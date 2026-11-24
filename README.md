@@ -17,6 +17,7 @@
 - 首次启动会弹 UAC，点「是」（托盘图标需要管理员权限）
 - 托盘右键可「打开页面 / 重启服务 / 退出」
 - 导出 CSV 后粘进下面的网页即可看 B30 / R10
+- 当前版本 **v1.5.0**：导出图片改为双列排版，高度从 3376 压到 1842
 
 在线版：https://lyuchen0720.github.io/arcaea-web/
 
@@ -94,12 +95,23 @@ https://arcaea-proxy.xxxx.workers.dev
 ## 导出成绩长图
 
 成绩区那一排按钮里有「导出图片」，点一下把整页成绩（账号卡 + 最近成绩 + BEST 30 + RECENT 10）
-拼成一张 1080 宽的竖版 PNG 存下来，登录凭证和 CSV 输入框不会进图。
+拼成一张 **1080 × 1842** 的竖版 PNG，登录凭证和 CSV 输入框不会进图。
 
+- **双列排版**：B30 十五行、R10 五行，比旧版单列（1080×3376）矮了 45%
+- 每格：名次 + 曲绘 + `[定数] 歌名` / 难度 + 判定行 + 分数 + 潜力
+- 判定行 `P{总Pure}+{Shine} · F{Far} · L{Lost}`，有 Lost 时标红
 - 纯 Canvas 2D 手绘，不加载任何第三方库，也不联网
-- 曲绘按 `jackets/<id>.webp` 取，离线也有图
+- 曲绘按 `jackets/<id>.webp` 取，离线也有图（命中 40/40）
 - 文件名 `arcaea-<名字>.png`
-- R10 那 10 行也会带曲绘（旧版漏传 id 的 bug 已修）
+
+### v1.5.0 修的问题
+
+| 问题 | 原因 |
+|---|---|
+| 导出图里曲绘全是灰色空块 | `drawSongRow` 只画了底块，漏调 `drawJacket` |
+| 整图下移 4px、底边被裁 | 起始 `y` 与高度公式起点不一致 |
+| R10 十行不出曲绘 | `scoreRow` 调用漏传 `r.id` |
+| 带逗号的歌名解析错位 | `splitCSVLine` 定义在调用之后，被 try/catch 静默吞掉 |
 
 ## 成绩 CSV
 
@@ -131,6 +143,9 @@ song,id,diff,const,score,shiny,pure,far,lost,clear,pot,date,set,designer
 | `server.py` | 本地 Python 代理 |
 | `worker.js` | Cloudflare Worker 代理 |
 | `requirements.txt` | 空（无第三方依赖） |
+| `jackets/<id>.webp` | 570 首曲绘，256px，共约 10 MB |
+| `教程.md` | 图文操作教程（8 步 + 常见问题） |
+| `ArcaeaScoreTool.md` | 提取器说明（下载 / 用法 / 排查） |
 
 ## 免责声明
 
