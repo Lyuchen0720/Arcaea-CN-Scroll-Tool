@@ -4,14 +4,14 @@
 
 ## 下载
 
-- **单文件版**：https://github.com/Lyuchen0720/arcaea-web/releases/latest/download/ArcaeaScoreTool.exe
-- **解压即用版**：https://github.com/Lyuchen0720/arcaea-web/releases/latest/download/ArcaeaScoreTool-portable.zip
+- **单文件版**：https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest/download/ArcaeaScoreTool.exe
+- **解压即用版**：https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest/download/ArcaeaScoreTool-portable.zip
 
 ## 用它做什么
 
 - 导出全部成绩为 CSV（歌名 / 难度 / 定数 / 分数 / 判定数 / clear 类型）
 - 直接看 B30 / R10 和最强单曲
-- 拿到 `a_t`（登录凭证），拿去 https://lyuchen0720.github.io/arcaea-web/ 在线查分
+- 拿到 `a_t`（登录凭证），拿去 https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/ 在线查分
 
 ## 三步走
 
