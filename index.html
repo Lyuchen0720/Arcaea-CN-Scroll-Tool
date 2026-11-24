@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arcaea 查分</title>
+<style>
+  :root{
+    --bg:#0d0818; --panel:rgba(30,20,55,.72); --line:rgba(150,120,255,.22);
+    --pink:#ff6bcb; --cyan:#5ce1e6; --purple:#a855f7; --txt:#e8e2ff; --dim:#9a90c0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;font:14px/1.6 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--txt);
+    background:
+      radial-gradient(900px 500px at 15% -10%, rgba(168,85,247,.30), transparent 60%),
+      radial-gradient(700px 480px at 90% 0%, rgba(92,225,230,.18), transparent 60%),
+      radial-gradient(800px 600px at 50% 110%, rgba(255,107,203,.16), transparent 60%),
+      var(--bg);
+    padding:26px 16px 56px;
+  }
+  .wrap{max-width:820px;margin:0 auto}
+  h1{font-size:20px;letter-spacing:.10em;font-weight:600;
+     background:linear-gradient(90deg,var(--cyan),var(--pink));
+     -webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:3px}
+  .sub{color:var(--dim);font-size:12px;margin-bottom:16px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+        padding:16px 18px;backdrop-filter:blur(12px);margin-bottom:13px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  input[type=text]{flex:1;min-width:220px;background:rgba(10,6,22,.6);border:1px solid var(--line);
+        border-radius:10px;padding:10px 12px;color:var(--txt);font-size:13px;outline:none;
+        font-family:ui-monospace,Consolas,monospace}
+  input[type=text]:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(168,85,247,.15)}
+  button{background:linear-gradient(135deg,var(--purple),var(--pink));border:0;border-radius:10px;
+        padding:10px 20px;color:#fff;font-weight:600;font-size:13px;cursor:pointer}
+  button:hover{filter:brightness(1.12)}
+  button:disabled{opacity:.5;cursor:default}
+  .hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .avatar{width:76px;height:76px;border-radius:50%;flex:none;
+          background:linear-gradient(135deg,rgba(92,225,230,.35),rgba(255,107,203,.35));
+          border:1px solid var(--line);display:grid;place-items:center;font-size:30px}
+  .who{flex:1;min-width:160px}
+  .name{font-size:23px;font-weight:700;letter-spacing:.02em}
+  .code{color:var(--dim);font-size:12px;font-family:ui-monospace,monospace}
+  .rating{text-align:right;flex:none}
+  .rating .num{font-size:40px;font-weight:800;line-height:1;
+      background:linear-gradient(135deg,var(--cyan),var(--purple),var(--pink));
+      -webkit-background-clip:text;background-clip:text;color:transparent}
+  .rating .lbl{font-size:10px;color:var(--dim);letter-spacing:.24em;margin-top:3px}
+  h2{font-size:12px;letter-spacing:.16em;color:var(--dim);margin:0 0 10px;font-weight:600;
+     display:flex;justify-content:space-between;align-items:baseline}
+  h2 .avg{font-size:13px;color:var(--pink);letter-spacing:.04em;font-weight:700}
+  .song{display:flex;align-items:center;gap:10px;padding:7px 0;
+        border-bottom:1px solid rgba(150,120,255,.09)}
+  .song:last-child{border-bottom:0}
+  .rank{width:24px;color:var(--dim);font-family:ui-monospace,monospace;font-size:11px;
+        text-align:right;flex:none}
+  .rank.top{color:var(--pink);font-weight:700}
+  .ttl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+  .ttl .a{color:var(--dim);font-size:10px;letter-spacing:.06em}
+  .cc{width:34px;text-align:center;font-family:ui-monospace,monospace;font-size:12.5px;
+      color:var(--cyan);flex:none}
+  .sc{width:104px;text-align:right;font-family:ui-monospace,monospace;font-size:12.5px;flex:none}
+  .sc small{display:block;color:var(--pink);font-size:10.5px}
+  .err{color:#ff8080;font-size:12px;margin-top:8px}
+  .hide{display:none}
+  .note{color:var(--dim);font-size:11px;margin-top:10px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>ARCAEA · 查分</h1>
+  <div class="sub">输入 App 里的 a_t 查询</div>
+
+  <div class="card">
+    <div class="row">
+      <input id="tok" type="text" placeholder="粘贴 a_t ..." spellcheck="false">
+      <button id="go">查询</button>
+    </div>
+    <div id="err" class="err hide"></div>
+  </div>
+
+  <div id="profile" class="card hide">
+    <div class="hero">
+      <div class="avatar">&#10022;</div>
+      <div class="who">
+        <div class="name" id="pname">—</div>
+        <div class="code" id="pcode"></div>
+      </div>
+      <div class="rating">
+        <div class="num" id="prating">—</div>
+        <div class="lbl">POTENTIAL</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="recent" class="card hide">
+    <h2>最近成绩</h2>
+    <div id="recentBody"></div>
+  </div>
+
+  <div id="b30" class="card hide">
+    <h2>BEST 30 <span class="avg" id="b30avg"></span></h2>
+    <div id="b30Body"></div>
+  </div>
+
+  <div id="r10" class="card hide">
+    <h2>RECENT 10 <span class="avg" id="r10avg"></span></h2>
+    <div id="r10Body"></div>
+    <div class="note">B30 / R10 由本地成绩库（131 条）计算；官方 rating 以服务器为准。</div>
+  </div>
+</div>
+<script>
+var $ = function(s){ return document.querySelector(s); };
+
+function showErr(m){ var e=$('#err'); e.textContent=m; e.classList.remove('hide'); }
+function hideErr(){ $('#err').classList.add('hide'); }
+function fmt(n){ return (n/1e6).toFixed(6); }
+
+function api(path, tok){
+  return fetch('/api' + path, { headers: { 'X-Token': tok || '' } })
+    .then(function(r){ return r.text().then(function(t){ return { status: r.status, text: t }; }); })
+    .then(function(o){
+      try { return JSON.parse(o.text); }
+      catch(e){ throw new Error('HTTP ' + o.status + ' ' + o.text.slice(0,120)); }
+    });
+}
+
+function diffLabel(d){
+  var m = {0:'PAST',1:'PRESENT',2:'FUTURE',3:'BEYOND',4:'BEYOND'};
+  if (typeof d === 'string') return d.toUpperCase();
+  return m[d] || d;
+}
+
+function scoreRow(rank, title, diff, cc, score, pot){
+  return '<div class="song">'
+    + '<div class="rank ' + (rank<=3?'top':'') + '">' + rank + '</div>'
+    + '<div class="ttl">' + title + '<div class="a">' + diffLabel(diff) + '</div></div>'
+    + '<div class="cc">' + cc + '</div>'
+    + '<div class="sc">' + fmt(score) + '<small>' + pot.toFixed(3) + '</small></div>'
+    + '</div>';
+}
+function cleanToken(v){
+  v = (v||'').trim();
+  var m = v.match(/name="a_t"\s*>([^<]+)</);
+  if (m) return m[1].trim();
+  m = v.match(/>([^<]{8,})</);
+  if (m) return m[1].trim();
+  return v;
+}
+
+function pot(cc, sc){
+  if (sc >= 10000000) return cc + 2;
+  if (sc >= 9800000) return cc + 1 + (sc - 9800000) / 200000;
+  return Math.max(0, cc - (9800000 - sc) / 300000);
+}
+
+function load(){
+  hideErr();
+  var tok = cleanToken($('#tok').value);
+  var btn = $('#go'); btn.disabled = true; btn.textContent = '查询中...';
+  localStorage.setItem('arcaea_token', tok);
+
+  Promise.all([
+    api('/user/me', tok),
+    fetch('/api/stats').then(function(r){ return r.json(); }),
+    fetch('/api/songmap').then(function(r){ return r.json(); })
+  ]).then(function(arr){
+    var me = arr[0], st = arr[1], sm = arr[2];
+    if (!me.success) throw new Error(JSON.stringify(me).slice(0,200));
+    var v = me.value;
+
+    $('#pname').textContent = v.display_name || v.name;
+    $('#pcode').textContent = 'USER CODE ' + v.user_code;
+    $('#prating').textContent = (v.rating/1000).toFixed(3);
+    $('#profile').classList.remove('hide');
+
+    var rs = v.recent_score || [];
+    $('#recentBody').innerHTML = rs.length
+      ? rs.map(function(s,i){
+          var info = sm[s.song_id] || {};
+          var cc = info.difficulties ? info.difficulties[String(s.difficulty)] : null;
+          var ccv = (cc == null) ? 0 : cc;
+          return scoreRow(i+1, info.title || s.song_id, s.difficulty, cc == null ? '-' : cc, s.score, pot(ccv, s.score));
+        }).join('')
+      : '<div style="color:var(--dim)">暂无最近成绩</div>';
+    $('#recent').classList.remove('hide');
+
+    $('#b30avg').textContent = 'AVG ' + st.b30_avg.toFixed(3);
+    $('#b30Body').innerHTML = st.b30.map(function(r,i){
+      return scoreRow(i+1, r.song, r.diff, r.cc, r.score, r.pot);
+    }).join('');
+    $('#b30').classList.remove('hide');
+
+    $('#r10avg').textContent = 'AVG ' + st.r10_avg.toFixed(3);
+    $('#r10Body').innerHTML = st.r10.length
+      ? st.r10.map(function(r,i){ return scoreRow(i+1, r.song, r.diff, r.cc, r.score, r.pot); }).join('')
+      : '<div style="color:var(--dim)">最近 30 天无成绩</div>';
+    $('#r10').classList.remove('hide');
+  }).catch(function(e){
+    showErr('查询失败: ' + (e && e.message ? e.message : e));
+  }).then(function(){
+    btn.disabled = false; btn.textContent = '查询';
+  });
+}
+
+$('#go').onclick = load;
+var qt = new URLSearchParams(location.search).get('t');
+$('#tok').value = qt || localStorage.getItem('arcaea_token') || '';
+if ($('#tok').value) load();
+</script>
+</body>
+</html>
