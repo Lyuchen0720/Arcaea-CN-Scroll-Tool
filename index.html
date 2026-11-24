@@ -28,14 +28,16 @@
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;
         padding:16px 18px;backdrop-filter:blur(12px);margin-bottom:13px}
   .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-  input[type=text]{flex:1;min-width:220px;background:rgba(10,6,22,.6);border:1px solid var(--line);
-        border-radius:10px;padding:10px 12px;color:var(--txt);font-size:13px;outline:none;
-        font-family:ui-monospace,Consolas,monospace}
-  input[type=text]:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(168,85,247,.15)}
+  input[type=text],textarea{flex:1;min-width:220px;background:rgba(10,6,22,.6);
+        border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--txt);
+        font-size:13px;outline:none;font-family:ui-monospace,Consolas,monospace;width:100%}
+  textarea{min-height:90px;resize:vertical;line-height:1.5}
+  input[type=text]:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(168,85,247,.15)}
   button{background:linear-gradient(135deg,var(--purple),var(--pink));border:0;border-radius:10px;
         padding:10px 20px;color:#fff;font-weight:600;font-size:13px;cursor:pointer}
   button:hover{filter:brightness(1.12)}
   button:disabled{opacity:.5;cursor:default}
+  button.ghost{background:transparent;border:1px solid var(--line);color:var(--dim);font-weight:500}
   .hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
   .avatar{width:76px;height:76px;border-radius:50%;flex:none;
           background:linear-gradient(135deg,rgba(92,225,230,.35),rgba(255,107,203,.35));
@@ -66,19 +68,43 @@
   .err{color:#ff8080;font-size:12px;margin-top:8px}
   .hide{display:none}
   .note{color:var(--dim);font-size:11px;margin-top:10px;line-height:1.5}
+  .tag{font-size:10px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);
+       color:var(--dim);margin-left:6px}
+  .tag.ok{color:#6ee7a8;border-color:rgba(110,231,168,.4)}
+  .tag.bad{color:#ff8080;border-color:rgba(255,128,128,.4)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>ARCAEA · 查分</h1>
-  <div class="sub">输入 App 里的 a_t 查询</div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10</div>
 
   <div class="card">
+    <h2>API 服务器 <span id="apiState" class="tag">未设置</span></h2>
+    <div class="row" style="margin-bottom:10px">
+      <input id="apibase" type="text" placeholder="https://your-worker.workers.dev（留空 = 同源）" spellcheck="false">
+    </div>
+    <div class="sub" style="margin:0 0 10px">
+      浏览器不能直接连 arcaea.xd.cn（对方不回 CORS 头），必须经过代理。
+    </div>
+    <h2>登录凭证</h2>
     <div class="row">
-      <input id="tok" type="text" placeholder="粘贴 a_t ..." spellcheck="false">
+      <input id="tok" type="text" placeholder="粘贴 a_t（可整行 XML）..." spellcheck="false">
       <button id="go">查询</button>
     </div>
     <div id="err" class="err hide"></div>
+  </div>
+
+  <div class="card">
+    <h2>成绩数据（可选） <span class="tag">算 B30/R10 需要</span></h2>
+    <div class="sub" style="margin:0 0 8px">
+      粘贴 scores.csv 的内容。没有也能查账号和最近成绩，只是不显示 B30/R10。
+    </div>
+    <textarea id="csv" placeholder="song,id,diff,const,score,...&#10;Grievous Lady,grievouslady,Future,11,9863372,..." spellcheck="false"></textarea>
+    <div class="row" style="margin-top:8px">
+      <button id="calc" class="ghost">只用 CSV 计算</button>
+      <span id="csvState" class="sub" style="margin:0"></span>
+    </div>
   </div>
 
   <div id="profile" class="card hide">
@@ -108,39 +134,20 @@
   <div id="r10" class="card hide">
     <h2>RECENT 10 <span class="avg" id="r10avg"></span></h2>
     <div id="r10Body"></div>
-    <div class="note">B30 / R10 由本地成绩库（131 条）计算；官方 rating 以服务器为准。</div>
+    <div class="note">
+      定数取自 songlist（整数），已按 <code>+0.4</code> 修正平均偏差；单曲潜力误差约 ±0.2。
+      B30/R10 为本地估算，官方 rating 以服务器为准。
+    </div>
   </div>
 </div>
 <script>
 var $ = function(s){ return document.querySelector(s); };
+var CONST_FIX = 0.4;
 
 function showErr(m){ var e=$('#err'); e.textContent=m; e.classList.remove('hide'); }
 function hideErr(){ $('#err').classList.add('hide'); }
 function fmt(n){ return (n/1e6).toFixed(6); }
 
-function api(path, tok){
-  return fetch('/api' + path, { headers: { 'X-Token': tok || '' } })
-    .then(function(r){ return r.text().then(function(t){ return { status: r.status, text: t }; }); })
-    .then(function(o){
-      try { return JSON.parse(o.text); }
-      catch(e){ throw new Error('HTTP ' + o.status + ' ' + o.text.slice(0,120)); }
-    });
-}
-
-function diffLabel(d){
-  var m = {0:'PAST',1:'PRESENT',2:'FUTURE',3:'BEYOND',4:'BEYOND'};
-  if (typeof d === 'string') return d.toUpperCase();
-  return m[d] || d;
-}
-
-function scoreRow(rank, title, diff, cc, score, pot){
-  return '<div class="song">'
-    + '<div class="rank ' + (rank<=3?'top':'') + '">' + rank + '</div>'
-    + '<div class="ttl">' + title + '<div class="a">' + diffLabel(diff) + '</div></div>'
-    + '<div class="cc">' + cc + '</div>'
-    + '<div class="sc">' + fmt(score) + '<small>' + pot.toFixed(3) + '</small></div>'
-    + '</div>';
-}
 function cleanToken(v){
   v = (v||'').trim();
   var m = v.match(/name="a_t"\s*>([^<]+)</);
@@ -156,48 +163,180 @@ function pot(cc, sc){
   return Math.max(0, cc - (9800000 - sc) / 300000);
 }
 
+function diffLabel(d){
+  var m = {0:'PAST',1:'PRESENT',2:'FUTURE',3:'BEYOND',4:'BEYOND'};
+  if (typeof d === 'string') return d.toUpperCase();
+  return m[d] || d;
+}
+
+function apiBase(){
+  var v = ($('#apibase').value || '').trim().replace(/\/+$/, '');
+  return v;
+}
+
+function api(path, tok){
+  var base = apiBase();
+  var url = (base ? base : '') + '/api' + path;
+  return fetch(url, { headers: { 'X-Token': tok || '' } })
+    .then(function(r){ return r.text().then(function(t){ return { status: r.status, text: t }; }); })
+    .then(function(o){
+      try { return JSON.parse(o.text); }
+      catch(e){ throw new Error('HTTP ' + o.status + ' ' + o.text.slice(0,120)); }
+    });
+}
+
+function loadSongmap(){
+  var bases = ['', apiBase()];
+  var i = 0;
+  function tryNext(){
+    if (i >= bases.length) return Promise.resolve({});
+    var b = bases[i++];
+    return fetch(b + '/songmap.json')
+      .then(function(r){ if (!r.ok) throw new Error('bad'); return r.json(); })
+      .catch(function(){ return tryNext(); });
+  }
+  return tryNext();
+}
+
+function splitCSVLine(line){
+  var out = [], cur = "", q = false;
+  for (var i = 0; i < line.length; i++){
+    var ch = line.charAt(i);
+    if (q){
+      if (ch === '"'){
+        if (line.charAt(i + 1) === '"') { cur += '"'; i++; }
+        else { q = false; }
+      } else { cur += ch; }
+    } else {
+      if (ch === '"') { q = true; }
+      else if (ch === ",") { out.push(cur); cur = ""; }
+      else { cur += ch; }
+    }
+  }
+  out.push(cur);
+  return out;
+}
+
+function parseCSV(text){
+  var lines = (text||'').trim().split(/\r?\n/).filter(function(l){ return l.trim(); });
+  if (lines.length < 2) return [];
+  var head = lines[0].replace(/^\uFEFF/, '').split(',').map(function(s){ return s.trim(); });
+  var ix = {};
+  head.forEach(function(h, i){ ix[h] = i; });
+  return lines.slice(1).map(function(line){
+    var c = splitCSVLine(line);
+    return {
+      song: (c[ix.song] || '').trim(),
+      id: (c[ix.id] || '').trim(),
+      diff: (c[ix.diff] || '').trim(),
+      cc: parseFloat(c[ix.const]) || 0,
+      score: parseInt(c[ix.score], 10) || 0,
+      date: (c[ix.date] || '').trim(),
+      clear: (c[ix.clear] || '').trim()
+    };
+  }).filter(function(r){ return r.score > 0; });
+}
+</script>
+<script>
+function scoreRow(rank, title, diff, cc, score, p){
+  return '<div class="song">'
+    + '<div class="rank ' + (rank<=3?'top':'') + '">' + rank + '</div>'
+    + '<div class="ttl">' + title + '<div class="a">' + diffLabel(diff) + '</div></div>'
+    + '<div class="cc">' + cc + '</div>'
+    + '<div class="sc">' + fmt(score) + '<small>' + p.toFixed(3) + '</small></div>'
+    + '</div>';
+}
+
+function computeBest(rows){
+  var best = {};
+  rows.forEach(function(r){
+    var k = r.id + '|' + r.diff;
+    if (!best[k] || r.score > best[k].score) best[k] = r;
+  });
+  return Object.keys(best).map(function(k){
+    var r = best[k];
+    return { song: r.song, diff: r.diff, cc: r.cc, score: r.score,
+             pot: pot(r.cc + CONST_FIX, r.score),
+             date: r.date, id: r.id };
+  }).sort(function(a, b){ return b.pot - a.pot; }).slice(0, 30);
+}
+
+function computeRecent(rows){
+  var cut = Date.now() - 30 * 864e5;
+  var rec = [];
+  rows.forEach(function(r){
+    var t = Date.parse(r.date);
+    if (!t || t < cut) return;
+    rec.push({ song: r.song, diff: r.diff, cc: r.cc, score: r.score,
+               pot: pot(r.cc + CONST_FIX, r.score),
+               date: r.date, id: r.id });
+  });
+  rec.sort(function(a, b){ return b.pot - a.pot; });
+  return rec.slice(0, 10);
+}
+
+function avgOf(list){
+  if (!list.length) return 0;
+  return list.reduce(function(s, x){ return s + x.pot; }, 0) / list.length;
+}
+
+function renderStats(rows, sm){
+  if (!rows.length){
+    $('#csvState').textContent = '没有解析到成绩行';
+    return;
+  }
+  var b30 = computeBest(rows), r10 = computeRecent(rows);
+  $('#b30avg').textContent = 'AVG ' + avgOf(b30).toFixed(3);
+  $('#b30Body').innerHTML = b30.map(function(r, i){
+    return scoreRow(i + 1, r.song || (sm[r.id] && sm[r.id].title) || r.id, r.diff, r.cc, r.score, r.pot);
+  }).join('');
+  $('#b30').classList.remove('hide');
+
+  $('#r10avg').textContent = 'AVG ' + avgOf(r10).toFixed(3);
+  $('#r10Body').innerHTML = r10.length
+    ? r10.map(function(r, i){ return scoreRow(i + 1, r.song || (sm[r.id] && sm[r.id].title) || r.id, r.diff, r.cc, r.score, r.pot); }).join('')
+    : '<div style="color:var(--dim)">最近 30 天无成绩</div>';
+  $('#r10').classList.remove('hide');
+  $('#csvState').textContent = rows.length + ' 条成绩已载入';
+}
+</script>
+<script>
 function load(){
   hideErr();
   var tok = cleanToken($('#tok').value);
+  if (!tok){ showErr('请先粘贴 a_t'); return; }
   var btn = $('#go'); btn.disabled = true; btn.textContent = '查询中...';
   localStorage.setItem('arcaea_token', tok);
+  localStorage.setItem('arcaea_apibase', apiBase());
 
-  Promise.all([
-    api('/user/me', tok),
-    fetch('/api/stats').then(function(r){ return r.json(); }),
-    fetch('/api/songmap').then(function(r){ return r.json(); })
-  ]).then(function(arr){
-    var me = arr[0], st = arr[1], sm = arr[2];
-    if (!me.success) throw new Error(JSON.stringify(me).slice(0,200));
+  var smP = loadSongmap();
+
+  api('/user/me', tok).then(function(me){
+    if (!me || !me.success) throw new Error(JSON.stringify(me).slice(0, 220));
     var v = me.value;
 
-    $('#pname').textContent = v.display_name || v.name;
-    $('#pcode').textContent = 'USER CODE ' + v.user_code;
-    $('#prating').textContent = (v.rating/1000).toFixed(3);
+    $('#pname').textContent = v.display_name || v.name || '—';
+    $('#pcode').textContent = 'USER CODE ' + (v.user_code || '');
+    $('#prating').textContent = (v.rating / 1000).toFixed(3);
     $('#profile').classList.remove('hide');
 
-    var rs = v.recent_score || [];
-    $('#recentBody').innerHTML = rs.length
-      ? rs.map(function(s,i){
-          var info = sm[s.song_id] || {};
-          var cc = info.difficulties ? info.difficulties[String(s.difficulty)] : null;
-          var ccv = (cc == null) ? 0 : cc;
-          return scoreRow(i+1, info.title || s.song_id, s.difficulty, cc == null ? '-' : cc, s.score, pot(ccv, s.score));
-        }).join('')
-      : '<div style="color:var(--dim)">暂无最近成绩</div>';
-    $('#recent').classList.remove('hide');
+    return smP.then(function(sm){
+      var rs = v.recent_score || [];
+      $('#recentBody').innerHTML = rs.length
+        ? rs.map(function(s, i){
+            var info = sm[s.song_id] || {};
+            var d = info.difficulties || {};
+            var cc = d[String(s.difficulty)];
+            var ccv = (cc == null) ? 0 : cc;
+            return scoreRow(i + 1, info.title || s.song_id, s.difficulty,
+                            cc == null ? '-' : cc, s.score, pot(ccv + CONST_FIX, s.score));
+          }).join('')
+        : '<div style="color:var(--dim)">暂无最近成绩</div>';
+      $('#recent').classList.remove('hide');
 
-    $('#b30avg').textContent = 'AVG ' + st.b30_avg.toFixed(3);
-    $('#b30Body').innerHTML = st.b30.map(function(r,i){
-      return scoreRow(i+1, r.song, r.diff, r.cc, r.score, r.pot);
-    }).join('');
-    $('#b30').classList.remove('hide');
-
-    $('#r10avg').textContent = 'AVG ' + st.r10_avg.toFixed(3);
-    $('#r10Body').innerHTML = st.r10.length
-      ? st.r10.map(function(r,i){ return scoreRow(i+1, r.song, r.diff, r.cc, r.score, r.pot); }).join('')
-      : '<div style="color:var(--dim)">最近 30 天无成绩</div>';
-    $('#r10').classList.remove('hide');
+      var rows = parseCSV($('#csv').value);
+      if (rows.length) renderStats(rows, sm);
+    });
   }).catch(function(e){
     showErr('查询失败: ' + (e && e.message ? e.message : e));
   }).then(function(){
@@ -205,10 +344,46 @@ function load(){
   });
 }
 
+function calcOnly(){
+  var rows = parseCSV($('#csv').value);
+  if (!rows.length){ showErr('CSV 里没有解析到成绩'); return; }
+  hideErr();
+  loadSongmap().then(function(sm){ renderStats(rows, sm); });
+}
+
 $('#go').onclick = load;
-var qt = new URLSearchParams(location.search).get('t');
-$('#tok').value = qt || localStorage.getItem('arcaea_token') || '';
-if ($('#tok').value) load();
+$('#calc').onclick = calcOnly;
+
+(function init(){
+  var sp = new URLSearchParams(location.search);
+  var qt = sp.get('t');
+  var qc = sp.get('c');
+  if (qc){
+    try { $('#csv').value = decodeURIComponent(escape(atob(qc))); }
+    catch(e){ showErr('CSV 参数解码失败: ' + e.message); }
+  }
+  $('#apibase').value = localStorage.getItem('arcaea_apibase') || '';
+  if (!qc) $('#csv').value = localStorage.getItem('arcaea_csv') || '';
+  $('#tok').value = qt || localStorage.getItem('arcaea_token') || '';
+
+  if (!apiBase()){
+    api('/user/me', '').then(function(j){
+      var t = $('#apiState');
+      if (j && (j.success || j.error_code !== undefined)) { t.textContent = '同源可用'; t.className = 'tag ok'; }
+      else { t.textContent = '同源异常'; t.className = 'tag bad'; }
+    }).catch(function(){
+      var t = $('#apiState');
+      t.textContent = '需填代理地址'; t.className = 'tag bad';
+    });
+  } else {
+    var t = $('#apiState'); t.textContent = '自定义'; t.className = 'tag ok';
+  }
+  if ($('#tok').value) load();
+})();
+
+$('#csv').addEventListener('change', function(){
+  localStorage.setItem('arcaea_csv', $('#csv').value);
+});
 </script>
 </body>
 </html>
