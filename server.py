@@ -86,6 +86,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if path == "/api/songmap":
             self._send(200, json.dumps(songs(), ensure_ascii=False).encode())
             return
+        if path == "/songmap.json":
+            self._send(200, json.dumps(songs(), ensure_ascii=False).encode())
+            return
         if path == "/api/stats":
             self._send(200, json.dumps(stats(), ensure_ascii=False).encode())
             return
