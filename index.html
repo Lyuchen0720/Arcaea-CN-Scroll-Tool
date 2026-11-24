@@ -56,6 +56,8 @@
   .song{display:flex;align-items:center;gap:10px;padding:7px 0;
         border-bottom:1px solid rgba(150,120,255,.09)}
   .song:last-child{border-bottom:0}
+  .jk{width:34px;height:34px;border-radius:6px;object-fit:cover;flex:none;background:rgba(255,255,255,.06)}
+  .jk.ph{display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dim)}
   .rank{width:24px;color:var(--dim);font-family:ui-monospace,monospace;font-size:11px;
         text-align:right;flex:none}
   .rank.top{color:var(--pink);font-weight:700}
@@ -78,6 +80,7 @@
 <div class="wrap">
   <h1>ARCAEA · 查分</h1>
   <div class="sub">国服成绩查询 · 本地计算 B30 / R10</div>
+  <div class="sub" style="font-size:10.5px;opacity:.55;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
     <h2>登录凭证</h2>
@@ -96,6 +99,8 @@
     <textarea id="csv" placeholder="song,id,diff,const,score,...&#10;Grievous Lady,grievouslady,Future,11,9863372,..." spellcheck="false"></textarea>
     <div class="row" style="margin-top:8px">
       <button id="calc" class="ghost">只用 CSV 计算</button>
+      <button id="jkBtn" class="ghost">导入封面 zip</button>
+      <input id="jkFile" type="file" accept=".zip" style="display:none">
       <span id="csvState" class="sub" style="margin:0"></span>
     </div>
   </div>
@@ -233,9 +238,33 @@ function parseCSV(text){
 }
 </script>
 <script>
-function scoreRow(rank, title, diff, cc, score, p){
+var JACKETS = {};   // id -> dataURL
+
+function jacketImg(id){
+  if (!id) return '<div class="jk ph">&#9835;</div>';
+  // 优先用用户导入的 zip，否则回落到仓库内置的 WebP
+  var src = JACKETS[id] || ('jackets/' + id + '.webp');
+  return '<img class="jk" loading="lazy" src="' + src + '" alt="" data-jk="' + id + '">';
+}
+
+function bindJacketFallback(){
+  var imgs = document.querySelectorAll('img.jk[data-jk]');
+  for (var i = 0; i < imgs.length; i++){
+    (function(im){
+      im.onerror = function(){
+        var d = document.createElement('div');
+        d.className = 'jk ph';
+        d.textContent = '♫';
+        if (im.parentNode) im.parentNode.replaceChild(d, im);
+      };
+    })(imgs[i]);
+  }
+}
+
+function scoreRow(rank, title, diff, cc, score, p, id){
   return '<div class="song">'
     + '<div class="rank ' + (rank<=3?'top':'') + '">' + rank + '</div>'
+    + jacketImg(id)
     + '<div class="ttl">' + title + '<div class="a">' + diffLabel(diff) + '</div></div>'
     + '<div class="cc">' + cc + '</div>'
     + '<div class="sc">' + fmt(score) + '<small>' + p.toFixed(3) + '</small></div>'
@@ -283,7 +312,7 @@ function renderStats(rows, sm){
   var b30 = computeBest(rows), r10 = computeRecent(rows);
   $('#b30avg').textContent = 'AVG ' + avgOf(b30).toFixed(3);
   $('#b30Body').innerHTML = b30.map(function(r, i){
-    return scoreRow(i + 1, r.song || (sm[r.id] && sm[r.id].title) || r.id, r.diff, r.cc, r.score, r.pot);
+    return scoreRow(i + 1, r.song || (sm[r.id] && sm[r.id].title) || r.id, r.diff, r.cc, r.score, r.pot, r.id);
   }).join('');
   $('#b30').classList.remove('hide');
 
@@ -293,6 +322,7 @@ function renderStats(rows, sm){
     : '<div style="color:var(--dim)">最近 30 天无成绩</div>';
   $('#r10').classList.remove('hide');
   $('#csvState').textContent = rows.length + ' 条成绩已载入';
+  bindJacketFallback();
 }
 </script>
 <script>
@@ -323,7 +353,7 @@ function load(){
             var cc = d[String(s.difficulty)];
             var ccv = (cc == null) ? 0 : cc;
             return scoreRow(i + 1, info.title || s.song_id, s.difficulty,
-                            cc == null ? '-' : cc, s.score, pot(ccv + CONST_FIX, s.score));
+                            cc == null ? '-' : cc, s.score, pot(ccv + CONST_FIX, s.score), s.song_id);
           }).join('')
         : '<div style="color:var(--dim)">暂无最近成绩</div>';
       $('#recent').classList.remove('hide');
@@ -355,6 +385,8 @@ $('#go').onclick = load;
 $('#calc').onclick = calcOnly;
 
 (function init(){
+  loadJackets();
+  bindJackets();
   var sp = new URLSearchParams(location.search);
   var qt = sp.get('t');
   var qc = sp.get('c');
@@ -379,6 +411,94 @@ $('#csv').addEventListener('input', function(){
     renderFromCsv();
   }, 400);
 });
+
+/* ---------- 封面 zip 导入（原生 DecompressionStream，不依赖第三方库）---------- */
+function readU16(b, o){ return b[o] | (b[o+1] << 8); }
+function readU32(b, o){ return (b[o] | (b[o+1]<<8) | (b[o+2]<<16) | (b[o+3]<<24)) >>> 0; }
+
+async function unzip(buf){
+  var b = new Uint8Array(buf), out = [];
+  var eocd = -1;
+  for (var i = b.length - 22; i >= 0 && i > b.length - 66000; i--){
+    if (readU32(b, i) === 0x06054b50){ eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('不是有效的 zip 文件');
+  var n = readU16(b, eocd + 10), off = readU32(b, eocd + 16);
+  var p = off;
+  for (var k = 0; k < n; k++){
+    if (readU32(b, p) !== 0x02014b50) break;
+    var nameLen = readU16(b, p + 28), extraLen = readU16(b, p + 30), cmtLen = readU16(b, p + 32);
+    var method = readU16(b, p + 10);
+    var csize = readU32(b, p + 20);
+    var lho = readU32(b, p + 42);
+    var name = new TextDecoder().decode(b.subarray(p + 46, p + 46 + nameLen));
+    var lnameLen = readU16(b, lho + 26), lextraLen = readU16(b, lho + 28);
+    var dataStart = lho + 30 + lnameLen + lextraLen;
+    var raw = b.subarray(dataStart, dataStart + csize);
+    if (!name.endsWith('/')) out.push({ name: name, method: method, raw: raw });
+    p += 46 + nameLen + extraLen + cmtLen;
+  }
+  var res = {};
+  for (var j = 0; j < out.length; j++){
+    var e = out[j];
+    var bytes;
+    if (e.method === 0) bytes = e.raw;
+    else if (e.method === 8){
+      var ds = new DecompressionStream('deflate-raw');
+      var blob = await new Response(new Blob([e.raw]).stream().pipeThrough(ds)).arrayBuffer();
+      bytes = new Uint8Array(blob);
+    } else continue;
+    var id = e.name.replace(/^.*\//, '').replace(/\.(jpg|jpeg|png)$/i, '');
+    res[id] = 'data:image/jpeg;base64,' + b64(bytes);
+  }
+  return res;
+}
+
+function b64(u8){
+  var CH = 0x8000, out = '';
+  for (var i = 0; i < u8.length; i += CH){
+    out += String.fromCharCode.apply(null, u8.subarray(i, i + CH));
+  }
+  return btoa(out);
+}
+
+function saveJackets(){
+  try { sessionStorage.setItem('arcaea_jackets', JSON.stringify(JACKETS)); } catch(e){}
+}
+function loadJackets(){
+  try {
+    var v = sessionStorage.getItem('arcaea_jackets');
+    if (v) JACKETS = JSON.parse(v);
+  } catch(e){ JACKETS = {}; }
+  return Object.keys(JACKETS).length;
+}
+
+/* ---------- 封面导入按钮 ---------- */
+function bindJackets(){
+  var btn = document.getElementById('jkBtn');
+  var file = document.getElementById('jkFile');
+  if (!btn || !file) return;
+  btn.onclick = function(){ file.click(); };
+  file.onchange = async function(){
+    var f = file.files && file.files[0];
+    if (!f) return;
+    var old = document.getElementById('csvState').textContent;
+    document.getElementById('csvState').textContent = '正在解压封面…';
+    try {
+      var buf = await f.arrayBuffer();
+      var imgs = await unzip(buf);
+      var n = 0;
+      Object.keys(imgs).forEach(function(k){ JACKETS[k] = imgs[k]; n++; });
+      saveJackets();
+      document.getElementById('csvState').textContent = '已导入 ' + n + ' 张封面';
+      // 重绘当前列表
+      if (document.getElementById('csv').value.trim()) renderFromCsv();
+    } catch (e) {
+      document.getElementById('csvState').textContent = '导入失败：' + e.message;
+      console.error(e);
+    }
+  };
+}
 </script>
 </body>
 </html>
