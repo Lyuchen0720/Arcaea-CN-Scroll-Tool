@@ -80,13 +80,6 @@
   <div class="sub">国服成绩查询 · 本地计算 B30 / R10</div>
 
   <div class="card">
-    <h2>API 服务器 <span id="apiState" class="tag">未设置</span></h2>
-    <div class="row" style="margin-bottom:10px">
-      <input id="apibase" type="text" placeholder="https://your-worker.workers.dev（留空 = 同源）" spellcheck="false">
-    </div>
-    <div class="sub" style="margin:0 0 10px">
-      浏览器不能直接连 arcaea.xd.cn（对方不回 CORS 头），必须经过代理。
-    </div>
     <h2>登录凭证</h2>
     <div class="row">
       <input id="tok" type="text" placeholder="粘贴 a_t（可整行 XML）..." spellcheck="false">
@@ -169,9 +162,11 @@ function diffLabel(d){
   return m[d] || d;
 }
 
+var API_BASE = '__API_BASE__';
+
 function apiBase(){
-  var v = ($('#apibase').value || '').trim().replace(/\/+$/, '');
-  return v;
+  if (API_BASE && API_BASE !== '__API_BASE__') return API_BASE.replace(/\/+$/, '');
+  return '';
 }
 
 function api(path, tok){
@@ -307,7 +302,6 @@ function load(){
   if (!tok){ showErr('请先粘贴 a_t'); return; }
   var btn = $('#go'); btn.disabled = true; btn.textContent = '查询中...';
   localStorage.setItem('arcaea_token', tok);
-  localStorage.setItem('arcaea_apibase', apiBase());
 
   var smP = loadSongmap();
 
@@ -351,6 +345,12 @@ function calcOnly(){
   loadSongmap().then(function(sm){ renderStats(rows, sm); });
 }
 
+function renderFromCsv(){
+  var rows = parseCSV($('#csv').value);
+  if (!rows.length) return;
+  loadSongmap().then(function(sm){ renderStats(rows, sm); });
+}
+
 $('#go').onclick = load;
 $('#calc').onclick = calcOnly;
 
@@ -362,27 +362,22 @@ $('#calc').onclick = calcOnly;
     try { $('#csv').value = decodeURIComponent(escape(atob(qc))); }
     catch(e){ showErr('CSV 参数解码失败: ' + e.message); }
   }
-  $('#apibase').value = localStorage.getItem('arcaea_apibase') || '';
   if (!qc) $('#csv').value = localStorage.getItem('arcaea_csv') || '';
   $('#tok').value = qt || localStorage.getItem('arcaea_token') || '';
-
-  if (!apiBase()){
-    api('/user/me', '').then(function(j){
-      var t = $('#apiState');
-      if (j && (j.success || j.error_code !== undefined)) { t.textContent = '同源可用'; t.className = 'tag ok'; }
-      else { t.textContent = '同源异常'; t.className = 'tag bad'; }
-    }).catch(function(){
-      var t = $('#apiState');
-      t.textContent = '需填代理地址'; t.className = 'tag bad';
-    });
-  } else {
-    var t = $('#apiState'); t.textContent = '自定义'; t.className = 'tag ok';
-  }
+  if ($('#csv').value.trim()) renderFromCsv();
   if ($('#tok').value) load();
 })();
 
 $('#csv').addEventListener('change', function(){
   localStorage.setItem('arcaea_csv', $('#csv').value);
+});
+
+$('#csv').addEventListener('input', function(){
+  clearTimeout(window.__csvT);
+  window.__csvT = setTimeout(function(){
+    localStorage.setItem('arcaea_csv', $('#csv').value);
+    renderFromCsv();
+  }, 400);
 });
 </script>
 </body>
