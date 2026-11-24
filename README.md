@@ -17,7 +17,7 @@
 - 首次启动会弹 UAC，点「是」（托盘图标需要管理员权限）
 - 托盘右键可「打开页面 / 重启服务 / 退出」
 - 导出 CSV 后粘进下面的网页即可看 B30 / R10
-- 当前版本 **v1.5.0**：导出图片改为双列排版，高度从 3376 压到 1842
+- 当前版本 **v1.6.0**：全新图标 + 双列导出图（1080×1842）
 
 在线版：https://lyuchen0720.github.io/arcaea-web/
 
@@ -144,6 +144,8 @@ song,id,diff,const,score,shiny,pure,far,lost,clear,pot,date,set,designer
 | `worker.js` | Cloudflare Worker 代理 |
 | `requirements.txt` | 空（无第三方依赖） |
 | `jackets/<id>.webp` | 570 首曲绘，256px，共约 10 MB |
+| `arcaea.ico` | 程序图标，10 种尺寸（16~256） |
+| `icon_1024.png` | 图标母版，1024×1024 |
 | `教程.md` | 图文操作教程（8 步 + 常见问题） |
 | `ArcaeaScoreTool.md` | 提取器说明（下载 / 用法 / 排查） |
 
