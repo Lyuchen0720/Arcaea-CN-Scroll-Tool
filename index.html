@@ -77,10 +77,9 @@
 </style>
 </head>
 <body>
-<div id="verTag" style="position:fixed;right:14px;bottom:10px;font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.5px;pointer-events:none;z-index:9">v1.4.0</div>
 <div class="wrap">
   <h1>ARCAEA · 查分</h1>
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10</div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.45;margin-left:8px">v1.5.0</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.55;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -172,8 +171,12 @@ function diffLabel(d){
 }
 
 var API_BASE = 'https://arcaea-proxy.2292666749.workers.dev';
+var OFFLINE = !!window.__OFFLINE__;
+var JK_PREFIX = 'jackets/';   // OFFLINE 时切成 /jackets/
 
 function apiBase(){
+  // 本地服务：走同源 /api/*，曲绘走 /jackets/<id>.webp（exe 已缓存到本地）
+  if (OFFLINE){ JK_PREFIX = '/jackets/'; return ''; }
   if (API_BASE && API_BASE !== '__API_BASE__') return API_BASE.replace(/\/+$/, '');
   return '';
 }
@@ -235,6 +238,10 @@ function parseCSV(text){
       diff: (c[ix.diff] || '').trim(),
       cc: parseFloat(c[ix.const]) || 0,
       score: parseInt(c[ix.score], 10) || 0,
+      shiny: parseInt(c[ix.shiny], 10) || 0,
+      pure: parseInt(c[ix.pure], 10) || 0,
+      far: parseInt(c[ix.far], 10) || 0,
+      lost: parseInt(c[ix.lost], 10) || 0,
       date: (c[ix.date] || '').trim(),
       clear: (c[ix.clear] || '').trim()
     };
@@ -248,7 +255,7 @@ var LOCAL = {};          // 本地路径映射：模拟器导出的曲绘目录�
 function jacketImg(id){
   if (!id) return '<div class="jk ph">&#9835;</div>';
   // 1) 本地目录优先  2) 用户导入的 zip  3) 仓库内置 WebP
-  var src = JACKETS[id] || (LOCAL.__base ? LOCAL.__base + '/' + id + '.jpg' : '') || ('jackets/' + id + '.webp');
+  var src = JACKETS[id] || (LOCAL.__base ? LOCAL.__base + '/' + id + '.jpg' : '') || (JK_PREFIX + id + '.webp');
   return '<img class="jk" loading="lazy" src="' + src + '" alt="" data-jk="' + id + '">';
 }
 
@@ -460,57 +467,101 @@ function drawJacket(c, im, x, y, s){
 }
 
 function drawSongRow(c, x, y, w, r, rank, im, sm, opt){
-  var s = 52, cy = y + 7;
-  // 隔行底色
-  if (rank % 2 === 0){
-    c.fillStyle = 'rgba(255,255,255,.018)';
-    c.fillRect(x, y, w, 66);
-  }
+  var mid = drawSongRow;
+  var H = (mid._h || 66);
+
   // 名次
+  c.font = '700 14px "Consolas",monospace';
+  c.textAlign = 'right';
   c.textBaseline = 'middle';
-  c.font = 'bold 22px "Microsoft YaHei","Segoe UI",sans-serif';
-  c.fillStyle = rank <= 3 ? '#f472b6' : 'rgba(255,255,255,.34)';
-  c.textAlign = 'center';
-  c.fillText(String(rank), x + 26, y + 33);
+  c.fillStyle = rank <= 3 ? '#f472b6' : 'rgba(255,255,255,.30)';
+  c.fillText(String(rank), x + 40, y + H / 2);
   c.textAlign = 'left';
 
   // 封面
-  drawJacket(c, im, x + 56, cy, s);
+  var s = H - 12, cy = y + H / 2;
+  drawJacket(c, im, x + 50, cy - s / 2, s);
 
   var info = (sm && sm[r.id]) || {};
   var title = r.song || info.title || r.id;
   var diff = diffLabel(r.diff);
 
-  // 定数块宽 74，分数块宽 190
-  var ccW = 74, scW = 190;
-  var tx = x + 56 + s + 16;
-  var tw = w - (tx - x) - ccW - scW - 24;
+  var scW = 118;
+  var tx = x + 50 + s + 14;
+  var tw = w - (tx - x) - scW - 22;
 
-  c.textBaseline = 'top';
-  c.font = '600 20px "Microsoft YaHei","Segoe UI",sans-serif';
+  // 定数 [10.7]
+  c.font = '700 13px "Consolas","Microsoft YaHei",monospace';
+  var ccTxt = '[' + (r.cc == null || r.cc === '' ? '-' : String(r.cc)) + ']';
+  c.textBaseline = 'top'; c.textAlign = 'left';
+  c.fillStyle = 'rgba(196,181,253,.85)';
+  c.fillText(ccTxt, tx, y + 10);
+  var cw2 = c.measureText(ccTxt).width;
+
+  // 歌名
+  c.font = '600 17px "Microsoft YaHei","Segoe UI",sans-serif';
   c.fillStyle = '#ece7ff';
-  c.fillText(clipText(c, title, tw), tx, y + 14);
+  var mx = tx + cw2 + 7;
+  c.fillText(clipText(c, title, tx + tw - mx), mx, y + 8);
 
-  c.font = '14px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.42)';
-  c.fillText(diff, tx, y + 40);
+  // 第二行：难度 + 判定
+  c.font = '12px "Microsoft YaHei",sans-serif';
+  c.fillStyle = 'rgba(255,255,255,.40)';
+  c.fillText(diff, tx, y + 32);
+  var dx = tx + c.measureText(diff).width + 10;
 
-  // 定数
-  c.textAlign = 'center';
-  c.font = '600 19px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.55)';
-  c.fillText(String(r.cc == null ? '-' : r.cc), x + w - scW - ccW / 2 - 12, y + 24);
+  var hasJudge = (typeof r.pure === 'number' && !isNaN(r.pure) && r.pure > 0);
+  if (hasJudge){
+    var base = '12px "Consolas","Segoe UI",monospace';
+    c.font = base;
+    c.fillStyle = 'rgba(255,255,255,.58)';
+    var a1 = 'P' + r.pure;
+    c.fillText(a1, dx, y + 32);
+    var x2 = dx + c.measureText(a1).width;
+    if (r.shiny > 0){
+      c.fillStyle = 'rgba(196,181,253,.80)';
+      var a2 = '+' + r.shiny;
+      c.fillText(a2, x2, y + 32);
+      x2 += c.measureText(a2).width;
+    }
+    c.fillStyle = 'rgba(255,255,255,.22)';
+    c.fillText(' · ', x2, y + 32);
+    var x3 = x2 + c.measureText(' · ').width;
+    c.fillStyle = 'rgba(255,255,255,.50)';
+    var a3 = 'F' + r.far;
+    c.fillText(a3, x3, y + 32);
+    var x4 = x3 + c.measureText(a3).width;
+    c.fillStyle = 'rgba(255,255,255,.22)';
+    c.fillText(' · ', x4, y + 32);
+    var x5 = x4 + c.measureText(' · ').width;
+    c.fillStyle = r.lost > 0 ? 'rgba(248,113,113,.78)' : 'rgba(255,255,255,.50)';
+    c.fillText('L' + r.lost, x5, y + 32);
+  }
 
-  // 分数 + 潜力
+  // 分数
   c.textAlign = 'right';
-  c.font = '600 21px "Consolas","Segoe UI",monospace';
-  c.fillStyle = '#ffffff';
-  c.fillText(fmt(r.score), x + w - 22, y + 12);
-  c.font = '600 16px "Consolas",monospace';
-  c.fillStyle = '#c4b5fd';
-  c.fillText(r.pot.toFixed(3), x + w - 22, y + 38);
-  c.textAlign = 'left';
   c.textBaseline = 'top';
+  c.font = '600 18px "Consolas","Segoe UI",monospace';
+  c.fillStyle = '#ffffff';
+  c.fillText(fmt(r.score), x + w - 10, y + 8);
+
+  // 潜力
+  c.font = '600 14px "Consolas",monospace';
+  c.fillStyle = '#c4b5fd';
+  c.fillText(r.pot.toFixed(3), x + w - 10, y + 31);
+
+  c.textAlign = 'left';
+}
+
+// 统一块绘制：一列就列数=1，双列就列数=2
+function drawBlock(c, x, y, w, list, cols, rowH, sm, imgs){
+  var gap = 16;
+  var colW = (w - gap * (cols - 1)) / cols;
+  for (var i = 0; i < list.length; i++){
+    var col = i % cols, row = Math.floor(i / cols);
+    drawSongRow._h = rowH;
+    drawSongRow(c, x + col * (colW + gap), y + row * rowH, colW, list[i], i + 1, imgs[list[i].id], sm);
+  }
 }
 
 async function buildScoreImage(){
@@ -530,7 +581,10 @@ async function buildScoreImage(){
       var ccv = (cc == null) ? 0 : cc;
       return { id: s.song_id, song: info.title || s.song_id, diff: s.difficulty,
                cc: (cc == null ? '-' : cc), score: s.score,
-               pot: pot(ccv + CONST_FIX, s.score) };
+               pot: pot(ccv + CONST_FIX, s.score),
+               shiny: s.shiny_perfect_count || 0,
+               pure: (s.perfect_count != null ? s.perfect_count : (s.shiny_perfect_count || 0)),
+               far: s.near_count || 0, lost: s.miss_count || 0 };
     });
   }
 
@@ -544,15 +598,17 @@ async function buildScoreImage(){
     return imgLoad(need[id]).then(function(im){ imgs[id] = im; });
   }));
 
-  var W = 1080, PAD = 40, CW = W - PAD * 2, ROW = 66, HEAD = 58, GAP = 18;
+  var W = 1080, PAD = 40, CW = W - PAD * 2, ROW = 74, HEAD = 54, GAP = 14;
+  var COLS = 2;
 
-  var hHead = 104;
-  var hProf = me ? 150 : 0;
-  var hRec = recent.length ? HEAD + recent.length * ROW + 18 : 0;
-  var hB30 = b30.length ? HEAD + b30.length * ROW + 18 : 0;
-  var hR10 = r10.length ? HEAD + r10.length * ROW + 18 : 0;
+  var hHead = 96;
+  var hProf = me ? 132 : 0;
+  var nRow = function(n){ return Math.ceil(n / COLS); };
+  var hRec = recent.length ? HEAD + nRow(recent.length) * ROW + 12 : 0;
+  var hB30 = b30.length ? HEAD + nRow(b30.length) * ROW + 12 : 0;
+  var hR10 = r10.length ? HEAD + nRow(r10.length) * ROW + 12 : 0;
   var hFoot = 62;
-  var H = 36 + hHead + GAP
+  var H = 30 + hHead + GAP
         + (hProf ? hProf + GAP : 0)
         + (hRec ? hRec + GAP : 0)
         + (hB30 ? hB30 + GAP : 0)
@@ -581,7 +637,7 @@ async function buildScoreImage(){
 
   c.textBaseline = 'top';
   c.textAlign = 'left';
-  var y = 48;
+  var y = 30;
 
   // 标题
   c.font = 'bold 42px "Microsoft YaHei","Segoe UI",sans-serif';
@@ -593,14 +649,14 @@ async function buildScoreImage(){
   c.fillText('国服成绩', PAD + tw + 16, y + 16);
   c.font = '15px "Microsoft YaHei",sans-serif';
   c.fillStyle = 'rgba(255,255,255,.35)';
-  c.fillText('BEST 30 + RECENT 10', PAD, y + 62);
+  c.fillText('BEST 30 + RECENT 10', PAD, y + 58);
 
   y += hHead;
 
   // 账号卡
   if (me){
     drawCard(c, PAD, y, CW, hProf);
-    var av = 84, ax = PAD + 26, ay = y + (hProf - av) / 2;
+    var av = 76, ax = PAD + 24, ay = y + (hProf - av) / 2;
     var ag = c.createLinearGradient(ax, ay, ax + av, ay + av);
     ag.addColorStop(0, '#8b5cf6');
     ag.addColorStop(1, '#ec4899');
@@ -609,7 +665,7 @@ async function buildScoreImage(){
     c.fillStyle = ag;
     c.fill();
     c.fillStyle = '#fff';
-    c.font = 'bold 40px sans-serif';
+    c.font = 'bold 36px sans-serif';
     c.textAlign = 'center';
     c.textBaseline = 'middle';
     c.fillText('✦', ax + av / 2, ay + av / 2 + 2);
@@ -617,23 +673,23 @@ async function buildScoreImage(){
     c.textBaseline = 'top';
 
     c.fillStyle = '#fff';
-    c.font = 'bold 34px "Microsoft YaHei","Segoe UI",sans-serif';
-    c.fillText(me.display_name || me.name || '—', ax + av + 26, y + 38);
+    c.font = 'bold 30px "Microsoft YaHei","Segoe UI",sans-serif';
+    c.fillText(me.display_name || me.name || '—', ax + av + 22, y + 30);
     c.font = '14px "Consolas",monospace';
     c.fillStyle = 'rgba(255,255,255,.42)';
-    c.fillText('USER CODE ' + (me.user_code || ''), ax + av + 26, y + 86);
+    c.fillText('USER CODE ' + (me.user_code || ''), ax + av + 22, y + 76);
 
     c.textAlign = 'right';
     var rnum = ((me.rating || 0) / 1000).toFixed(3);
-    c.font = 'bold 54px "Consolas","Segoe UI",monospace';
+    c.font = 'bold 46px "Consolas","Segoe UI",monospace';
     var pg = c.createLinearGradient(W - PAD - 320, y, W - PAD - 40, y + hProf);
     pg.addColorStop(0, '#a78bfa');
     pg.addColorStop(1, '#f472b6');
     c.fillStyle = pg;
-    c.fillText(rnum, W - PAD - 30, y + 32);
+    c.fillText(rnum, W - PAD - 30, y + 26);
     c.font = '12px "Consolas",monospace';
     c.fillStyle = 'rgba(255,255,255,.38)';
-    c.fillText('POTENTIAL', W - PAD - 30, y + 96);
+    c.fillText('POTENTIAL', W - PAD - 30, y + 82);
     c.textAlign = 'left';
     y += hProf + GAP;
   }
@@ -643,11 +699,8 @@ async function buildScoreImage(){
     drawCard(c, PAD, y, CW, hRec);
     c.font = '600 20px "Microsoft YaHei",sans-serif';
     c.fillStyle = '#e9e3ff';
-    c.fillText('最近成绩', PAD + 24, y + 20);
-    var ry = y + HEAD;
-    for (var i = 0; i < recent.length; i++){
-      drawSongRow(c, PAD + 12, ry + i * ROW, CW - 24, recent[i], i + 1, imgs[recent[i].id], sm);
-    }
+    c.fillText('最近成绩', PAD + 22, y + 18);
+    drawBlock(c, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs);
     y += hRec + GAP;
   }
 
@@ -656,16 +709,13 @@ async function buildScoreImage(){
     drawCard(c, PAD, y, CW, hB30);
     c.font = '600 20px "Microsoft YaHei",sans-serif';
     c.fillStyle = '#e9e3ff';
-    c.fillText('BEST 30', PAD + 24, y + 20);
+    c.fillText('BEST 30', PAD + 22, y + 18);
     c.textAlign = 'right';
     c.font = 'bold 22px "Consolas",monospace';
     c.fillStyle = '#c4b5fd';
-    c.fillText('AVG ' + avgOf(b30).toFixed(3), PAD + CW - 24, y + 19);
+    c.fillText('AVG ' + avgOf(b30).toFixed(3), PAD + CW - 22, y + 17);
     c.textAlign = 'left';
-    var by = y + HEAD;
-    for (var j = 0; j < b30.length; j++){
-      drawSongRow(c, PAD + 12, by + j * ROW, CW - 24, b30[j], j + 1, imgs[b30[j].id], sm);
-    }
+    drawBlock(c, PAD + 14, y + HEAD, CW - 28, b30, COLS, ROW, sm, imgs);
     y += hB30 + GAP;
   }
 
@@ -674,16 +724,13 @@ async function buildScoreImage(){
     drawCard(c, PAD, y, CW, hR10);
     c.font = '600 20px "Microsoft YaHei",sans-serif';
     c.fillStyle = '#e9e3ff';
-    c.fillText('RECENT 10', PAD + 24, y + 20);
+    c.fillText('RECENT 10', PAD + 22, y + 18);
     c.textAlign = 'right';
     c.font = 'bold 22px "Consolas",monospace';
     c.fillStyle = '#f9a8d4';
-    c.fillText('AVG ' + avgOf(r10).toFixed(3), PAD + CW - 24, y + 19);
+    c.fillText('AVG ' + avgOf(r10).toFixed(3), PAD + CW - 22, y + 17);
     c.textAlign = 'left';
-    var ry2 = y + HEAD;
-    for (var k = 0; k < r10.length; k++){
-      drawSongRow(c, PAD + 12, ry2 + k * ROW, CW - 24, r10[k], k + 1, imgs[r10[k].id], sm);
-    }
+    drawBlock(c, PAD + 14, y + HEAD, CW - 28, r10, COLS, ROW, sm, imgs);
     y += hR10 + GAP;
   }
 
@@ -749,10 +796,25 @@ $('#expImg').onclick = exportScoreImage;
     try { $('#csv').value = decodeURIComponent(escape(atob(qc))); }
     catch(e){ showErr('CSV 参数解码失败: ' + e.message); }
   }
-  if (!qc) $('#csv').value = localStorage.getItem('arcaea_csv') || '';
-  $('#tok').value = qt || localStorage.getItem('arcaea_token') || '';
+  if (!qc){
+    var savedCsv = localStorage.getItem('arcaea_csv') || '';
+    // 本地服务注入的成绩数据优先于上一次缓存的 CSV（刚提取的一定更新）
+    $('#csv').value = (window.__AUTOCSV__ || savedCsv);
+  }
+  var savedTok = localStorage.getItem('arcaea_token') || '';
+  $('#tok').value = qt || (window.__AUTOTOKEN__ || savedTok);
   if ($('#csv').value.trim()) renderFromCsv();
   if ($('#tok').value) load();
+  if (!$('#csv').value.trim() && !$('#tok').value){
+    var st = $('#csvState');
+    if (st) st.textContent = '还没有数据：回到工具页点「开始提取」，或把 scores.csv 粘进来';
+    var p = $('#profile');
+    if (p){
+      p.classList.remove('hide');
+      p.innerHTML = '<div style="padding:8px 2px;color:#c4b5fd;font-size:14px;line-height:1.7">'
+        + '还没有提取到数据喵。<br>回到工具页点「开始提取」，提取完这里会自动带上成绩和曲绘。</div>';
+    }
+  }
 })();
 
 $('#csv').addEventListener('change', function(){
