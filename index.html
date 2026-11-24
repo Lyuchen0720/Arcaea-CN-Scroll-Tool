@@ -99,8 +99,11 @@
     <textarea id="csv" placeholder="song,id,diff,const,score,...&#10;Grievous Lady,grievouslady,Future,11,9863372,..." spellcheck="false"></textarea>
     <div class="row" style="margin-top:8px">
       <button id="calc" class="ghost">只用 CSV 计算</button>
+      <button id="expImg" class="ghost" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-color:transparent">导出图片</button>
       <button id="jkBtn" class="ghost">导入封面 zip</button>
+      <button id="jkDirBtn" class="ghost" title="若是 exe 导出的 jackets 目录，可直接选那个文件夹；也可以在本页按 Ctrl+O 打开 index.html">选择曲绘目录</button>
       <input id="jkFile" type="file" accept=".zip" style="display:none">
+      <input id="jkDir" type="file" webkitdirectory directory style="display:none">
       <span id="csvState" class="sub" style="margin:0"></span>
     </div>
   </div>
@@ -240,10 +243,11 @@ function parseCSV(text){
 <script>
 var JACKETS = {};   // id -> dataURL
 
+var LOCAL = {};          // 本地路径映射：模拟器导出的曲绘目录（file:// 或 绝对路径）
 function jacketImg(id){
   if (!id) return '<div class="jk ph">&#9835;</div>';
-  // 优先用用户导入的 zip，否则回落到仓库内置的 WebP
-  var src = JACKETS[id] || ('jackets/' + id + '.webp');
+  // 1) 本地目录优先  2) 用户导入的 zip  3) 仓库内置 WebP
+  var src = JACKETS[id] || (LOCAL.__base ? LOCAL.__base + '/' + id + '.jpg' : '') || ('jackets/' + id + '.webp');
   return '<img class="jk" loading="lazy" src="' + src + '" alt="" data-jk="' + id + '">';
 }
 
@@ -309,6 +313,7 @@ function renderStats(rows, sm){
     $('#csvState').textContent = '没有解析到成绩行';
     return;
   }
+  LAST.rows = rows; LAST.sm = sm || {};
   var b30 = computeBest(rows), r10 = computeRecent(rows);
   $('#b30avg').textContent = 'AVG ' + avgOf(b30).toFixed(3);
   $('#b30Body').innerHTML = b30.map(function(r, i){
@@ -318,7 +323,7 @@ function renderStats(rows, sm){
 
   $('#r10avg').textContent = 'AVG ' + avgOf(r10).toFixed(3);
   $('#r10Body').innerHTML = r10.length
-    ? r10.map(function(r, i){ return scoreRow(i + 1, r.song || (sm[r.id] && sm[r.id].title) || r.id, r.diff, r.cc, r.score, r.pot); }).join('')
+    ? r10.map(function(r, i){ return scoreRow(i + 1, r.song || (sm[r.id] && sm[r.id].title) || r.id, r.diff, r.cc, r.score, r.pot, r.id); }).join('')
     : '<div style="color:var(--dim)">最近 30 天无成绩</div>';
   $('#r10').classList.remove('hide');
   $('#csvState').textContent = rows.length + ' 条成绩已载入';
@@ -339,6 +344,7 @@ function load(){
     if (!me || !me.success) throw new Error(JSON.stringify(me).slice(0, 220));
     var v = me.value;
 
+    LAST.me = v;
     $('#pname').textContent = v.display_name || v.name || '—';
     $('#pcode').textContent = 'USER CODE ' + (v.user_code || '');
     $('#prating').textContent = (v.rating / 1000).toFixed(3);
@@ -381,8 +387,356 @@ function renderFromCsv(){
   loadSongmap().then(function(sm){ renderStats(rows, sm); });
 }
 
+/* ===== 导出长图：纯 Canvas 绘制，不依赖任何第三方库 ===== */
+var LAST = { rows: null, sm: {}, me: null };
+
+function jacketSrc(id){
+  if (!id) return '';
+  if (typeof JACKETS !== 'undefined' && JACKETS[id]) return JACKETS[id];
+  if (typeof LOCAL !== 'undefined' && LOCAL.__base) return LOCAL.__base + '/' + id + '.jpg';
+  var pre = (typeof JK_PREFIX !== 'undefined') ? JK_PREFIX : 'jackets/';
+  return pre + id + '.webp';
+}
+
+function imgLoad(src){
+  return new Promise(function(res){
+    if (!src) return res(null);
+    var im = new Image();
+    im.onload = function(){ res(im); };
+    im.onerror = function(){ res(null); };
+    im.src = src;
+  });
+}
+
+function rrPath(c, x, y, w, h, r){
+  c.beginPath();
+  c.moveTo(x + r, y);
+  c.lineTo(x + w - r, y);
+  c.quadraticCurveTo(x + w, y, x + w, y + r);
+  c.lineTo(x + w, y + h - r);
+  c.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  c.lineTo(x + r, y + h);
+  c.quadraticCurveTo(x, y + h, x, y + h - r);
+  c.lineTo(x, y + r);
+  c.quadraticCurveTo(x, y, x + r, y);
+  c.closePath();
+}
+
+function drawCard(c, x, y, w, h){
+  rrPath(c, x, y, w, h, 18);
+  c.fillStyle = 'rgba(255,255,255,.045)';
+  c.fill();
+  c.strokeStyle = 'rgba(255,255,255,.085)';
+  c.lineWidth = 1;
+  c.stroke();
+}
+
+function clipText(c, text, max){
+  if (c.measureText(text).width <= max) return text;
+  var t = String(text);
+  while (t.length > 1 && c.measureText(t + '…').width > max) t = t.slice(0, -1);
+  return t + '…';
+}
+
+function drawJacket(c, im, x, y, s){
+  c.save();
+  rrPath(c, x, y, s, s, 8);
+  c.clip();
+  if (im){
+    c.drawImage(im, x, y, s, s);
+  } else {
+    c.fillStyle = 'rgba(255,255,255,.07)';
+    c.fillRect(x, y, s, s);
+    c.fillStyle = 'rgba(255,255,255,.28)';
+    c.font = '22px sans-serif';
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText('♫', x + s / 2, y + s / 2 + 1);
+    c.textAlign = 'left';
+    c.textBaseline = 'top';
+  }
+  c.restore();
+}
+
+function drawSongRow(c, x, y, w, r, rank, im, sm, opt){
+  var s = 52, cy = y + 7;
+  // 隔行底色
+  if (rank % 2 === 0){
+    c.fillStyle = 'rgba(255,255,255,.018)';
+    c.fillRect(x, y, w, 66);
+  }
+  // 名次
+  c.textBaseline = 'middle';
+  c.font = 'bold 22px "Microsoft YaHei","Segoe UI",sans-serif';
+  c.fillStyle = rank <= 3 ? '#f472b6' : 'rgba(255,255,255,.34)';
+  c.textAlign = 'center';
+  c.fillText(String(rank), x + 26, y + 33);
+  c.textAlign = 'left';
+
+  // 封面
+  drawJacket(c, im, x + 56, cy, s);
+
+  var info = (sm && sm[r.id]) || {};
+  var title = r.song || info.title || r.id;
+  var diff = diffLabel(r.diff);
+
+  // 定数块宽 74，分数块宽 190
+  var ccW = 74, scW = 190;
+  var tx = x + 56 + s + 16;
+  var tw = w - (tx - x) - ccW - scW - 24;
+
+  c.textBaseline = 'top';
+  c.font = '600 20px "Microsoft YaHei","Segoe UI",sans-serif';
+  c.fillStyle = '#ece7ff';
+  c.fillText(clipText(c, title, tw), tx, y + 14);
+
+  c.font = '14px "Microsoft YaHei",sans-serif';
+  c.fillStyle = 'rgba(255,255,255,.42)';
+  c.fillText(diff, tx, y + 40);
+
+  // 定数
+  c.textAlign = 'center';
+  c.font = '600 19px "Microsoft YaHei",sans-serif';
+  c.fillStyle = 'rgba(255,255,255,.55)';
+  c.fillText(String(r.cc == null ? '-' : r.cc), x + w - scW - ccW / 2 - 12, y + 24);
+
+  // 分数 + 潜力
+  c.textAlign = 'right';
+  c.font = '600 21px "Consolas","Segoe UI",monospace';
+  c.fillStyle = '#ffffff';
+  c.fillText(fmt(r.score), x + w - 22, y + 12);
+  c.font = '600 16px "Consolas",monospace';
+  c.fillStyle = '#c4b5fd';
+  c.fillText(r.pot.toFixed(3), x + w - 22, y + 38);
+  c.textAlign = 'left';
+  c.textBaseline = 'top';
+}
+
+async function buildScoreImage(){
+  var rows = (LAST.rows && LAST.rows.length) ? LAST.rows : parseCSV($('#csv').value);
+  if (!rows || !rows.length) return null;
+  var sm = LAST.sm || {};
+  var me = LAST.me;
+  var b30 = computeBest(rows);
+  var r10 = computeRecent(rows);
+
+  var recent = [];
+  if (me && me.recent_score){
+    recent = me.recent_score.map(function(s){
+      var info = sm[s.song_id] || {};
+      var d = info.difficulties || {};
+      var cc = d[String(s.difficulty)];
+      var ccv = (cc == null) ? 0 : cc;
+      return { id: s.song_id, song: info.title || s.song_id, diff: s.difficulty,
+               cc: (cc == null ? '-' : cc), score: s.score,
+               pot: pot(ccv + CONST_FIX, s.score) };
+    });
+  }
+
+  // 预载所有曲绘
+  var need = {};
+  [b30, r10, recent].forEach(function(list){
+    list.forEach(function(r){ if (r.id && !need[r.id]) need[r.id] = jacketSrc(r.id); });
+  });
+  var imgs = {};
+  await Promise.all(Object.keys(need).map(function(id){
+    return imgLoad(need[id]).then(function(im){ imgs[id] = im; });
+  }));
+
+  var W = 1080, PAD = 40, CW = W - PAD * 2, ROW = 66, HEAD = 58, GAP = 18;
+
+  var hHead = 104;
+  var hProf = me ? 150 : 0;
+  var hRec = recent.length ? HEAD + recent.length * ROW + 18 : 0;
+  var hB30 = b30.length ? HEAD + b30.length * ROW + 18 : 0;
+  var hR10 = r10.length ? HEAD + r10.length * ROW + 18 : 0;
+  var hFoot = 62;
+  var H = 36 + hHead + GAP
+        + (hProf ? hProf + GAP : 0)
+        + (hRec ? hRec + GAP : 0)
+        + (hB30 ? hB30 + GAP : 0)
+        + (hR10 ? hR10 + GAP : 0)
+        + hFoot;
+
+  var cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  var c = cv.getContext('2d');
+
+  // 背景渐变
+  var bg = c.createLinearGradient(0, 0, W * 0.6, H);
+  bg.addColorStop(0, '#15111f');
+  bg.addColorStop(0.45, '#1b1529');
+  bg.addColorStop(1, '#110e19');
+  c.fillStyle = bg;
+  c.fillRect(0, 0, W, H);
+
+  // 顶部紫色光晕
+  var glow = c.createRadialGradient(W * 0.5, -80, 0, W * 0.5, -80, W * 0.95);
+  glow.addColorStop(0, 'rgba(139,92,246,.26)');
+  glow.addColorStop(0.55, 'rgba(139,92,246,.07)');
+  glow.addColorStop(1, 'rgba(139,92,246,0)');
+  c.fillStyle = glow;
+  c.fillRect(0, 0, W, 520);
+
+  c.textBaseline = 'top';
+  c.textAlign = 'left';
+  var y = 48;
+
+  // 标题
+  c.font = 'bold 42px "Microsoft YaHei","Segoe UI",sans-serif';
+  c.fillStyle = '#f0eaff';
+  c.fillText('ARCAEA', PAD, y);
+  var tw = c.measureText('ARCAEA').width;
+  c.font = '600 22px "Microsoft YaHei",sans-serif';
+  c.fillStyle = '#a78bfa';
+  c.fillText('国服成绩', PAD + tw + 16, y + 16);
+  c.font = '15px "Microsoft YaHei",sans-serif';
+  c.fillStyle = 'rgba(255,255,255,.35)';
+  c.fillText('BEST 30 + RECENT 10', PAD, y + 62);
+
+  y += hHead;
+
+  // 账号卡
+  if (me){
+    drawCard(c, PAD, y, CW, hProf);
+    var av = 84, ax = PAD + 26, ay = y + (hProf - av) / 2;
+    var ag = c.createLinearGradient(ax, ay, ax + av, ay + av);
+    ag.addColorStop(0, '#8b5cf6');
+    ag.addColorStop(1, '#ec4899');
+    c.beginPath();
+    c.arc(ax + av / 2, ay + av / 2, av / 2, 0, Math.PI * 2);
+    c.fillStyle = ag;
+    c.fill();
+    c.fillStyle = '#fff';
+    c.font = 'bold 40px sans-serif';
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText('✦', ax + av / 2, ay + av / 2 + 2);
+    c.textAlign = 'left';
+    c.textBaseline = 'top';
+
+    c.fillStyle = '#fff';
+    c.font = 'bold 34px "Microsoft YaHei","Segoe UI",sans-serif';
+    c.fillText(me.display_name || me.name || '—', ax + av + 26, y + 38);
+    c.font = '14px "Consolas",monospace';
+    c.fillStyle = 'rgba(255,255,255,.42)';
+    c.fillText('USER CODE ' + (me.user_code || ''), ax + av + 26, y + 86);
+
+    c.textAlign = 'right';
+    var rnum = ((me.rating || 0) / 1000).toFixed(3);
+    c.font = 'bold 54px "Consolas","Segoe UI",monospace';
+    var pg = c.createLinearGradient(W - PAD - 320, y, W - PAD - 40, y + hProf);
+    pg.addColorStop(0, '#a78bfa');
+    pg.addColorStop(1, '#f472b6');
+    c.fillStyle = pg;
+    c.fillText(rnum, W - PAD - 30, y + 32);
+    c.font = '12px "Consolas",monospace';
+    c.fillStyle = 'rgba(255,255,255,.38)';
+    c.fillText('POTENTIAL', W - PAD - 30, y + 96);
+    c.textAlign = 'left';
+    y += hProf + GAP;
+  }
+
+  // 最近成绩
+  if (recent.length){
+    drawCard(c, PAD, y, CW, hRec);
+    c.font = '600 20px "Microsoft YaHei",sans-serif';
+    c.fillStyle = '#e9e3ff';
+    c.fillText('最近成绩', PAD + 24, y + 20);
+    var ry = y + HEAD;
+    for (var i = 0; i < recent.length; i++){
+      drawSongRow(c, PAD + 12, ry + i * ROW, CW - 24, recent[i], i + 1, imgs[recent[i].id], sm);
+    }
+    y += hRec + GAP;
+  }
+
+  // BEST 30
+  if (b30.length){
+    drawCard(c, PAD, y, CW, hB30);
+    c.font = '600 20px "Microsoft YaHei",sans-serif';
+    c.fillStyle = '#e9e3ff';
+    c.fillText('BEST 30', PAD + 24, y + 20);
+    c.textAlign = 'right';
+    c.font = 'bold 22px "Consolas",monospace';
+    c.fillStyle = '#c4b5fd';
+    c.fillText('AVG ' + avgOf(b30).toFixed(3), PAD + CW - 24, y + 19);
+    c.textAlign = 'left';
+    var by = y + HEAD;
+    for (var j = 0; j < b30.length; j++){
+      drawSongRow(c, PAD + 12, by + j * ROW, CW - 24, b30[j], j + 1, imgs[b30[j].id], sm);
+    }
+    y += hB30 + GAP;
+  }
+
+  // RECENT 10
+  if (r10.length){
+    drawCard(c, PAD, y, CW, hR10);
+    c.font = '600 20px "Microsoft YaHei",sans-serif';
+    c.fillStyle = '#e9e3ff';
+    c.fillText('RECENT 10', PAD + 24, y + 20);
+    c.textAlign = 'right';
+    c.font = 'bold 22px "Consolas",monospace';
+    c.fillStyle = '#f9a8d4';
+    c.fillText('AVG ' + avgOf(r10).toFixed(3), PAD + CW - 24, y + 19);
+    c.textAlign = 'left';
+    var ry2 = y + HEAD;
+    for (var k = 0; k < r10.length; k++){
+      drawSongRow(c, PAD + 12, ry2 + k * ROW, CW - 24, r10[k], k + 1, imgs[r10[k].id], sm);
+    }
+    y += hR10 + GAP;
+  }
+
+  // 页脚
+  c.font = '13px "Microsoft YaHei",sans-serif';
+  c.fillStyle = 'rgba(255,255,255,.26)';
+  c.fillText('定数已按 +0.4 修正 · B30/R10 为本地估算，官方 rating 以游戏内为准', PAD, y + 6);
+  c.textAlign = 'right';
+  c.fillText('曲绘版权归 lowiro 所有 · 仅用于曲目识别', W - PAD, y + 6);
+  c.textAlign = 'left';
+
+  return cv;
+}
+
+async function exportScoreImage(){
+  var btn = $('#expImg');
+  var old = btn ? btn.textContent : '';
+  if (btn){ btn.disabled = true; btn.textContent = '生成中…'; }
+  try {
+    var cv = await buildScoreImage();
+    if (!cv){ alert('没有成绩数据。先粘贴 CSV 或点「查询」。'); return; }
+    var done = function(url, name){
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ document.body.removeChild(a); }, 400);
+    };
+    var me = LAST.me;
+    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '.png';
+    if (cv.toBlob){
+      await new Promise(function(res){
+        cv.toBlob(function(b){
+          if (b) done(URL.createObjectURL(b), name);
+          else done(cv.toDataURL('image/png'), name);
+          res();
+        }, 'image/png');
+      });
+    } else {
+      done(cv.toDataURL('image/png'), name);
+    }
+  } catch (e) {
+    alert('生成失败：' + (e && e.message ? e.message : e));
+  } finally {
+    if (btn){ btn.disabled = false; btn.textContent = old || '导出图片'; }
+  }
+}
+
 $('#go').onclick = load;
 $('#calc').onclick = calcOnly;
+$('#expImg').onclick = exportScoreImage;
+
+
 
 (function init(){
   loadJackets();
@@ -465,7 +819,25 @@ function b64(u8){
 function saveJackets(){
   try { sessionStorage.setItem('arcaea_jackets', JSON.stringify(JACKETS)); } catch(e){}
 }
+function loadLocalDir(){
+  try {
+    var v = localStorage.getItem('arcaea_localdir');
+    if (!v) return 0;
+    var m = JSON.parse(v);
+    LOCAL = { __base: m.base || '' };
+    return LOCAL.__base ? 1 : 0;
+  } catch(e){ return 0; }
+}
+function setLocalDir(base){
+  var b = (base || '').replace(/\/+$/, '');
+  if (!b) { LOCAL = {}; localStorage.removeItem('arcaea_localdir'); return 0; }
+  LOCAL = {};            // 懒生成：jacketImg 里按实际 id 拼路径
+  LOCAL.__base = b;
+  try { localStorage.setItem('arcaea_localdir', JSON.stringify({base: b})); } catch(e){}
+  return 1;
+}
 function loadJackets(){
+  loadLocalDir();
   try {
     var v = sessionStorage.getItem('arcaea_jackets');
     if (v) JACKETS = JSON.parse(v);
@@ -498,6 +870,28 @@ function bindJackets(){
       console.error(e);
     }
   };
+  // 选择本地曲绘目录（exe 导出的 jackets 文件夹）
+  var dirBtn = document.getElementById('jkDirBtn');
+  var dir = document.getElementById('jkDir');
+  if (dirBtn && dir){
+    dirBtn.onclick = function(){ dir.click(); };
+    dir.onchange = function(){
+      var fs = dir.files;
+      if (!fs || !fs.length) return;
+      // 用浏览器给的完整路径推出目录（只在本机 file:// 或本地服务下可用）
+      var full = (fs[0].path || '').replace(/\\/g, '/');
+      var dirPath = full ? full.substring(0, full.lastIndexOf('/')) : '';
+      if (!dirPath){
+        document.getElementById('csvState').textContent =
+          '浏览器没给出完整路径，请直接打开本地 index.html（Ctrl+O）后再试';
+        return;
+      }
+      setLocalDir('file:///' + dirPath);
+      document.getElementById('csvState').textContent =
+        '已绑定本地曲绘目录：' + dirPath + '（' + fs.length + ' 个文件）';
+      if (document.getElementById('csv').value.trim()) renderFromCsv();
+    };
+  }
 }
 </script>
 </body>
