@@ -47,7 +47,7 @@ python server.py 3390
 
 1. 仓库 Settings → Pages
 2. Source 选 `Deploy from a branch`，分支 `main`，目录 `/ (root)`
-3. 等一两分钟，访问 `https://<你的用户名>.github.io/arcaea-web/`
+3. 等一两分钟，访问 `https://<你的用户名>.github.io/Arcaea-CN-Scroll-Tool/`
 
 ### 第 2 步：部署 Worker 代理
 
