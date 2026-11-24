@@ -1,91 +1,117 @@
 # Arcaea 国服查分站
 
-一个自托管的 Arcaea（国服，`com.xd.arcaea.tapcn`）成绩查询网页，带本地后端代理 + B30/R10 计算。
+一个纯前端的 Arcaea（国服，`com.xd.arcaea.tapcn`）成绩查询页面，附带 Cloudflare Worker 代理脚本，可自托管或部署成在线站。
 
-> ⚠️ **免责声明**：本项目通过游戏客户端自带的接口读取**你自己账号**的数据，属于非官方、未授权调用。
-> 使用前请阅读 lowiro 与 XD 的用户协议。作者不对封号、法律或其他后果负责。**不要用它去查别人的成绩，也不要公开分享你的 `a_t`。**
+- 账号卡：名称 / user code / 官方 rating
+- 最近成绩
+- **B30 / R10**：粘贴成绩 CSV 后在**浏览器本地**计算
+- 支持 GitHub Pages 静态托管 + Worker 代理
 
-## 它能做什么
+## 为什么需要代理
 
-| 功能 | 数据来源 | 状态 |
+`arcaea.xd.cn` 的接口**不返回 `Access-Control-Allow-Origin`**，浏览器直接 `fetch` 会被 CORS 拦掉。所以必须有一个后端转发请求。
+
+本仓库提供两种代理：
+
+| 方式 | 文件 | 场景 |
 |---|---|---|
-| 账号卡（名字 / user_code / rating） | `GET /webapi/user/me` | ✅ |
-| 最近成绩 | `user/me` 的 `recent_score` | ✅（官方只给 1 条） |
-| 世界排行榜 | `GET /webapi/score/total_ranking/world` | ✅ |
-| **B30 / R10** | 本地 `scores.csv` | ✅（需自己导出，见下） |
+| Python 本地服务 | `server.py` | 本机跑 |
+| Cloudflare Worker | `worker.js` | 在线部署（免费） |
 
-## 为什么需要 `a_t`
-
-国服客户端把登录令牌存在私有目录：
-
-```
-/data/data/com.xd.arcaea.tapcn/shared_prefs/Cocos2dxPrefsFile.xml
-    <string name="a_t">…</string>
-```
-
-**读取需要 root**。没有 root 的话，等官方开放网页版登录后再来 —— 目前官方 `/authapi/auth/login/exchange` 接口返回 504，第三方没法代你登录。
-
-拿到 `a_t` 后直接粘进页面的输入框（整行 XML 也行，会自动提取）。
-
-## 快速开始
+## 用法一：本地运行
 
 ```bash
 python server.py 3390
 # 打开 http://127.0.0.1:3390
 ```
 
-无第三方依赖，Python 3.8+ 标准库即可。
+`server.py` 只依赖标准库，不需要 `pip install`。
 
-### 导出 `scores.csv`（可选，用于 B30/R10）
+## 用法二：在线部署（推荐）
 
-在 root 过的设备上取出游戏的 SQLite 成绩库：
+### 第 1 步：前端放 GitHub Pages
 
-```bash
-adb root
-adb pull /data/data/com.xd.arcaea.tapcn/files/st3 ./st3.db
-adb pull /data/data/com.xd.arcaea.tapcn/files/cb/active/songs/songlist ./songlist.json
+1. 仓库 Settings → Pages
+2. Source 选 `Deploy from a branch`，分支 `main`，目录 `/ (root)`
+3. 等一两分钟，访问 `https://<你的用户名>.github.io/arcaea-web/`
+
+### 第 2 步：部署 Worker 代理
+
+1. 打开 https://dash.cloudflare.com → Workers & Pages → Create → Worker
+2. 名字随便，比如 `arcaea-proxy`
+3. 把 `worker.js` 的**全部内容**粘进去，替换默认代码
+4. Deploy
+5. 记下地址，形如 `https://arcaea-proxy.<你的子域>.workers.dev`
+
+### 第 3 步：连起来
+
+打开 Pages 上的页面，在「API 服务器」输入框填 Worker 地址：
+
+```
+https://arcaea-proxy.xxxx.workers.dev
 ```
 
-然后 join 出 CSV，列名如下（放到项目根目录，或用 `ARCAEA_SCORES` 环境变量指定）：
+点「查询」。设置会存在 `localStorage`，下次自动带上。
+
+## 登录凭证 a_t
+
+页面需要 `a_t`（游戏登录后的 access token）。它存在：
+
+```
+/data/data/com.xd.arcaea.tapcn/shared_prefs/Cocos2dxPrefsFile.xml
+```
+
+形如：
+
+```xml
+<string name="a_t">mehZ2U/....=</string>
+```
+
+**整行 XML 或只填等号后面那串都可以**，页面会自动提取。
+
+这个目录是 App 私有目录，**非 root 读不到**。所以目前只有 root 设备 / 模拟器能拿到。
+
+### 取 a_t 的可行做法
+
+1. Android 模拟器（MuMu / 雷电等）装游戏 → 登录 → 开 root → `adb pull` 那个 XML
+2. 真机 root 后用文件管理器读
+
+> TapTap OAuth 登录这条路（网页版「用 TapTap 登录」）在国服服务端 `POST /authapi/auth/login/exchange` 上**固定 504**，目前不可用。
+
+## 成绩 CSV
+
+B30 / R10 需要一份历史成绩表。格式：
 
 ```csv
 song,id,diff,const,score,shiny,pure,far,lost,clear,pot,date,set,designer
-Grievous Lady,grievouslady,Future,11,9863372,0,...
+"Good bye, Merry-Go-Round.",goodbyemerry,Future,10,9825674,951,1056,18,10,Track Complete,11.086,2026-11-19,ongeki_append_1,絶滅
 ```
 
-> 定数说明：官方下发的 `rating` 是**取整值**，本项目统一 `+0.4` 近似真实定数（与官方 rating 误差 < 0.01）。
+- 从游戏的 SQLite 库 `files/st3` 的 `scores` 表导出
+- 必须有 `song,id,diff,const,score,date` 这几列
+- 字段含逗号时**要用双引号包裹**（页面已支持）
 
-## 自部署
+粘贴进页面的文本框即可，内容存 `localStorage`，不会上传到任何地方。
 
-后端必须存在（`arcaea.xd.cn` 不返回 CORS 头，浏览器无法直接跨域）。两个选择：
+## 定数说明
 
-**1. 本机 / 家里 NAS**
+`songlist` 下发的 `rating` 字段是**取整**的（10、11），真实定数是小数（10.6、11.5）。
 
-```bash
-python server.py 3390
-```
+页面按 **+0.4** 修正平均偏差（实测能让算出的 rating 和官方差 0.001）。局限：单曲潜力误差约 ±0.2，但**排序正确**。
 
-**2. 带 Serverless 的平台**（Vercel / Cloudflare Workers）
-
-把 `server.py` 的 `proxy()` 逻辑搬到对应函数里即可，逻辑很简单：转发 `X-Token` 到 `https://arcaea.xd.cn/webapi/<path>`。
-
-> GitHub Pages 只能放静态文件，**跑不了后端**，直接传上去是打不开的。
-
-## 文件说明
+## 文件
 
 | 文件 | 说明 |
 |---|---|
-| `server.py` | 后端：静态文件 + `/api/*` 代理 + B30/R10 计算 |
-| `index.html` | 前端：深色玻璃拟态，账号卡 / 最近成绩 / B30 表 / R10 表 |
-| `songmap.json` | 570 首歌的 id → 标题 / 定数映射（从 `songlist` 提取） |
+| `index.html` | 前端页面（单文件，无构建） |
+| `songmap.json` | 570 首歌的 id → 名称/定数 |
+| `server.py` | 本地 Python 代理 |
+| `worker.js` | Cloudflare Worker 代理 |
+| `requirements.txt` | 空（无第三方依赖） |
 
-## 已知限制
+## 免责声明
 
-- `/webapi/score/song/me/all` 返回 `error_code 1401`，拿不到完整成绩，只能靠本地 CSV
-- 定数 `+0.4` 是全局近似，单曲潜力有 ±0.2 误差（排序正确）
-- 没有好友功能：`/webapi/friend/me` 只返回空数组，没有查询他人成绩的接口
-- TapTap 登录链路（`/authapi/auth/login/exchange`）目前全线 504，等官方修
-
-## License
-
-MIT（仅供学习研究）
+- 本项目**只读**，不修改游戏数据、不发请求以外的任何操作
+- 使用的是游戏客户端自己的公开接口，属于**未授权调用**
+- 官方从未提供查分 API，使用风险自负（包括但不限于封号）
+- `a_t` 等同账号凭证，**不要发给任何人**
