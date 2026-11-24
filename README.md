@@ -1,4 +1,4 @@
-# Arcaea 国服查分站
+# Arcaea-CN-Scroll-Tool
 
 一个纯前端的 Arcaea（国服，`com.xd.arcaea.tapcn`）成绩查询页面，附带 Cloudflare Worker 代理脚本，可自托管或部署成在线站。
 
@@ -11,7 +11,7 @@
 
 模拟器 + 游戏内登录一次，就能一键导出 `a_t` 和成绩 CSV：
 
-**[下载 ArcaeaScoreTool 最新版](https://github.com/Lyuchen0720/arcaea-web/releases/latest)**
+**[下载 ArcaeaScoreTool 最新版](https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest)**
 
 - 需要模拟器（MuMu 已验证）里装好国服 Arcaea 并登录过
 - 首次启动会弹 UAC，点「是」（托盘图标需要管理员权限）
@@ -19,7 +19,7 @@
 - 导出 CSV 后粘进下面的网页即可看 B30 / R10
 - 当前版本 **v1.6.0**：全新图标 + 双列导出图（1080×1842）
 
-在线版：https://lyuchen0720.github.io/arcaea-web/
+在线版：https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/
 
 ## 为什么需要代理
 
