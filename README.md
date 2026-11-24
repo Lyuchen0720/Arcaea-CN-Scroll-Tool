@@ -7,6 +7,19 @@
 - **B30 / R10**：粘贴成绩 CSV 后在**浏览器本地**计算
 - 支持 GitHub Pages 静态托管 + Worker 代理
 
+## 一键提取工具（推荐先用这个）
+
+模拟器 + 游戏内登录一次，就能一键导出 `a_t` 和成绩 CSV：
+
+**[下载 ArcaeaScoreTool 最新版](https://github.com/Lyuchen0720/arcaea-web/releases/latest)**
+
+- 需要模拟器（MuMu 已验证）里装好国服 Arcaea 并登录过
+- 首次启动会弹 UAC，点「是」（托盘图标需要管理员权限）
+- 托盘右键可「打开页面 / 重启服务 / 退出」
+- 导出 CSV 后粘进下面的网页即可看 B30 / R10
+
+在线版：https://lyuchen0720.github.io/arcaea-web/
+
 ## 为什么需要代理
 
 `arcaea.xd.cn` 的接口**不返回 `Access-Control-Allow-Origin`**，浏览器直接 `fetch` 会被 CORS 拦掉。所以必须有一个后端转发请求。
