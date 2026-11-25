@@ -361,7 +361,9 @@ function bindJacketFallback(root){
       /* 用 addEventListener 而不是 im.onload=，否则会覆盖页面已有的 onload 逻辑 */
       im.addEventListener('load',  function(){ im.classList.add('jk-on'); });
       im.addEventListener('error', function(){ jkFail(im); });
-      if (im.complete && im.naturalWidth === 0 && im.getAttribute('src')) jkFail(im);
+      /* 缓存命中时 load 不会重放，必须主动补上可见状态 */
+      if (im.complete){ if (im.naturalWidth > 0) im.classList.add('jk-on');
+        else if (im.getAttribute('src')) jkFail(im); }
     })(imgs[i]);
   }
 }
