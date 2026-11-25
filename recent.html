@@ -458,6 +458,11 @@ function loadSongmap(){
 }
 
 function boot(){
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+    return;
+  }
+  if (!$('#parse') || !$('#exp')) return;
   var qs = new URLSearchParams(location.search);
   var qc = qs.get('c');
   $('#parse').addEventListener('click', function(){
@@ -481,7 +486,7 @@ function boot(){
     loadPlayer();
   });
 }
-document.addEventListener('DOMContentLoaded', boot);
+boot();
 </script>
 <div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.2.4 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a></div>
 </body>
