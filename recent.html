@@ -102,7 +102,7 @@ button.p:hover{filter:brightness(1.06)}
     <button class="p" id="parse">渲染</button>
     <button id="exp">导出图片</button>
   </div>
-  <p class="note" id="note">还没有数据。把 scores.csv 粘进上面的框，或点「渲染」读取上次的成绩。</p>
+  <p class="note" id="note">请先进行成绩查询喵 —— 回到「成绩查询」页查一次，或者把 scores.csv 粘进上面的框。</p>
   <p class="who hide" id="who"></p>
   <div class="list" id="list"></div>
 </div>
@@ -217,7 +217,7 @@ function cardHTML(r, i){
 
 function render(){
   var listEl = $('#list'), noteEl = $('#note');
-  if (!ROWS.length){ noteEl.textContent = '还没有数据。把 scores.csv 粘进上面的框，或点「渲染」读取上次的成绩。'; listEl.innerHTML = ''; return; }
+  if (!ROWS.length){ noteEl.textContent = '请先进行成绩查询喵 —— 回到「成绩查询」页查一次，或者把 scores.csv 粘进上面的框。'; listEl.innerHTML = ''; return; }
   var sorted = ROWS.slice().sort(function(a, b){
     if (a.ts && b.ts) return b.ts - a.ts;
     var d = String(b.date).localeCompare(String(a.date));
@@ -480,6 +480,6 @@ function boot(){
 }
 document.addEventListener('DOMContentLoaded', boot);
 </script>
-<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.2.0 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a></div>
+<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.2.1 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a></div>
 </body>
 </html>
