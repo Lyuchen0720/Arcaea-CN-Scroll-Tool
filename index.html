@@ -25,6 +25,8 @@
     letter-spacing:.05em;font-weight:700;color:#3d3748;text-shadow:0 1px 2px rgba(255,255,255,.7)}
   .pageheadnav li{padding-bottom:3px;border-bottom:2px solid transparent}
   .pageheadnav li.on{border-bottom-color:var(--pink)}
+  .pageheadnav a{color:inherit;text-decoration:none}
+  .pageheadnav a:hover{color:var(--pink)}
   .hex{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);
     width:clamp(250px,35vw,430px);height:clamp(112px,15vw,182px);background:#fff;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -127,12 +129,12 @@
   <img class="pageheadbg" src="off/hero.webp" alt="Arcaea">
   <div class="pageheadnav">
     <img class="pageheadlogo" src="off/logo.png" alt="ARCAEA">
-    <ul><li class="on">成绩查询</li><li>曲目</li><li>排行</li><li>关于</li></ul>
+    <ul><li class="on">成绩查询</li><li>曲目</li><li>排行</li><li><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest" target="_blank" rel="noopener">提取工具</a></li></ul>
   </div>
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v1.7.0</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v1.7.1</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -985,7 +987,7 @@ function loadJackets(){
 </script>
 
   <div class="pgfoot">
-    <div><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool" target="_blank" rel="noopener">GitHub 仓库</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest" target="_blank" rel="noopener">最新版本</a><span class="sep">·</span><a href="https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/" target="_blank" rel="noopener">在线版</a></div>
+    <div><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool" target="_blank" rel="noopener">GitHub 仓库</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest" target="_blank" rel="noopener">下载提取工具</a><span class="sep">·</span><a href="https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/" target="_blank" rel="noopener">在线版</a></div>
     <div class="fa">作者 <b>Lyuchen0720</b> · 曲绘版权归 lowiro 所有，仅用于曲目识别</div>
   </div>
 </body>
