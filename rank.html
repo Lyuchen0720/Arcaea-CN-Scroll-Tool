@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arcaea 国服 · 难度排行</title>
+<style>
+  :root{
+    --bg:#fff; --panel:#fff; --line:#eae7f0; --line2:#f4f1fa;
+    --pink:#d3459a; --cyan:#2bb8d4; --purple:#6b3fa0; --txt:#2b2733; --dim:#938fa0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    min-height:100vh;font:14px/1.6 "Exo 2","Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--txt);background:#fff;-webkit-font-smoothing:antialiased;
+    padding:0 16px 56px;
+  }
+  /* ---------- 顶部官图头 ---------- */
+  .pagehead{position:relative;margin:0 -16px;height:clamp(230px,33vw,430px);overflow:hidden;background:#e9ecf5}
+  .pageheadbg{width:100%;height:100%;object-fit:cover;object-position:center 42%;display:block}
+  .pageheadnav{position:absolute;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:16px clamp(16px,3.6vw,52px)}
+  .pageheadlogo{height:clamp(26px,3vw,42px);filter:drop-shadow(0 1px 3px rgba(0,0,0,.22))}
+  .pageheadnav ul{display:flex;gap:clamp(12px,2.4vw,40px);list-style:none;font-size:clamp(11px,1.1vw,14px);
+    letter-spacing:.05em;font-weight:700;color:#3d3748;text-shadow:0 1px 2px rgba(255,255,255,.7)}
+  .pageheadnav li{padding-bottom:3px;border-bottom:2px solid transparent}
+  .pageheadnav li.on{border-bottom-color:var(--pink)}
+  .pageheadnav a{color:inherit;text-decoration:none}
+  .pageheadnav a:hover{color:var(--pink)}
+  .hex{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);
+    width:clamp(250px,35vw,430px);height:clamp(112px,15vw,182px);background:#fff;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    clip-path:polygon(9% 0,91% 0,100% 50%,91% 100%,9% 100%,0 50%);
+    box-shadow:0 10px 34px rgba(70,50,110,.10)}
+  .hex b{font-size:clamp(21px,3.2vw,38px);font-weight:700;letter-spacing:.03em;color:#241033}
+  .hex small{font-size:clamp(8.5px,.95vw,12px);letter-spacing:.36em;color:#a6a1b3;margin-top:5px;font-weight:700}
+  /* ---------- 主体 ---------- */
+  .wrap{max-width:820px;margin:76px auto 0}
+  h1{font-family:"Bodoni MT","Didot","Cinzel","Playfair Display",
+     "Palatino Linotype","Book Antiqua","Times New Roman",serif;
+     font-size:26px;line-height:1.14;font-weight:400;text-transform:uppercase;
+     margin:0 0 8px 0;display:flex;align-items:baseline;gap:.34em;flex-wrap:wrap}
+  h1 .en{letter-spacing:.26em;padding-right:.26em;color:#1d0b2e}
+  h1 .dot{font-size:.62em;color:var(--pink);transform:translateY(-.24em)}
+  h1 .cn{font-family:"Songti SC","SimSun","Source Han Serif SC",serif;
+     font-size:.84em;letter-spacing:.10em;color:#5a2a86;font-weight:600}
+  .sub{color:var(--dim);font-size:12px;margin-bottom:16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;
+        padding:16px 18px;margin-bottom:13px;box-shadow:0 2px 14px rgba(80,60,130,.05)}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  input[type=text],textarea{flex:1;min-width:220px;background:#fbfaff;
+        border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--txt);
+        font-size:13px;outline:none;font-family:ui-monospace,Consolas,monospace;width:100%}
+  textarea{min-height:90px;resize:vertical;line-height:1.5}
+  input[type=text]:focus,textarea:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(107,63,160,.12)}
+  button{background:linear-gradient(135deg,#8b5cf6,#d3459a);border:0;border-radius:10px;
+        padding:10px 20px;color:#fff;font-weight:700;font-size:13px;cursor:pointer;
+        letter-spacing:.02em;font-family:inherit}
+  button:hover{filter:brightness(1.08)}
+  button:disabled{opacity:.5;cursor:default}
+  button.ghost{background:#fff;border:1px solid var(--line);color:#6b637d;font-weight:600}
+  button.ghost:hover{border-color:#d9d2ea;background:#fbfaff}
+  .hero{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+  .avatar{width:72px;height:72px;border-radius:50%;flex:none;
+          background:linear-gradient(135deg,#8b5cf6,#ec4899);
+          display:grid;place-items:center;font-size:28px;color:#fff}
+  .who{flex:1;min-width:160px}
+  .name{font-size:23px;font-weight:700;letter-spacing:.01em}
+  .code{color:var(--dim);font-size:11px;letter-spacing:.14em;font-weight:700;margin-top:3px}
+  .rating{text-align:right;flex:none}
+  .rating .num{font-size:40px;font-weight:700;line-height:1;
+      background:linear-gradient(100deg,#8b5cf6,#d3459a);
+      -webkit-background-clip:text;background-clip:text;color:transparent}
+  .rating .lbl{font-size:10px;color:var(--dim);letter-spacing:.24em;margin-top:4px;font-weight:700}
+  h2{font-size:12px;letter-spacing:.16em;color:var(--dim);margin:0 0 10px;font-weight:700;
+     display:flex;justify-content:space-between;align-items:baseline}
+  h2 .avg{font-size:13px;color:var(--purple);letter-spacing:.04em;font-weight:700}
+  .song{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:10px}
+  .song:nth-child(odd){background:#fbfaff}
+  .song:hover{background:#f4effc}
+  .jk{width:36px;height:36px;border-radius:7px;object-fit:cover;flex:none;
+      background:#f0eef6;opacity:0;transition:opacity .18s}
+  .jk.jk-on{opacity:1}
+  .jk.ph{display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--dim);opacity:1}
+  .rank{width:26px;color:#b9b3c8;font-family:ui-monospace,monospace;font-size:11.5px;
+        text-align:right;flex:none;font-weight:700}
+  .rank.top{color:var(--pink);font-weight:700}
+  .ttl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13.5px;font-weight:600}
+  .ttl .a{color:var(--dim);font-size:10px;letter-spacing:.06em;font-weight:400}
+  .cc{width:36px;text-align:center;font-family:ui-monospace,monospace;font-size:12.5px;
+      color:#7b6f96;flex:none;font-weight:700}
+  .sc{width:106px;text-align:right;font-family:ui-monospace,monospace;font-size:12.5px;flex:none;font-weight:700}
+  .sc small{display:block;color:var(--purple);font-size:10.5px;font-weight:700}
+  .err{color:#d5284a;font-size:12px;margin-top:8px}
+  .hide{display:none}
+  .note{color:var(--dim);font-size:11px;margin-top:10px;line-height:1.5}
+  .tag{font-size:10px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);
+       color:var(--dim);margin-left:6px;font-weight:600}
+  .tag.ok{color:#1a9c63;border-color:rgba(26,156,99,.35);background:rgba(26,156,99,.06)}
+  .tag.bad{color:#d5284a;border-color:rgba(213,40,74,.3);background:rgba(213,40,74,.05)}
+.pgfoot{margin:22px 0 6px;padding-top:14px;border-top:1px solid var(--line);text-align:center;font-size:11.5px;color:#a9a4b6;line-height:1.8}
+.pgfoot a{color:var(--purple);text-decoration:none;font-weight:600}
+.pgfoot a:hover{text-decoration:underline}
+.pgfoot .sep{opacity:.4;margin:0 7px}
+.pgfoot .fa{margin-top:4px;opacity:.85;font-size:11px}
+.pgfoot .fa b{color:#3d2a52;font-weight:700}
+.bgwrap,.bgphoto{display:none}
+</style>
+<style>
+  .grp{margin:0 0 6px}
+  .grphead{display:flex;align-items:baseline;gap:10px;padding:18px 4px 8px}
+  .grphead b{font-family:"Exo 2",system-ui,sans-serif;font-size:22px;color:#241033;letter-spacing:.02em}
+  .grphead small{font-size:11px;color:#a6a1b3;letter-spacing:.14em;font-weight:700}
+  .grphead .cnt{margin-left:auto;font-size:11px;color:#b9b3c8;font-weight:600}
+  .tag.ftr{color:#8b5cf6;border-color:rgba(139,92,246,.35);background:rgba(139,92,246,.07)}
+  .tag.byd{color:#d5284a;border-color:rgba(213,40,74,.30);background:rgba(213,40,74,.06)}
+  .ttl .a{margin-left:0}
+  .dsc{width:150px;text-align:right;font-size:11px;color:var(--dim);flex:none;
+       overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  @media (max-width:640px){.dsc{display:none}}
+</style>
+
+<body>
+<div class="pagehead">
+  <img class="pageheadbg" src="off/hero.webp" alt="">
+  <div class="pageheadnav">
+    <img class="pageheadlogo" src="off/logo.png" alt="ARCAEA">
+    <ul><li><a href="index.html">成绩查询</a></li><li><a href="https://arcaea.lowiro.com/zh/song_ranking/paid" target="_blank" rel="noopener">曲目</a></li><li class="on">排行</li><li><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest" target="_blank" rel="noopener">提取工具</a></li></ul>
+  </div>
+  <div class="hex"><b>难度排行</b><small>DIFFICULTY RANK</small></div>
+</div>
+
+<div class="wrap" style="margin-top:76px">
+  <div class="card" style="padding:6px 10px 14px">
+    <div id="list"><div class="note">正在加载曲目数据…</div></div>
+    <div class="note" id="note"></div>
+  </div>
+
+  <div class="pgfoot">
+    <div>FTR / BYD 难度 9 ~ 12 · 定数为游戏内下发值（整数）<span class="sep">·</span>共 <b id="total">0</b> 张谱面</div>
+    <div><a href="index.html">← 回到成绩查询</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool" target="_blank" rel="noopener">GitHub 仓库</a><span class="sep">·</span><a href="https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/" target="_blank" rel="noopener">在线版</a></div>
+    <div class="fa">作者 <b>Lyuchen0720</b> · 曲绘版权归 lowiro 所有，仅用于曲目识别</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var rows = [], listEl = document.getElementById('list');
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  }); }
+  function rowHtml(r, i){
+    var tag = r.cls === 'BYD' ? 'byd' : 'ftr';
+    var src = 'jackets/' + r.id + '.webp';
+    return '<div class="song">'
+      + '<div class="rank' + (i < 3 ? ' top' : '') + '">' + (i + 1) + '</div>'
+      + '<img class="jk" loading="lazy" src="' + src + '" alt="">'
+      + '<div class="ttl">' + esc(r.title)
+      + '<span class="tag ' + tag + '">' + r.cls + '</span>'
+      + '<div class="a">' + esc(r.artist) + '</div></div>'
+      + '<div class="cc">' + r.cc + '</div>'
+      + '<div class="dsc">' + esc(r.designer || '—') + '</div>'
+      + '</div>';
+  }
+  function render(){
+    var groups = {}, order = [];
+    rows.forEach(function(r){ if(!groups[r.cc]){ groups[r.cc] = []; order.push(r.cc); } groups[r.cc].push(r); });
+    order.sort(function(a,b){ return b - a; });
+    var html = '';
+    order.forEach(function(cc){
+      var g = groups[cc];
+      html += '<div class="grp"><div class="grphead"><b>' + cc + '</b><small>' + (cc >= 11 ? 'BEYOND / FUTURE' : 'FUTURE / BEYOND') + '</small>'
+           +  '<span class="cnt">' + g.length + ' 张</span></div>';
+      g.forEach(function(r, i){ html += rowHtml(r, i); });
+      html += '</div>';
+    });
+    listEl.innerHTML = html || '<div class="note">没有符合条件的数据</div>';
+    document.getElementById('total').textContent = rows.length;
+  }
+  fetch('songrank.json?x=' + Date.now()).then(function(r){ return r.json(); })
+    .then(function(d){
+      rows = (d && d.rows) || [];
+      render();
+      // 曲绘加载成功淡入
+      Array.prototype.forEach.call(document.querySelectorAll('img.jk'), function(im){
+        im.referrerPolicy = 'no-referrer';
+        im.addEventListener('load', function(){ im.classList.add('jk-on'); });
+        im.addEventListener('error', function(){
+          var ph = document.createElement('div');
+          ph.className = 'jk ph';
+          ph.textContent = '♪';
+          if (im.parentNode) im.parentNode.replaceChild(ph, im);
+        });
+      });
+    })
+    .catch(function(e){
+      listEl.innerHTML = '<div class="err">加载失败：' + esc(e.message) + '</div>';
+    });
+})();
+</script>
+</body>
+</html>
