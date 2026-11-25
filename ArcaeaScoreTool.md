@@ -6,7 +6,7 @@
 
 | 方式 | 地址 |
 |---|---|
-| **蓝奏云**（国内快） | https://wwbgn.lanzouw.com/iPrkI4h8wufc 密码 **g676** |
+| **蓝奏云**（国内快） | https://wwbgn.lanzouw.com/b01i61li9g 密码 **3t5r** |
 | **GitHub Releases** | https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest |
 | **介绍页**（截图 + 详细说明） | https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/tool.html |
 
