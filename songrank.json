@@ -1,0 +1,6094 @@
+{
+"rows": [
+{
+"id": "deinosphainein",
+"title": "DEINOS PHAINEIN",
+"artist": "Blacklolita vs Juggernaut.",
+"cls": "BYD",
+"rc": 3,
+"cc": 12,
+"designer": "DIVINE WRATH ⟦憤怒⟧",
+"set": "konzetsu"
+},
+{
+"id": "testify",
+"title": "Testify",
+"artist": "void (Mournfinale) feat. 星熊南巫",
+"cls": "BYD",
+"rc": 3,
+"cc": 12,
+"designer": "Silent¦END",
+"set": "finale"
+},
+{
+"id": "aethercrest",
+"title": "Aether Crest: Astral",
+"artist": "void (Mournfinale) × 水野健治",
+"cls": "BYD",
+"rc": 4,
+"cc": 11,
+"designer": "夜浪 × 絶滅「αἴθων」",
+"set": "chunithm_append_3"
+},
+{
+"id": "alterego",
+"title": "ALTER EGO",
+"artist": "Yuta Imai vs Qlarabelle",
+"cls": "BYD",
+"rc": 4,
+"cc": 11,
+"designer": "Article 0x8《Enmity》",
+"set": "nihil"
+},
+{
+"id": "diein",
+"title": "DIE IN",
+"artist": "TAK x Sobrem",
+"cls": "BYD",
+"rc": 4,
+"cc": 11,
+"designer": "Beyond the ExtinctioIV",
+"set": "single"
+},
+{
+"id": "extradimensional",
+"title": "Extradimensional Cosmic Phenomenon",
+"artist": "TAKIO feat. つぐ",
+"cls": "BYD",
+"rc": 4,
+"cc": 11,
+"designer": "#0000遒ｧ",
+"set": "anima"
+},
+{
+"id": "parallax",
+"title": "Parallax",
+"artist": "xi vs ak+q (lowiro)",
+"cls": "BYD",
+"rc": 4,
+"cc": 11,
+"designer": "M理論 vs 夜浪",
+"set": "diversesystem"
+},
+{
+"id": "undyingmacula",
+"title": "Undying Macula",
+"artist": "Ashrount",
+"cls": "BYD",
+"rc": 4,
+"cc": 11,
+"designer": "M/V_BRIDGE",
+"set": "eclipse"
+},
+{
+"id": "arcanaeden",
+"title": "Arcana Eden",
+"artist": "Team Grimoire vs Sakuzyo vs Laur",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "Eye of the Storm",
+"set": "finale"
+},
+{
+"id": "axiumcrisis",
+"title": "Axium Crisis",
+"artist": "ak+q",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "Monolith - Diverged",
+"set": "yugamu"
+},
+{
+"id": "cataclysmcry",
+"title": "Cataclysm Cry",
+"artist": "Aid",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "運命の淵 -threshold of fate-",
+"set": "konzetsu"
+},
+{
+"id": "designant",
+"title": "Designant.",
+"artist": "Designant",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "Final Command. Infinity",
+"set": "lephon"
+},
+{
+"id": "dreadarea",
+"title": "DREAD AREA",
+"artist": "Ashrount vs. 打打だいず",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "絶滅「天道」",
+"set": "konzetsu"
+},
+{
+"id": "lamentrain",
+"title": "Lament Rain",
+"artist": "Ashrount vs. 打打だいず",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "⇆ Projection",
+"set": "lephon"
+},
+{
+"id": "pentiment",
+"title": "Pentiment",
+"artist": "Nothing But Requiem with Museo",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "Paradox Blight",
+"set": "finale"
+},
+{
+"id": "pragmatism",
+"title": "PRAGMATISM",
+"artist": "Laur",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "THE LAST DREAM",
+"set": "core"
+},
+{
+"id": "rivenpilgrim",
+"title": "Riven Pilgrimage",
+"artist": "rejection & Supire feat. eili",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "零下 vs 夜浪「gardantoj」",
+"set": "konzetsu"
+},
+{
+"id": "tempestissimo",
+"title": "Tempestissimo",
+"artist": "t+pazolite",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "Finale - The Tempest",
+"set": "vs"
+},
+{
+"id": "viciousheroism",
+"title": "Vicious Heroism",
+"artist": "Kobaryo",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "[FUTiLE] Defiance",
+"set": "zettai"
+},
+{
+"id": "worldender",
+"title": "World Ender",
+"artist": "sasakure.UK × TJ.hangneil",
+"cls": "BYD",
+"rc": 3,
+"cc": 11,
+"designer": "Imaginary Sky",
+"set": "finale"
+},
+{
+"id": "ifi",
+"title": "#1f1e33",
+"artist": "かめりあ(EDP)",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "夜浪 VS 東星 \"Convergence\"",
+"set": "vs"
+},
+{
+"id": "abstrusedilemma",
+"title": "Abstruse Dilemma",
+"artist": "Ashrount vs. 打打だいず",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "Remnant ⇑⇓ Volition",
+"set": "eden"
+},
+{
+"id": "aegleseeker",
+"title": "Aegleseeker",
+"artist": "Silentroom vs Frums",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "L₆ː The Void",
+"set": "observer"
+},
+{
+"id": "arghena",
+"title": "Arghena",
+"artist": "Feryquitous vs Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "第三識 \"Pluriversality\"",
+"set": "eden_append_1"
+},
+{
+"id": "fractureray",
+"title": "Fracture Ray",
+"artist": "Sakuzyo",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "Paradox Zero",
+"set": "rei"
+},
+{
+"id": "grievouslady",
+"title": "Grievous Lady",
+"artist": "Team Grimoire vs Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "迷路深層",
+"set": "yugamu"
+},
+{
+"id": "lamia",
+"title": "LAMIA",
+"artist": "BlackY",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "[漆黒の執行者] 夜浪",
+"set": "ongeki_append_1"
+},
+{
+"id": "saikyostronger",
+"title": "SAIKYO STRONGER",
+"artist": "REDALiCE vs USAO",
+"cls": "FTR",
+"rc": 2,
+"cc": 11,
+"designer": "最強FUMEN (夜浪 ft. 東星)",
+"set": "single"
+},
+{
+"id": "hascome",
+"title": "......已至。",
+"artist": "秋田真典",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "nora::neko [Reality of The End]",
+"set": "arknights"
+},
+{
+"id": "temptationgc",
+"title": "10pt8ion",
+"artist": "Lite Show Magic",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nite Schwa Power",
+"set": "groovecoaster_append_1"
+},
+{
+"id": "eightem",
+"title": "8-EM",
+"artist": "Sampling Masters AYA",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "X-SCHWASION",
+"set": "chunithm_append_3"
+},
+{
+"id": "acidgod",
+"title": "Acid God",
+"artist": "Yuta Imai",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "終点",
+"set": "single"
+},
+{
+"id": "andorxor",
+"title": "ANDORXOR",
+"artist": "Sobrem",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "反∧水",
+"set": "eclipse"
+},
+{
+"id": "asgore",
+"title": "ASGORE",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "sidewaves -Bergentrückung-",
+"set": "undertale_append_1"
+},
+{
+"id": "balor",
+"title": "Balor",
+"artist": "Redsign",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "karat, the Piercing Eye",
+"set": "konzetsu"
+},
+{
+"id": "blazingair",
+"title": "BlazinG AIR",
+"artist": "kanone",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "BlazinG ÉND",
+"set": "chunithm_append_3"
+},
+{
+"id": "blythe",
+"title": "BlythE",
+"artist": "M2U",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "M理論",
+"set": "djmax_append_1"
+},
+{
+"id": "breakbreak",
+"title": "BREaK! BREaK! BREaK!",
+"artist": "HiTECH NINJA vs Cranky",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "EXSCHWASiON vs 絶滅",
+"set": "maimai_append_2"
+},
+{
+"id": "csqn",
+"title": "c.s.q.n.",
+"artist": "Aoi",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "chaosblast",
+"title": "CHAOSBLAST",
+"artist": "QURELESS + 柚子花",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NITRO「THE ANARQISM」",
+"set": "anima_append_1"
+},
+{
+"id": "chronologia",
+"title": "chronologia",
+"artist": "lowiro Sound Team (ak+q x nitro)",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nitro x Toaster",
+"set": "single"
+},
+{
+"id": "chateaudecartes",
+"title": "Château de cartes",
+"artist": "Inverted Silence ft. Pernelle",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Intérateur",
+"set": "single"
+},
+{
+"id": "codeoblivion",
+"title": "Code: Oblivion",
+"artist": "Kobaryo × Gram",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "煌磨",
+"set": "nextstage"
+},
+{
+"id": "cryogenic",
+"title": "Cryogenic",
+"artist": "Camellia ft. Petra Gurin",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "raycast /connected/",
+"set": "single"
+},
+{
+"id": "diesirae",
+"title": "Dies irae",
+"artist": "お月さま交響曲",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "M理論",
+"set": "single"
+},
+{
+"id": "distortedfate",
+"title": "Distorted Fate",
+"artist": "Sakuzyo",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "TOASTER DATA PATCHER",
+"set": "single"
+},
+{
+"id": "dontdie",
+"title": "Don't Die",
+"artist": "Paul Bazooka",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "nora::neko",
+"set": "single"
+},
+{
+"id": "dontfightmusic",
+"title": "Don't Fight The Music",
+"artist": "黒魔",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "絶滅 (AQUA) Lv.70",
+"set": "ongeki_append_2"
+},
+{
+"id": "dualdependency",
+"title": "Dual Dependency",
+"artist": "seatrus",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "絶∥滅",
+"set": "anima"
+},
+{
+"id": "dualdoom",
+"title": "Dual Doom Deathmatch",
+"artist": "Kobaryo vs HyuN",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NITRO",
+"set": "rotaeno"
+},
+{
+"id": "desive",
+"title": "Désive",
+"artist": "MisomyL",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Yearning Call",
+"set": "single"
+},
+{
+"id": "eternitybreak",
+"title": "Eternity Break",
+"artist": "Puru",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "M理論_halt",
+"set": "single"
+},
+{
+"id": "etherdrive",
+"title": "Ether Drive",
+"artist": "crayvxn",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Exschwasion",
+"set": "diversesystem"
+},
+{
+"id": "fatality",
+"title": "Fatality",
+"artist": "Renpul",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "raycast",
+"set": "diversesystem"
+},
+{
+"id": "gensounosatellite",
+"title": "Gensou no Satellite",
+"artist": "豚乙女",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Luxance",
+"set": "single"
+},
+{
+"id": "kamippoi",
+"title": "God-ish",
+"artist": "ピノキオピー",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "絶滅っぽいな",
+"set": "virtualsingers"
+},
+{
+"id": "goodrage",
+"title": "GOODRAGE",
+"artist": "EBIMAYO",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NORANEKO",
+"set": "single"
+},
+{
+"id": "incarnator",
+"title": "INCARNATOR₀₀",
+"artist": "Silentroom × N²",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "antymis [archetype]",
+"set": "nextstage"
+},
+{
+"id": "infinitedim",
+"title": "INFINITE DIMENSION",
+"artist": "DJ Noriken × P*Light",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "ray∞cast",
+"set": "nextstage"
+},
+{
+"id": "invertedworld",
+"title": "Inverted World",
+"artist": "ARForest",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "聖輪↓↑夜浪",
+"set": "rotaeno"
+},
+{
+"id": "lilly",
+"title": "Lilly",
+"artist": "Juggernaut.",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "瑞獣【応龍】",
+"set": "anima"
+},
+{
+"id": "aishite",
+"title": "Love me, Love me, Love me",
+"artist": "きくお",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "煌磨煌磨煌磨",
+"set": "virtualsingers"
+},
+{
+"id": "marenyx",
+"title": "MARENYX",
+"artist": "BlackY × Aoi",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "raycast against. 零下",
+"set": "nextstage"
+},
+{
+"id": "megalovania",
+"title": "MEGALOVANIA",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "瑞獣 ＬＶ１９",
+"set": "undertale"
+},
+{
+"id": "megalovaniarmx",
+"title": "MEGALOVANIA (Camellia Remix)",
+"artist": "Camellia",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "* do you wanna have a bad time?",
+"set": "single"
+},
+{
+"id": "meltyrhapsody",
+"title": "Melty Rhapsody",
+"artist": "lapix feat. PANXI",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "M理論_liquid",
+"set": "megarex"
+},
+{
+"id": "mylifeismine",
+"title": "My life is mine alone!",
+"artist": "Mylta feat. ねんね",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "antymis",
+"set": "megarex"
+},
+{
+"id": "nightmare",
+"title": "Nightmare",
+"artist": "M2U",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "零下",
+"set": "djmax"
+},
+{
+"id": "nowayback",
+"title": "No Way Back",
+"artist": "Nhato",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "「Nitro」",
+"set": "eclipse"
+},
+{
+"id": "oblivion",
+"title": "OBLIVION",
+"artist": "ESTi",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Toaster",
+"set": "djmax"
+},
+{
+"id": "opspectheme",
+"title": "Operation Spectrum Battle Theme",
+"artist": "cybermiso, DOT96, tigerlily",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "瑞獣×夜浪: 危機等級32",
+"set": "arknights"
+},
+{
+"id": "override",
+"title": "Override",
+"artist": "吉田夜世",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "sudo M理論",
+"set": "virtualsingers"
+},
+{
+"id": "paranoidarc",
+"title": "Paranoid Arc",
+"artist": "t+pazolite",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Exschwasion v.●/○/○",
+"set": "single"
+},
+{
+"id": "radiant",
+"title": "Radiant",
+"artist": "Mary Clare, Erik Castro",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "sidewaves",
+"set": "arknights"
+},
+{
+"id": "rainofconflict",
+"title": "Rain of Conflict in a Radiant Abyss",
+"artist": "ak+q",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nitro meets Toaster “v20170309”",
+"set": "single"
+},
+{
+"id": "riotsystem",
+"title": "Riot in the System",
+"artist": "Laur & Massive New Krew feat. 社築",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Interioter",
+"set": "extend_4"
+},
+{
+"id": "schrago",
+"title": "Schra Go (Uchina Time)",
+"artist": "REMO-CON",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NITRO",
+"set": "diversesystem"
+},
+{
+"id": "signal",
+"title": "Signal",
+"artist": "rejection feat. Such",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "絶滅",
+"set": "megarex"
+},
+{
+"id": "somniomancer",
+"title": "Somniomancer [null set]",
+"artist": "Crywolf",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "絶滅 the New Covenant",
+"set": "arknights"
+},
+{
+"id": "straightintolights",
+"title": "Straight into the lights",
+"artist": "Cosmograph",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "反水 × 夜浪",
+"set": "maimai_append_2"
+},
+{
+"id": "subsphere",
+"title": "Subsphere in Eclosion",
+"artist": "窓辺リカ",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nitro v.○/●/○",
+"set": "single"
+},
+{
+"id": "sucromania",
+"title": "Sucromania",
+"artist": "STEAKA",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "karat",
+"set": "single"
+},
+{
+"id": "synthesis",
+"title": "Synthesis.",
+"artist": "tn-shi",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Synthesis.raycast()",
+"set": "single"
+},
+{
+"id": "telepathy",
+"title": "Telepathy",
+"artist": "DECO*27",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": ";-b",
+"set": "virtualsingers"
+},
+{
+"id": "theraft",
+"title": "The 'Raft' taught me: your heart will always find a way.",
+"artist": "庭師",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "raycast v.○/○/●",
+"set": "single"
+},
+{
+"id": "thirdsun",
+"title": "Third Sun",
+"artist": "Ash Astral",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NEO NITRO",
+"set": "single"
+},
+{
+"id": "trickmaster",
+"title": "Tr!cK Ma?tEr",
+"artist": "Nothing But Requiem",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "KAr?T",
+"set": "single"
+},
+{
+"id": "tasogare",
+"title": "Twilight Concerto",
+"artist": "Scarlette",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Exschwasion",
+"set": "single"
+},
+{
+"id": "un",
+"title": "un",
+"artist": "黒魔",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NITRO「The Absolute」",
+"set": "konzetsu"
+},
+{
+"id": "virtus",
+"title": "ViRTUS",
+"artist": "Hiro",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NiTRO",
+"set": "maimai_append_2"
+},
+{
+"id": "wereallgonnadie",
+"title": "We're All Gonna Die",
+"artist": "Paul Bazooka",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "絶滅",
+"set": "djmax_append_1"
+},
+{
+"id": "welcomequeen",
+"title": "Welcome, Queen of Fiction.",
+"artist": "打打だいず",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "虚偽の玉座【夜浪】",
+"set": "anima_append_1"
+},
+{
+"id": "xterfusion",
+"title": "Xterfusion",
+"artist": "REDALiCE × t+pazolite",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nitro -fuze- 夜浪",
+"set": "single"
+},
+{
+"id": "xxium",
+"title": "Xxium and Purple haze",
+"artist": "D.watt",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "ẋx",
+"set": "extend_4"
+},
+{
+"id": "zephyrlast",
+"title": "zephyrlasting",
+"artist": "s-don × nitro (lowiro)",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "Nitro 「The Timeless」",
+"set": "nextstage"
+},
+{
+"id": "azalea",
+"title": "ΛZΛLEΛ",
+"artist": "ak+q × onoken",
+"cls": "BYD",
+"rc": 4,
+"cc": 10,
+"designer": "NORΛ::NEKO × KΛRΛT",
+"set": "nextstage"
+},
+{
+"id": "altale",
+"title": "Altale",
+"artist": "Sakuzyo",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "nora::neko << fantasy",
+"set": "single"
+},
+{
+"id": "bethere",
+"title": "Be There",
+"artist": "PSYQUI",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "BE KARAT",
+"set": "single"
+},
+{
+"id": "bookmaker",
+"title": "Bookmaker (2D Version)",
+"artist": "Kobaryo",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Toastmaker",
+"set": "base"
+},
+{
+"id": "breachoffaith",
+"title": "Breach of Faith",
+"artist": "Supire feat.eili",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "夜浪「perfidulo」",
+"set": "lephon"
+},
+{
+"id": "dropdead",
+"title": "dropdead",
+"artist": "Frums",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "絶滅 over 夜浪.",
+"set": "single"
+},
+{
+"id": "einherjar",
+"title": "Einherjar Joker",
+"artist": "DJ Genki vs Gram",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "~REQUIEM~ 夜浪",
+"set": "single"
+},
+{
+"id": "energysynergymatrix",
+"title": "ENERGY SYNERGY MATRIX",
+"artist": "Tanchiky",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "白亜紀と古第三紀の間の大量絶滅",
+"set": "extend"
+},
+{
+"id": "heavenlycaress",
+"title": "Heavenly caress",
+"artist": "Noah",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "絶･零･夜",
+"set": "single"
+},
+{
+"id": "heavensdoor",
+"title": "Heavensdoor",
+"artist": "LeaF",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "東星※天の門",
+"set": "prelude"
+},
+{
+"id": "impact",
+"title": "IMPACT",
+"artist": "USAO feat. 光吉猛修",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Toaster NEW!!",
+"set": "chunithm_append_2"
+},
+{
+"id": "infinitestrife",
+"title": "Infinite Strife,",
+"artist": "BlackYooh vs. siromaru",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Inner Labyrinth",
+"set": "finale"
+},
+{
+"id": "laqryma",
+"title": "La'qryma of the Wasteland",
+"artist": "DJ Noriken",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Nitro 「The Forsaken」",
+"set": "single"
+},
+{
+"id": "lastendconductor",
+"title": "lastendconductor",
+"artist": "zts",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "libertas",
+"title": "Libertas",
+"artist": "Zekk",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Exschwasion -unbound-",
+"set": "single"
+},
+{
+"id": "nhelv",
+"title": "Nhelv",
+"artist": "Silentroom",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "零下 -descent-",
+"set": "base"
+},
+{
+"id": "omakeno",
+"title": "OMAKENO Stroke",
+"artist": "t+pazolite",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "NITRO",
+"set": "groovecoaster"
+},
+{
+"id": "partyvinyl",
+"title": "Party Vinyl",
+"artist": "モリモリあつし",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Party Exschwasion",
+"set": "shiawase"
+},
+{
+"id": "purpleverse",
+"title": "Purple Verse",
+"artist": "Hommarju",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "/ERROR/ 絶滅",
+"set": "extend"
+},
+{
+"id": "quonwacca",
+"title": "Quon",
+"artist": "DJ Noriken",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "XIII: The Journey/Nitro",
+"set": "wacca"
+},
+{
+"id": "raysofremnant",
+"title": "Rays of Remnant",
+"artist": "May × Felysrator",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "nora::nue",
+"set": "lephon"
+},
+{
+"id": "redandblue",
+"title": "Red and Blue",
+"artist": "Silentroom",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "moonquay \"retrograde\"\nBLUE=LEFT RIGHT=RED",
+"set": "base"
+},
+{
+"id": "renegade",
+"title": "Renegade",
+"artist": "sky_delta",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "raycast, The Irresolute",
+"set": "lephon"
+},
+{
+"id": "saintorsinner",
+"title": "Saint or Sinner",
+"artist": "crayvxn",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "↑零下↑",
+"set": "prelude"
+},
+{
+"id": "singularity",
+"title": "Singularity",
+"artist": "ETIA.",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Exschwasion against. 絶滅",
+"set": "nijuusei"
+},
+{
+"id": "smallcloud",
+"title": "Small Cloud Sugar Candy",
+"artist": "テヅカ x Aoi feat.桃雛なの",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "@#7¥M!$",
+"set": "observer_append_2"
+},
+{
+"id": "trappola",
+"title": "trappola bewitching",
+"artist": "gmtn.",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "NITRO -mesmerize-",
+"set": "yugamu"
+},
+{
+"id": "yourbestnightmare",
+"title": "Your Best Nightmare",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 3,
+"cc": 10,
+"designer": "Arcaea Charting Team【The Six Souls】",
+"set": "undertale"
+},
+{
+"id": "ii",
+"title": " ͟͝͞Ⅱ́̕ ",
+"artist": "Cytus",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Cam_Library_702_12_29",
+"set": "cytusii_append_1"
+},
+{
+"id": "nnglooms",
+"title": "99 Glooms",
+"artist": "Sta",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "終点",
+"set": "cytusii_append_1"
+},
+{
+"id": "infinity",
+"title": "[X]",
+"artist": "Blacklolita",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星",
+"set": "maimai_append_1"
+},
+{
+"id": "aethercrest",
+"title": "Aether Crest: Astral",
+"artist": "void (Mournfinale) × 水野健治",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "M理論 《Quintessence》",
+"set": "chunithm_append_3"
+},
+{
+"id": "alephzero",
+"title": "Aleph-0",
+"artist": "LeaF",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "ə₀",
+"set": "extend_2"
+},
+{
+"id": "alexandrite",
+"title": "Alexandrite",
+"artist": "WAiKURO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※空の宝石",
+"set": "single"
+},
+{
+"id": "alive",
+"title": "ALIVE",
+"artist": "Obadiah Brown-Beach, Cristina Vee",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "RAYCAST",
+"set": "arknights"
+},
+{
+"id": "alterego",
+"title": "ALTER EGO",
+"artist": "Yuta Imai vs Qlarabelle",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Article VII《Analysis》",
+"set": "nihil"
+},
+{
+"id": "altergate",
+"title": "AlterGate",
+"artist": "MisoilePunch♪ ~タケノコ添え~",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "anima_append_1"
+},
+{
+"id": "amazingmightyyyy",
+"title": "AMAZING MIGHTYYYY!!!!",
+"artist": "WAiKURO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "AMAZING TOASTYYYY!!!!",
+"set": "maimai"
+},
+{
+"id": "andrevivemelody",
+"title": "And Revive The Melody",
+"artist": "黒魔",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 (FIRE) Lv.75",
+"set": "ongeki_append_2"
+},
+{
+"id": "angelsboundary",
+"title": "Angel's Boundary",
+"artist": "MEMODEMO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "[絶,滅)",
+"set": "single"
+},
+{
+"id": "arcanaeden",
+"title": "Arcana Eden",
+"artist": "Team Grimoire vs Sakuzyo vs Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Eye of the Storm",
+"set": "finale"
+},
+{
+"id": "astralquant",
+"title": "Astral Quantization",
+"artist": "Dj Grimoire",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Ψ",
+"set": "lephon"
+},
+{
+"id": "attraqtia",
+"title": "AttraqtiA",
+"artist": "かめりあ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Toaster affected by 'CHUNITHM'",
+"set": "single"
+},
+{
+"id": "aurgelmir",
+"title": "Aurgelmir",
+"artist": "溝口ゆうま feat. 大瀬良あい",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪",
+"set": "single"
+},
+{
+"id": "axiumcrisis",
+"title": "Axium Crisis",
+"artist": "ak+q",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "The Monolith",
+"set": "yugamu"
+},
+{
+"id": "backtobasics",
+"title": "Back to Basics",
+"artist": "m1dy",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 THE FUMEn ANARCHIST",
+"set": "single"
+},
+{
+"id": "take",
+"title": "Bamboo",
+"artist": "立秋 feat.ちょこ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "竹の子",
+"set": "extend"
+},
+{
+"id": "blackmind",
+"title": "Black MInD",
+"artist": "COSIO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "聖輪",
+"set": "groovecoaster_append_1"
+},
+{
+"id": "breachoffaith",
+"title": "Breach of Faith",
+"artist": "Supire feat.eili",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪「perfidulo」",
+"set": "lephon"
+},
+{
+"id": "buchigireberserker",
+"title": "BUCHiGiRE Berserker",
+"artist": "REDALiCE vs MASAKI",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星 vs 夜浪 《BERSERK》",
+"set": "single"
+},
+{
+"id": "capella",
+"title": "Capella",
+"artist": "ARForest",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "0°Nitro",
+"set": "single"
+},
+{
+"id": "cataclysmcry",
+"title": "Cataclysm Cry",
+"artist": "Aid",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "運命の手 -hand of fate-",
+"set": "konzetsu"
+},
+{
+"id": "chaos",
+"title": "CHAOS",
+"artist": "Æsir",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "cytusii"
+},
+{
+"id": "chromafill",
+"title": "Chromafill",
+"artist": "ていぬ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "exschwasion -彩色-",
+"set": "single"
+},
+{
+"id": "chronicle",
+"title": "Chronicle",
+"artist": "Lime",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 -Annales Historiae-",
+"set": "extend_2"
+},
+{
+"id": "climax",
+"title": "Climax",
+"artist": "USAO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro -EXTRA ROUND-",
+"set": "chunithm_append_1"
+},
+{
+"id": "conflict",
+"title": "conflict",
+"artist": "siromaru + cranky",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "toaster + nitro",
+"set": "yugamu"
+},
+{
+"id": "corpssansorganes",
+"title": "corps-sans-organes",
+"artist": "cybermiso",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪「月食」",
+"set": "mirai"
+},
+{
+"id": "crimsonthrone",
+"title": "Crimson Throne",
+"artist": "Dimier√Lisb",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "cyaegha",
+"title": "Cyaegha",
+"artist": "USAO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪、旧支配者",
+"set": "zettai"
+},
+{
+"id": "cyanine",
+"title": "cyanine",
+"artist": "jioyi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪",
+"set": "lanota"
+},
+{
+"id": "daat",
+"title": "DA'AT -The First Seeker of Souls-",
+"artist": "水野健治 VS 大国奏音",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 -Revolutions-",
+"set": "chunithm_append_3"
+},
+{
+"id": "dantalion",
+"title": "Dantalion",
+"artist": "Team Grimoire",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 X 東星 \"The Lost\"",
+"set": "vs"
+},
+{
+"id": "deinosphainein",
+"title": "DEINOS PHAINEIN",
+"artist": "Blacklolita vs Juggernaut.",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "DIVINE CURSE ⟦呪詛⟧",
+"set": "konzetsu"
+},
+{
+"id": "desertrealm",
+"title": "Desertrealm",
+"artist": "Masahiro \"Godspeed\" Aoki",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "karat -weathered-",
+"set": "single"
+},
+{
+"id": "designant",
+"title": "Designant.",
+"artist": "Designant",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "3rd Command ≒ Ascendance",
+"set": "lephon"
+},
+{
+"id": "diein",
+"title": "DIE IN",
+"artist": "TAK x Sobrem",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "antymIV",
+"set": "single"
+},
+{
+"id": "divinelight",
+"title": "Divine Light of Myriad",
+"artist": "yoho",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※神授",
+"set": "observer_append_2"
+},
+{
+"id": "dreadarea",
+"title": "DREAD AREA",
+"artist": "Ashrount vs. 打打だいず",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅「天道」",
+"set": "konzetsu"
+},
+{
+"id": "dullblade",
+"title": "Dull Blade",
+"artist": "stuv",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "NITRO",
+"set": "single"
+},
+{
+"id": "edenwacca",
+"title": "eden",
+"artist": "\"漆黒\"の堕天使《Gram》†Versus†\"聖刻\"の熾天使《Gram》",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "反水",
+"set": "wacca_append_1"
+},
+{
+"id": "egoeimi",
+"title": "Ego Eimi",
+"artist": "BlackY feat. Risa Yuzuki",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星",
+"set": "eden_append_1"
+},
+{
+"id": "etherstrike",
+"title": "Ether Strike",
+"artist": "Akira Complex",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Zero Sky",
+"set": "rei"
+},
+{
+"id": "extradimensional",
+"title": "Extradimensional Cosmic Phenomenon",
+"artist": "TAKIO feat. つぐ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "#0000遒ｧ",
+"set": "anima"
+},
+{
+"id": "felis",
+"title": "Felis",
+"artist": "M2U",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星",
+"set": "alice"
+},
+{
+"id": "freemyself",
+"title": "Free Myself",
+"artist": "lapix feat. mami",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Exschwasion -unbound-",
+"set": "single"
+},
+{
+"id": "gengaozo",
+"title": "G e n g a o z o",
+"artist": "-45",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "_ F U T U R E",
+"set": "extend"
+},
+{
+"id": "garakuta",
+"title": "Garakuta Doll Play",
+"artist": "t+pazolite",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Arcaea Charting Teamからの挑戦状",
+"set": "chunithm"
+},
+{
+"id": "genocider",
+"title": "GENOCIDER",
+"artist": "DJ Myosuke",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Toaster",
+"set": "wacca"
+},
+{
+"id": "gimmedablood",
+"title": "GIMME DA BLOOD",
+"artist": "C-Show",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪",
+"set": "single"
+},
+{
+"id": "gloryroad",
+"title": "GLORY：ROAD",
+"artist": "uma vs. モリモリあつし",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※紅空",
+"set": "shiawase"
+},
+{
+"id": "goodbyemerry",
+"title": "Good bye, Merry-Go-Round.",
+"artist": "Yooh",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "ongeki_append_1"
+},
+{
+"id": "grandspell",
+"title": "Grandspell",
+"artist": "Hylen",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Exschwasion",
+"set": "single"
+},
+{
+"id": "halcyon",
+"title": "Halcyon",
+"artist": "xi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※太陽",
+"set": "rei"
+},
+{
+"id": "hiirogekka",
+"title": "Hiiro Gekka, Kyoushou no Zetsu (nayuta 2017 ver.)",
+"artist": "nayuta x 黒鳥(EastNewSound)",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅 Exschwasion 絶滅 Exschwasion",
+"set": "single"
+},
+{
+"id": "hivemind",
+"title": "HIVEMIND",
+"artist": "かたぎり",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "NITRO -unconnected-",
+"set": "extend"
+},
+{
+"id": "ikazuchi",
+"title": "Ikazuchi",
+"artist": "光吉猛修",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "先史の機械神【夜浪】",
+"set": "chunithm"
+},
+{
+"id": "internetyamero",
+"title": "INTERNET YAMERO",
+"artist": "Aiobahn feat. KOTOKO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "該当チャンネルが停止されたため、\nこの譜面は再生できません。",
+"set": "single"
+},
+{
+"id": "izana",
+"title": "IZANA",
+"artist": "t+pazolite vs P*Light",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "NITRO",
+"set": "single"
+},
+{
+"id": "judgement",
+"title": "Judgement",
+"artist": "Tatsunoshin",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅 » collapse",
+"set": "nihil"
+},
+{
+"id": "overdrive",
+"title": "Kanbu de Tomatte Sugu Tokeru",
+"artist": "ARM＋夕野ヨシミ (IOSYS) feat. miko",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "C7H11NO配合!!!!!!",
+"set": "single"
+},
+{
+"id": "kissinglucifer",
+"title": "Kissing Lucifer",
+"artist": "ETIA.",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "NITRO",
+"set": "single"
+},
+{
+"id": "kyorenromance",
+"title": "KYOREN ROMANCE",
+"artist": "REDALiCE vs DJ Myosuke feat. DELUTAYA",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Dec18 + Nitro",
+"set": "single"
+},
+{
+"id": "lamentrain",
+"title": "Lament Rain",
+"artist": "Ashrount vs. 打打だいず",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "⇆ Separation",
+"set": "lephon"
+},
+{
+"id": "lastcelebration",
+"title": "Last Celebration",
+"artist": "Laur vs CK",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro affected by 'CHUNITHM'",
+"set": "chunithm_append_1"
+},
+{
+"id": "lethalvoltage",
+"title": "Lethal Voltage",
+"artist": "siqlo",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "moonquay [SHOCK]",
+"set": "extend_3"
+},
+{
+"id": "liar",
+"title": "Liar",
+"artist": "zts",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "KLMNOP + Nitro",
+"set": "djmax_append_1"
+},
+{
+"id": "lightningscrew",
+"title": "Lightning Screw",
+"artist": "HiTECH NINJA",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星",
+"set": "dividedheart"
+},
+{
+"id": "livefastdieyoung",
+"title": "Live Fast Die Young",
+"artist": "anubasu-anubasu",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro with Toaster.",
+"set": "nijuusei_append_1"
+},
+{
+"id": "logos",
+"title": "Logos",
+"artist": "polysha feat. 高城みよ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "eden_append_1"
+},
+{
+"id": "lucidtraveler",
+"title": "Lucid Traveler",
+"artist": "Akira Complex vs 3R2",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Toaster vs ₸öα$†ε₹",
+"set": "cytusii"
+},
+{
+"id": "loschen",
+"title": "Löschen",
+"artist": "BlackY feat. Risa Yuzuki",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "observer"
+},
+{
+"id": "magnolia",
+"title": "Magnolia",
+"artist": "M2U Vocal by Guriri",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Lacrimosa",
+"set": "cytusii_append_1"
+},
+{
+"id": "maliciousmischance",
+"title": "Malicious Mischance",
+"artist": "s-don",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "×NITRO×",
+"set": "single"
+},
+{
+"id": "manicjeer",
+"title": "Manic Jeer",
+"artist": "ルゼ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "NITR<O>",
+"set": "single"
+},
+{
+"id": "masqueradelegion",
+"title": "Masquerade Legion",
+"artist": "Srav3R & DJ Noriken",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro 「The Veiled」",
+"set": "single"
+},
+{
+"id": "medusa",
+"title": "Medusa",
+"artist": "HiTECH NINJA",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Toaster",
+"set": "musedash"
+},
+{
+"id": "metamysteria",
+"title": "Meta-Mysteria",
+"artist": "DJ Noriken",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "VII: THE CHARIOT/夜浪",
+"set": "wacca_append_1"
+},
+{
+"id": "metallicpunisher",
+"title": "Metallic Punisher",
+"artist": "INNOCENT NOIZE",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Black Tea",
+"set": "single"
+},
+{
+"id": "mirinae",
+"title": "MIRINAE",
+"artist": "TAK × Zekk",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "N↑TRO",
+"set": "single"
+},
+{
+"id": "gou",
+"title": "Misdeed -la bonté de Dieu et l'origine du mal-",
+"artist": "光吉猛修 VS 穴山大輔",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "神の啓示「人類の未来」",
+"set": "chunithm_append_1"
+},
+{
+"id": "mvurbd",
+"title": "MVURBD",
+"artist": "ETIA.",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "rotaeno"
+},
+{
+"id": "neowings",
+"title": "NEO WINGS",
+"artist": "SOUND HOLIC feat. Nana Takahashi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "nirvluce",
+"title": "Nirv lucE",
+"artist": "しーけー",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※紅空",
+"set": "shiawase"
+},
+{
+"id": "nullapophenia",
+"title": "NULL APOPHENIA",
+"artist": "N²",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星 vs 夜浪《APOPHÄNIE》",
+"set": "single"
+},
+{
+"id": "oshamascramble",
+"title": "Oshama Scramble!",
+"artist": "t+pazolite",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro!+999牛乳",
+"set": "maimai"
+},
+{
+"id": "ouroboros",
+"title": "ouroboros -twin stroke of the end-",
+"artist": "Cranky VS MASAKI",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Groove 東星",
+"set": "groovecoaster"
+},
+{
+"id": "overwhelm",
+"title": "Overwhelm",
+"artist": "xi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪",
+"set": "observer_append_1"
+},
+{
+"id": "pentiment",
+"title": "Pentiment",
+"artist": "Nothing But Requiem with Museo",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Paradox Blight",
+"set": "finale"
+},
+{
+"id": "placebobattler",
+"title": "Placebo♥Battler",
+"artist": "OSTER project",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅【再構築】",
+"set": "single"
+},
+{
+"id": "pragmatism",
+"title": "PRAGMATISM",
+"artist": "Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星",
+"set": "core"
+},
+{
+"id": "primitivelights",
+"title": "PRIMITIVE LIGHTS",
+"artist": "TAG",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※原初の灯",
+"set": "single"
+},
+{
+"id": "pupa",
+"title": "PUPA",
+"artist": "モリモリあつし",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "én -胡蝶の夢-",
+"set": "single"
+},
+{
+"id": "qovat",
+"title": "Qovat",
+"artist": "owl＊tree",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "ny＊tree",
+"set": "single"
+},
+{
+"id": "redolentshape",
+"title": "Redolent Shape",
+"artist": "Sanaas",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "single"
+},
+{
+"id": "rekkaresonance",
+"title": "REKKA RESONANCE",
+"artist": "REDALiCE vs Kobaryo",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 vs Nitro",
+"set": "single"
+},
+{
+"id": "ringedgenesis",
+"title": "Ringed Genesis",
+"artist": "Edelritter",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 vs Nitro",
+"set": "prelude"
+},
+{
+"id": "riseoftheworld",
+"title": "Rise of the World",
+"artist": "cosMo＠暴走P",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "N⇑TRO",
+"set": "eden"
+},
+{
+"id": "rivenpilgrim",
+"title": "Riven Pilgrimage",
+"artist": "rejection & Supire feat. eili",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "零下「kuratoro」",
+"set": "konzetsu"
+},
+{
+"id": "rostpagegene",
+"title": "ROST PAGE GENE",
+"artist": "MYUKKE.",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "NEON:ROAD:OKAY",
+"set": "extend_3"
+},
+{
+"id": "scarletlance",
+"title": "Scarlet Lance",
+"artist": "MASAKI (ZUNTATA)",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "闇運",
+"set": "groovecoaster"
+},
+{
+"id": "seclusion",
+"title": "Seclusion",
+"artist": "Laur feat. Sennzai",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "N•Ex•T",
+"set": "observer"
+},
+{
+"id": "sheriruth",
+"title": "Sheriruth",
+"artist": "Team Grimoire",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪",
+"set": "core"
+},
+{
+"id": "sheriruthrmx",
+"title": "Sheriruth (Laur Remix)",
+"artist": "Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※恣意",
+"set": "single"
+},
+{
+"id": "singularity",
+"title": "Singularity",
+"artist": "ETIA.",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星※コラプサー",
+"set": "nijuusei"
+},
+{
+"id": "spidersthread",
+"title": "Spider's Thread",
+"artist": "きくお×cosMo＠暴走P feat.影縫英",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪 <->",
+"set": "chunithm_append_2"
+},
+{
+"id": "spiritdauntless",
+"title": "Spirit of the Dauntless",
+"artist": "KO3 & Relect",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "single"
+},
+{
+"id": "stasis",
+"title": "Stasis",
+"artist": "Maozon",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星",
+"set": "lanota_append_1"
+},
+{
+"id": "superambulance",
+"title": "SUPER AMBULANCE",
+"artist": "AJURIKA",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "moonquay v.MASTER",
+"set": "ongeki_append_2"
+},
+{
+"id": "tempestissimo",
+"title": "Tempestissimo",
+"artist": "t+pazolite",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Onslaught - Crescendo",
+"set": "vs"
+},
+{
+"id": "temptation",
+"title": "TEmPTaTiON",
+"artist": "かねこちはる",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "EXtINcTiON",
+"set": "maimai_append_1"
+},
+{
+"id": "teravolt",
+"title": "TeraVolt",
+"artist": "Katali",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "超東星 × 雷夜浪",
+"set": "eden_append_2"
+},
+{
+"id": "testify",
+"title": "Testify",
+"artist": "void (Mournfinale) feat. 星熊南巫",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Black¦FUTURE",
+"set": "finale"
+},
+{
+"id": "tiferet",
+"title": "Tiferet",
+"artist": "xi + Sta",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪[Spherical]",
+"set": "tonesphere"
+},
+{
+"id": "tothemilkyway",
+"title": "To the Milky Way",
+"artist": "黒魔",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitroだー！",
+"set": "single"
+},
+{
+"id": "toaliceliddell",
+"title": "To: Alice Liddell",
+"artist": "モリモリあつし",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Yours Sincerely, 夜浪",
+"set": "alice_append_1"
+},
+{
+"id": "trpno",
+"title": "TRPNO",
+"artist": "Nauts",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "raycast",
+"set": "extend_3"
+},
+{
+"id": "trrricksters",
+"title": "Trrricksters!!",
+"artist": "s-don vs. 翡乃イスカ",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "chunithm_append_2"
+},
+{
+"id": "ultradiaxon",
+"title": "ultradiaxon-N3",
+"artist": "nitro (lowiro)",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "undyingmacula",
+"title": "Undying Macula",
+"artist": "Ashrount",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "EVENTHORIZON",
+"set": "eclipse"
+},
+{
+"id": "unknownlevels",
+"title": "UNKNOWN LEVELS",
+"artist": "Yuta Imai",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "⇓ 東星 vs Toaster ⇓",
+"set": "eden"
+},
+{
+"id": "valhallazero",
+"title": "Valhalla:0",
+"artist": "Juggernaut.",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "夜浪",
+"set": "omatsuri"
+},
+{
+"id": "viciousheroism",
+"title": "Vicious Heroism",
+"artist": "Kobaryo",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Nitro vanquish Toaster.",
+"set": "zettai"
+},
+{
+"id": "viyellastears",
+"title": "Viyella's Tears",
+"artist": "Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "東星の涙",
+"set": "ongeki"
+},
+{
+"id": "vulcanus",
+"title": "Vulcānus",
+"artist": "Team Grimoire vs Aoi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Volution IV",
+"set": "rotaeno"
+},
+{
+"id": "wereallgonnadie",
+"title": "We're All Gonna Die",
+"artist": "Paul Bazooka",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "djmax_append_1"
+},
+{
+"id": "welcomequeen",
+"title": "Welcome, Queen of Fiction.",
+"artist": "打打だいず",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "ようこそ、瑞獣。",
+"set": "anima_append_1"
+},
+{
+"id": "wishuponasnow",
+"title": "Wish Upon a Snow",
+"artist": "打打だいず",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "0°絶滅",
+"set": "single"
+},
+{
+"id": "worldender",
+"title": "World Ender",
+"artist": "sasakure.UK × TJ.hangneil",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "Imaginary Sky",
+"set": "finale"
+},
+{
+"id": "worldvanquisher",
+"title": "World Vanquisher",
+"artist": "void (Mournfinale)",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "処刑人【東星】",
+"set": "chunithm"
+},
+{
+"id": "xanatos",
+"title": "Xanatos",
+"artist": "Tatsh",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "XERiNG × eXschwasion × NitromeX",
+"set": "single"
+},
+{
+"id": "xtreme",
+"title": "XTREME",
+"artist": "USAO",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "絶滅",
+"set": "wacca_append_1"
+},
+{
+"id": "aterlbus",
+"title": "αterlβus",
+"artist": "Aoi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "τoastεr",
+"set": "dynamix"
+},
+{
+"id": "guardina",
+"title": "γuarδina",
+"artist": "Aoi",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "τoastεr",
+"set": "single"
+},
+{
+"id": "omegafour",
+"title": "ω4",
+"artist": "穴山大輔 VS 光吉猛修 VS Kai",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "τ0",
+"set": "ongeki"
+},
+{
+"id": "sacrosanct",
+"title": "⊥⊬",
+"artist": "Silentroom Dismantled XOR かたぎり",
+"cls": "FTR",
+"rc": 2,
+"cc": 10,
+"designer": "▯",
+"set": "konzetsu"
+},
+{
+"id": "altersist",
+"title": "Altersist",
+"artist": "void (Mournfinale)",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "sidewaves",
+"set": "single"
+},
+{
+"id": "blackmirror",
+"title": "Black Mirror on the Wall",
+"artist": "暁Records",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "KLMNOP",
+"set": "extend_3"
+},
+{
+"id": "chaintonite",
+"title": "CHAIN2NITE",
+"artist": "asuzora feat. cyber milk ちゃん",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "raycast",
+"set": "megarex"
+},
+{
+"id": "cosmogyral",
+"title": "Cosmogyral",
+"artist": "Darren + Altermis",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Interator",
+"set": "extend_4"
+},
+{
+"id": "crimsonquartz",
+"title": "Crimson Quartz",
+"artist": "DiGiTAL WiNG with 空音",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "raycast",
+"set": "single"
+},
+{
+"id": "deathbyglamour",
+"title": "Death By Glamour",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "RYCT THE MUSICAL",
+"set": "undertale"
+},
+{
+"id": "disintegration",
+"title": "disintegration",
+"artist": "ひゅ〜ぶ",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "raycast",
+"set": "extend_3"
+},
+{
+"id": "epitaxy",
+"title": "epitaxy",
+"artist": "Camellia",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Dec18",
+"set": "extend_3"
+},
+{
+"id": "factorder",
+"title": "Factorder",
+"artist": "瀬名 feat. 梨雛",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Luxance -Lost Colors-",
+"set": "anima_append_1"
+},
+{
+"id": "fadingsky",
+"title": "Fading Sky",
+"artist": "AJURIKA",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "antymis",
+"set": "arknights"
+},
+{
+"id": "furetemitai",
+"title": "FURETE-MITAI",
+"artist": "みきとP",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "nora::neko",
+"set": "extend_3"
+},
+{
+"id": "caramelpop",
+"title": "Gimme Caramel Popcorn!",
+"artist": "ヤミナベレコーズ feat. 繭糸",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Interator",
+"set": "base"
+},
+{
+"id": "hellohell",
+"title": "HELLOHELL",
+"artist": "暁Records",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "eién",
+"set": "extend_3"
+},
+{
+"id": "hypnotize",
+"title": "Hypnotize",
+"artist": "rejection",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "én × nitro「The Radical」",
+"set": "nihil"
+},
+{
+"id": "iwantyou",
+"title": "I want You",
+"artist": "Lin-G",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Toaster",
+"set": "djmax_append_1"
+},
+{
+"id": "incompleteone",
+"title": "incomplete the one",
+"artist": "Halv feat.Kuroa*",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "<>ntym1s",
+"set": "anima_append_1"
+},
+{
+"id": "innocence",
+"title": "Innocence",
+"artist": "Powerless feat. Sennzai",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "First Dawn",
+"set": "single"
+},
+{
+"id": "ionostream",
+"title": "IONOSTREAM",
+"artist": "Tatsh",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Dec18 + Nitro",
+"set": "single"
+},
+{
+"id": "jingle",
+"title": "Jingle",
+"artist": "DJ Noriken",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "KLMNOP",
+"set": "base"
+},
+{
+"id": "ladymadestar",
+"title": "Ladymade Star",
+"artist": "ESTi",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Nitro -RESPECT-",
+"set": "djmax"
+},
+{
+"id": "lastgoodbye",
+"title": "Last Goodbye",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Good night.",
+"set": "undertale"
+},
+{
+"id": "lavie",
+"title": "Lavie",
+"artist": "すりぃ",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "sidewavesチュウ",
+"set": "virtualsingers"
+},
+{
+"id": "liftoff",
+"title": "LiftOff",
+"artist": "MAYA AKAI",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Luxance's Case-Book",
+"set": "ongeki_append_2"
+},
+{
+"id": "miles",
+"title": "Miles",
+"artist": "Electronic Boutique",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Interator",
+"set": "single"
+},
+{
+"id": "morningloom",
+"title": "MORNINGLOOM",
+"artist": "saaa",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Exschwasion • 8:46",
+"set": "extend_3"
+},
+{
+"id": "paradoxpalette",
+"title": "Paradox Palette",
+"artist": "Aethoro",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "antymis.",
+"set": "extend_4"
+},
+{
+"id": "particle",
+"title": "Particle",
+"artist": "Lime / Kankitsu",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "M理論_strangeq",
+"set": "extend_4"
+},
+{
+"id": "prayer",
+"title": "Prayer",
+"artist": "qfeileadh&レゾナンスもえこ",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "nora::neko",
+"set": "extend_3"
+},
+{
+"id": "ran",
+"title": "Ran",
+"artist": "Feryquitous",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "antymis",
+"set": "diversesystem"
+},
+{
+"id": "renegadeark",
+"title": "Renegade",
+"artist": "Jason Walsh, Substantial, X. ARI",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Natsu",
+"set": "base"
+},
+{
+"id": "satisfaction",
+"title": "SATISFACTION",
+"artist": "P*Light & DJ Noriken feat. KMNZ",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Nitro",
+"set": "base"
+},
+{
+"id": "seethelights",
+"title": "See the Lights!",
+"artist": "polysha feat. しろさきあや",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "raycast☆",
+"set": "anima"
+},
+{
+"id": "shinchoku",
+"title": "Shinchoku Doudesuka?",
+"artist": "sumijun feat. ななひら",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "進捗ダメです",
+"set": "single"
+},
+{
+"id": "spearofjustice",
+"title": "Spear of Justice",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "antymis",
+"set": "undertale_append_1"
+},
+{
+"id": "speedoflight",
+"title": "Speed of Light",
+"artist": "DJ OKAWARI, 二宮愛",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "karat",
+"set": "arknights"
+},
+{
+"id": "spiderdance",
+"title": "Spider Dance",
+"artist": "Toby Fox",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "24 KARAT GOLD",
+"set": "undertale_append_1"
+},
+{
+"id": "stargateextreme",
+"title": "STARGATE EXTREME",
+"artist": "KARUT",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "eién",
+"set": "single"
+},
+{
+"id": "tabootears",
+"title": "taboo tears you up 2017",
+"artist": "REDALiCE",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "én",
+"set": "extend_4"
+},
+{
+"id": "tictactoe",
+"title": "Tic! Tac! Toe!",
+"artist": "TAK x Corbin",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "moonquay c.FAIL",
+"set": "single"
+},
+{
+"id": "uad",
+"title": "U.A.D",
+"artist": "HAYAKO",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "Exschwas⇅on",
+"set": "djmax"
+},
+{
+"id": "vainspire",
+"title": "Vainspire",
+"artist": "satella",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "|karat|",
+"set": "eclipse"
+},
+{
+"id": "voyagetofuture",
+"title": "Voyage to the Future",
+"artist": "Shunji Fujii feat. 千花",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "karat",
+"set": "extend_4"
+},
+{
+"id": "waltzforlorelei",
+"title": "Waltz for Lorelei",
+"artist": "Sobrem & 庭師",
+"cls": "BYD",
+"rc": 4,
+"cc": 9,
+"designer": "antymis",
+"set": "rotaeno"
+},
+{
+"id": "antithese",
+"title": "Antithese",
+"artist": "Blacklolita",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "石樂",
+"set": "zettai"
+},
+{
+"id": "anokumene",
+"title": "Anökumene",
+"artist": "Jun Kuroda",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Astral Luxance",
+"set": "base"
+},
+{
+"id": "cyberneciacatharsis",
+"title": "Cybernecia Catharsis",
+"artist": "Tanchiky",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "antymis",
+"set": "base"
+},
+{
+"id": "dement",
+"title": "Dement ~after legend~",
+"artist": "Cosmograph",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Nitro ~ABYSS~",
+"set": "base"
+},
+{
+"id": "eccentrictale",
+"title": "Eccentric Tale",
+"artist": "Yamajet",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Nitro「The Aberrant」",
+"set": "alice"
+},
+{
+"id": "fairytale",
+"title": "Fairytale",
+"artist": "chitose",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Nitro in Wonderland",
+"set": "base"
+},
+{
+"id": "kyogenkigo",
+"title": "False Embellishment",
+"artist": "影虎。 & ikaruga_nex",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "¬ə",
+"set": "extend"
+},
+{
+"id": "freefall",
+"title": "FREEF4LL",
+"artist": "YUKIYANAGI",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "TO4STER",
+"set": "base"
+},
+{
+"id": "goodtek",
+"title": "GOODTEK (Arcaea Edit)",
+"artist": "EBIMAYO",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "GOODTOAST",
+"set": "base"
+},
+{
+"id": "ignotus",
+"title": "Ignotus",
+"artist": "ak+q",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Toaster × 石樂",
+"set": "base"
+},
+{
+"id": "infinityheaven",
+"title": "Infinity Heaven",
+"artist": "HyuN",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Nitr∞",
+"set": "base"
+},
+{
+"id": "inkarusi",
+"title": "inkar-usi",
+"artist": "DIA",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "CERiNG",
+"set": "base"
+},
+{
+"id": "kanagawa",
+"title": "Kanagawa Cyber Culvert",
+"artist": "南ゆに",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Exschwas↓on",
+"set": "base"
+},
+{
+"id": "last",
+"title": "Last",
+"artist": "onoken",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Arcaea",
+"set": "epilogue"
+},
+{
+"id": "lasteternity",
+"title": "Last | Eternity",
+"artist": "onoken",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Arcaea",
+"set": "epilogue"
+},
+{
+"id": "lostcivilization",
+"title": "Lost Civilization",
+"artist": "Laur vs CK",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Nitro affected by Nitro",
+"set": "base"
+},
+{
+"id": "lumia",
+"title": "Lumia",
+"artist": "sky_delta",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Toaster.",
+"set": "core"
+},
+{
+"id": "merlin",
+"title": "MERLIN",
+"artist": "REDALiCE",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "EXSCHWASiON",
+"set": "groovecoaster"
+},
+{
+"id": "moonheart",
+"title": "Moonheart",
+"artist": "翡乃イスカ",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Toaster",
+"set": "mirai"
+},
+{
+"id": "nexttoyou",
+"title": "next to you",
+"artist": "uma feat. 橘花音",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Toastie",
+"set": "nijuusei"
+},
+{
+"id": "oblivia",
+"title": "Oblivia",
+"artist": "Saiph",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Nitro 「The Forgotten」",
+"set": "base"
+},
+{
+"id": "purgatorium",
+"title": "Purgatorium",
+"artist": "お月さま交響曲",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "Toaster",
+"set": "base"
+},
+{
+"id": "qualia",
+"title": "qualia -ideaesthesia-",
+"artist": "nitro",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "moonquay -end of chartaesthesia-",
+"set": "base"
+},
+{
+"id": "shadesoflight",
+"title": "Shades of Light in a Transcendent Realm",
+"artist": "ak+q",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "N↑TRO",
+"set": "base"
+},
+{
+"id": "snowwhite",
+"title": "Snow White",
+"artist": "Puru",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "én + Nitro",
+"set": "base"
+},
+{
+"id": "teriqma",
+"title": "Teriqma",
+"artist": "owl＊tree",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "én 200716",
+"set": "single"
+},
+{
+"id": "vexaria",
+"title": "Vexaria",
+"artist": "ak+q",
+"cls": "BYD",
+"rc": 3,
+"cc": 9,
+"designer": "石樂",
+"set": "base"
+},
+{
+"id": "unknownnum",
+"title": "+1(UNKNOWN)-NUMBER",
+"artist": "MEMODEMO × AQUASINE ^ (hackerling)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論_GSM",
+"set": "single"
+},
+{
+"id": "hascome",
+"title": "......已至。",
+"artist": "秋田真典",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "nora::neko [Body of The End]",
+"set": "arknights"
+},
+{
+"id": "temptationgc",
+"title": "10pt8ion",
+"artist": "Lite Show Magic",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nite Schwa Power",
+"set": "groovecoaster_append_1"
+},
+{
+"id": "thirdavenue",
+"title": "3rd Avenue",
+"artist": "Sound Souler",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "New Dimensions",
+"set": "extend_4"
+},
+{
+"id": "seventhsense",
+"title": "7thSense",
+"artist": "削除",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "石樂",
+"set": "maimai"
+},
+{
+"id": "eightem",
+"title": "8-EM",
+"artist": "Sampling Masters AYA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Rave Gallery",
+"set": "chunithm_append_3"
+},
+{
+"id": "melodyoflove",
+"title": "A Wandering Melody of Love",
+"artist": "からとPαnchii少年 feat.はるの",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "恋のToaster",
+"set": "omatsuri"
+},
+{
+"id": "acheron",
+"title": "Acheron",
+"artist": "KARUT",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "karat",
+"set": "single"
+},
+{
+"id": "acidgod",
+"title": "Acid God",
+"artist": "Yuta Imai",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "nora::pengin",
+"set": "single"
+},
+{
+"id": "aidrew",
+"title": "Ai Drew",
+"artist": "Feryquitous",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "moonquay v.MASTER",
+"set": "ongeki_append_1"
+},
+{
+"id": "aiueoon",
+"title": "AI[UE]OON",
+"artist": "MYUKKE.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "N[I]TRO",
+"set": "omatsuri"
+},
+{
+"id": "alicealamode",
+"title": "Alice à la mode",
+"artist": "Masanori Akita",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "alice"
+},
+{
+"id": "alicessuitcase",
+"title": "Alice's Suitcase",
+"artist": "Endorfin.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "alice"
+},
+{
+"id": "aloneandlorn",
+"title": "Alone & Lorn",
+"artist": "Ponchi♪ feat.はぁち",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én & KLMNOP",
+"set": "extend_2"
+},
+{
+"id": "altale",
+"title": "Altale",
+"artist": "Sakuzyo",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "single"
+},
+{
+"id": "alterale",
+"title": "AlterAle",
+"artist": "Arik Kau Delay (アラ＆かゆき＆でり）",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "observer_append_2"
+},
+{
+"id": "amekagura",
+"title": "Amekagura",
+"artist": "荒谷サトル",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis",
+"set": "extend_2"
+},
+{
+"id": "amygdata",
+"title": "amygdata",
+"artist": "nitro",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "andorxor",
+"title": "ANDORXOR",
+"artist": "Sobrem",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "反∧水",
+"set": "eclipse"
+},
+{
+"id": "antagonism",
+"title": "Antagonism",
+"artist": "Yooh vs. siromaru",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "vs"
+},
+{
+"id": "anokumene",
+"title": "Anökumene",
+"artist": "Jun Kuroda",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "base"
+},
+{
+"id": "arcahv",
+"title": "Arcahv",
+"artist": "Feryquitous",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "∅",
+"set": "vs"
+},
+{
+"id": "ascent",
+"title": "Ascent",
+"artist": "TANUKI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwas↑on with CER↑NG",
+"set": "nijuusei_append_1"
+},
+{
+"id": "ashenboundary",
+"title": "Ashen 6oundary",
+"artist": "YUKIYANAGI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "[NITRO]",
+"set": "nihil"
+},
+{
+"id": "astrawalkthrough",
+"title": "Astra walkthrough",
+"artist": "paraoka",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Aster join Toaster.",
+"set": "extend_2"
+},
+{
+"id": "astraltale",
+"title": "Astral tale",
+"artist": "Noah",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "astralexe",
+"title": "astral.exe",
+"artist": "Synzak & Laxeno57",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis.exe",
+"set": "extend_3"
+},
+{
+"id": "auxesia",
+"title": "Auxesia",
+"artist": "ginkiha",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitroだー！",
+"set": "single"
+},
+{
+"id": "avantraze",
+"title": "Avant Raze",
+"artist": "Sampling Masters MEGA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Avant Toast",
+"set": "single"
+},
+{
+"id": "awakeninruins",
+"title": "Awaken In Ruins",
+"artist": "Supa7onyz",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis",
+"set": "extend_3"
+},
+{
+"id": "bbkkbkk",
+"title": "B.B.K.K.B.K.K.",
+"artist": "nora2r",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "E.E.X.X.E.X.X.",
+"set": "single"
+},
+{
+"id": "badtek",
+"title": "BADTEK",
+"artist": "EBIMAYO",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "BADTOAST ft. Kurorak",
+"set": "single"
+},
+{
+"id": "balor",
+"title": "Balor",
+"artist": "Redsign",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "karat, the Piercing Eye",
+"set": "konzetsu"
+},
+{
+"id": "battlenoone",
+"title": "BATTLE NO.1",
+"artist": "TANO*C Sound Team",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Arcaea Team",
+"set": "single"
+},
+{
+"id": "bethere",
+"title": "Be There",
+"artist": "PSYQUI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Be Nitro",
+"set": "single"
+},
+{
+"id": "beautifuldreamer",
+"title": "Beautiful Dreamer",
+"artist": "M-Project",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "single"
+},
+{
+"id": "blacklotus",
+"title": "Black Lotus",
+"artist": "wa.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "extend"
+},
+{
+"id": "blackterritory",
+"title": "Black Territory",
+"artist": "DJ Myosuke",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NitroNukeδ",
+"set": "zettai"
+},
+{
+"id": "blaster",
+"title": "Blaster",
+"artist": "Massive New Krew",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//urorak",
+"set": "base"
+},
+{
+"id": "blockedlibrary",
+"title": "Blocked Library",
+"artist": "影虎。",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "dividedheart"
+},
+{
+"id": "blrink",
+"title": "BLRINK",
+"artist": "Sta",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "未来の縁",
+"set": "prelude"
+},
+{
+"id": "bluerose",
+"title": "Blue Rose",
+"artist": "Cosmograph",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "dividedheart"
+},
+{
+"id": "blythe",
+"title": "BlythE",
+"artist": "M2U",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論",
+"set": "djmax_append_1"
+},
+{
+"id": "csqn",
+"title": "c.s.q.n.",
+"artist": "Aoi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "callimakarma",
+"title": "Callima Karma",
+"artist": "t+pazolite vs Feryquitous",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Forlorn Dream",
+"set": "epilogue"
+},
+{
+"id": "bassline",
+"title": "Can I Friend You on Bassbook? Lol",
+"artist": "かめりあ feat. ななひら",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "トースト食べる？笑",
+"set": "single"
+},
+{
+"id": "carminescythe",
+"title": "carmine:scythe",
+"artist": "かゆき",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "週刊Toaster",
+"set": "single"
+},
+{
+"id": "chaosblast",
+"title": "CHAOSBLAST",
+"artist": "QURELESS + 柚子花",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NITRO「THE ANARQISM」",
+"set": "anima_append_1"
+},
+{
+"id": "chronologia",
+"title": "chronologia",
+"artist": "lowiro Sound Team (ak+q x nitro)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "chateaudecartes",
+"title": "Château de cartes",
+"artist": "Inverted Silence ft. Pernelle",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Intérateur",
+"set": "single"
+},
+{
+"id": "coastalhighway",
+"title": "Coastal Highway",
+"artist": "Glitch Droids",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "observer_append_1"
+},
+{
+"id": "cocorocosmetic",
+"title": "cocoro*cosmetic",
+"artist": "KOTONOHOUSE",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "codeoblivion",
+"title": "Code: Oblivion",
+"artist": "Kobaryo × Gram",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "~sidewaves",
+"set": "nextstage"
+},
+{
+"id": "corruption",
+"title": "Corruption",
+"artist": "3R2",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "₸öα$†ε₹",
+"set": "zettai"
+},
+{
+"id": "crossover",
+"title": "CROSS†OVER",
+"artist": "HyuN feat. LyuU",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "extend"
+},
+{
+"id": "crosssoul",
+"title": "CROSS†SOUL",
+"artist": "HyuN feat. Syepias",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//eternal",
+"set": "single"
+},
+{
+"id": "cryogenic",
+"title": "Cryogenic",
+"artist": "Camellia ft. Petra Gurin",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "raycast /connected/",
+"set": "single"
+},
+{
+"id": "crystalgravity",
+"title": "Crystal Gravity",
+"artist": "Tanchiky vs. siromaru",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "observer"
+},
+{
+"id": "cyberneciacatharsis",
+"title": "Cybernecia Catharsis",
+"artist": "Tanchiky",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kero + Nitro",
+"set": "base"
+},
+{
+"id": "nekonote",
+"title": "Dancin' on a Cat's Paw",
+"artist": "Ino(chronoize)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis",
+"set": "base"
+},
+{
+"id": "dataerror",
+"title": "DataErr0r",
+"artist": "Cosmograph",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ToastErr0r",
+"set": "single"
+},
+{
+"id": "dazzlehop",
+"title": "Dazzle hop",
+"artist": "Sampling Masters MEGA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kuro rak",
+"set": "ongeki"
+},
+{
+"id": "defection",
+"title": "Defection",
+"artist": "TeddyLoid feat. DELTA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Monolith Incarnate",
+"set": "finale"
+},
+{
+"id": "devillicsphere",
+"title": "Devillic Sphere",
+"artist": "3R2",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "₸öα$†ε₹",
+"set": "cytusii"
+},
+{
+"id": "diesirae",
+"title": "Dies irae",
+"artist": "お月さま交響曲",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論",
+"set": "single"
+},
+{
+"id": "distortedfate",
+"title": "Distorted Fate",
+"artist": "Sakuzyo",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "distortionhuman",
+"title": "Distortion Human",
+"artist": "DJ Myosuke & KAJI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ディストーション・ルクアンス",
+"set": "extend_3"
+},
+{
+"id": "dontdie",
+"title": "Don't Die",
+"artist": "Paul Bazooka",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "nora::neko",
+"set": "single"
+},
+{
+"id": "dontfightmusic",
+"title": "Don't Fight The Music",
+"artist": "黒魔",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "絶滅 (AQUA) Lv.70",
+"set": "ongeki_append_2"
+},
+{
+"id": "dreadnought",
+"title": "Dreadnought",
+"artist": "Mastermind (xi + nora2r)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Astronomer (Toaster + 東星)",
+"set": "single"
+},
+{
+"id": "dreaminattraction",
+"title": "Dreamin' Attraction!!",
+"artist": "翡乃イスカ",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "base"
+},
+{
+"id": "drg",
+"title": "DRG",
+"artist": "onoken",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "_CHAOS",
+"set": "cytusii_append_1"
+},
+{
+"id": "dualdependency",
+"title": "Dual Dependency",
+"artist": "seatrus",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "絶∥滅",
+"set": "anima"
+},
+{
+"id": "dxfullmetal",
+"title": "DX Choseinou Full Metal Shojo",
+"artist": "IOSYS TRAX (uno with.ちよこ)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "DX譜面作者フルメタルNitro",
+"set": "groovecoaster"
+},
+{
+"id": "dynitikos",
+"title": "Dynitikós",
+"artist": "Prower",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasión",
+"set": "extend_2"
+},
+{
+"id": "desive",
+"title": "Désive",
+"artist": "MisomyL",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Yearning Call",
+"set": "single"
+},
+{
+"id": "einherjar",
+"title": "Einherjar Joker",
+"artist": "DJ Genki vs Gram",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Requiem TaroNuke",
+"set": "single"
+},
+{
+"id": "ember",
+"title": "Ember",
+"artist": "Powerless & siqlo feat. Tia",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Fate's End",
+"set": "konzetsu"
+},
+{
+"id": "empireofwinter",
+"title": "Empire of Winter",
+"artist": "Street",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "0°Nitro",
+"set": "single"
+},
+{
+"id": "endmoonlight",
+"title": "End of The Moonlight",
+"artist": "Forte Escape",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sidewaves",
+"set": "djmax"
+},
+{
+"id": "energysynergymatrix",
+"title": "ENERGY SYNERGY MATRIX",
+"artist": "Tanchiky",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "POWER NITRO",
+"set": "extend"
+},
+{
+"id": "equilibrium",
+"title": "Equilibrium",
+"artist": "Maozon",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "vs"
+},
+{
+"id": "essenceoftwilight",
+"title": "Essence of Twilight",
+"artist": "ak+q",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "core"
+},
+{
+"id": "eternitybreak",
+"title": "Eternity Break",
+"artist": "Puru",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論_halt",
+"set": "single"
+},
+{
+"id": "eveninginscarlet",
+"title": "Evening in Scarlet",
+"artist": "Freezer feat.妃苺",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitroだー！",
+"set": "single"
+},
+{
+"id": "faintlight",
+"title": "Faint Light (Arcaea Edit)",
+"artist": "Taishi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "extend"
+},
+{
+"id": "fallensquare",
+"title": "Fallensquare",
+"artist": "Silentroom",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Haruba",
+"set": "single"
+},
+{
+"id": "kyogenkigo",
+"title": "False Embellishment",
+"artist": "影虎。 & ikaruga_nex",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "extend"
+},
+{
+"id": "fantasy",
+"title": "FANTA5Y",
+"artist": "Moon Jelly & YUKIYANAGI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "TOA5TIE",
+"set": "extend_2"
+},
+{
+"id": "farawaylight",
+"title": "Far Away Light",
+"artist": "technoplanet feat. はるの & 黒沢ダイスケ",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "observer"
+},
+{
+"id": "fatality",
+"title": "Fatality",
+"artist": "Renpul",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "raycast",
+"set": "diversesystem"
+},
+{
+"id": "feelssoright",
+"title": "Feels So Right feat. Renko",
+"artist": "Mysteka",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "felys",
+"title": "felys final remix",
+"artist": "onoken",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Dec18",
+"set": "extend_2"
+},
+{
+"id": "filament",
+"title": "Filament",
+"artist": "Puru",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "finalstep",
+"title": "Final Step!",
+"artist": "Lime",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "musedash"
+},
+{
+"id": "flexidefine",
+"title": "flexidefine",
+"artist": "Lamanya",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "flexi::feline",
+"set": "extend_4"
+},
+{
+"id": "floatingworld",
+"title": "Floating World",
+"artist": "baker feat. botan",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "single"
+},
+{
+"id": "fluffyflash",
+"title": "FLUFFY FLASH",
+"artist": "Kobaryo",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "ongeki_append_1"
+},
+{
+"id": "flyburg",
+"title": "Flyburg and Endroll",
+"artist": "アリスシャッハと魔法の楽団",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NーHelix",
+"set": "shiawase"
+},
+{
+"id": "galacticlove",
+"title": "Galactic Love",
+"artist": "La prière",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "single"
+},
+{
+"id": "galaxyfriends",
+"title": "Galaxy Friends",
+"artist": "Kobaryo",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitrome X",
+"set": "single"
+},
+{
+"id": "genesischunithm",
+"title": "Genesis",
+"artist": "Morrigan feat.Lily",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "chunithm_append_2"
+},
+{
+"id": "gimmick",
+"title": "GIMMICK",
+"artist": "Ms.Sill",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis + Nitro",
+"set": "extend_2"
+},
+{
+"id": "glow",
+"title": "Glow",
+"artist": "SPACELECTRO",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "extend"
+},
+{
+"id": "kamippoi",
+"title": "God-ish",
+"artist": "ピノキオピー",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "絶滅っぽいな",
+"set": "virtualsingers"
+},
+{
+"id": "goldenslaughterer",
+"title": "goldenslaughterer",
+"artist": "zts",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "single"
+},
+{
+"id": "goodrage",
+"title": "GOODRAGE",
+"artist": "EBIMAYO",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Interator",
+"set": "single"
+},
+{
+"id": "goodtek",
+"title": "GOODTEK (Arcaea Edit)",
+"artist": "EBIMAYO",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "base"
+},
+{
+"id": "gothiveofra",
+"title": "Got hive of Ra",
+"artist": "E.G.G.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Groove Nitro",
+"set": "groovecoaster"
+},
+{
+"id": "hailstone",
+"title": "Hailstone",
+"artist": "Kazki Misora",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "raycast",
+"set": "extend_3"
+},
+{
+"id": "akinokagerou",
+"title": "Haze of Autumn",
+"artist": "karatoPαnchii feat.はるの",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "秋のén",
+"set": "musedash"
+},
+{
+"id": "headbonkache",
+"title": "Head BONK ache",
+"artist": "saaa ft. MC iwata Bros.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "kokoro",
+"title": "Heart",
+"artist": "削除 (Violin : Katali)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "écologie (from SEGA)",
+"set": "ongeki_append_1"
+},
+{
+"id": "heartjackin",
+"title": "Heart Jackin'",
+"artist": "Yu_Asahina",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "TaroNuke + Nitro",
+"set": "alice_append_1"
+},
+{
+"id": "heavenlycaress",
+"title": "Heavenly caress",
+"artist": "Noah",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "heavensdoor",
+"title": "Heavensdoor",
+"artist": "LeaF",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Black Tea",
+"set": "prelude"
+},
+{
+"id": "hotarubinoyuki",
+"title": "Hotarubi no Yuki",
+"artist": "Endorfin.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "0°Nitro",
+"set": "omatsuri"
+},
+{
+"id": "hybris",
+"title": "Hybris (The one who shattered)",
+"artist": "qfeileadh feat.のあ",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "extend_2"
+},
+{
+"id": "hypervision",
+"title": "HYPER VISION",
+"artist": "VOLTA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NITRO",
+"set": "single"
+},
+{
+"id": "iconoclast",
+"title": "Iconoclast",
+"artist": "Yamajet",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "yugamu"
+},
+{
+"id": "ignition",
+"title": "Ignition",
+"artist": "パソコン音楽クラブ",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "るくあんす",
+"set": "chunithm_append_3"
+},
+{
+"id": "ignotus",
+"title": "Ignotus",
+"artist": "ak+q",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "base"
+},
+{
+"id": "darakunosono",
+"title": "Illegal Paradise",
+"artist": "gmtn. (witch's slave)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//eternal + nitro",
+"set": "base"
+},
+{
+"id": "impact",
+"title": "IMPACT",
+"artist": "USAO feat. 光吉猛修",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én feat. écologie",
+"set": "chunithm_append_2"
+},
+{
+"id": "impurebird",
+"title": "Impure Bird",
+"artist": "MIssionary",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "single"
+},
+{
+"id": "invain",
+"title": "In Vain",
+"artist": "ryhki",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "nihil"
+},
+{
+"id": "infinitestrife",
+"title": "Infinite Strife,",
+"artist": "BlackYooh vs. siromaru",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Inner Labyrinth",
+"set": "finale"
+},
+{
+"id": "init",
+"title": "init()",
+"artist": "kamome sano",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "invertedworld",
+"title": "Inverted World",
+"artist": "ARForest",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "↑én↓",
+"set": "rotaeno"
+},
+{
+"id": "journey",
+"title": "Journey",
+"artist": "ARForest",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "lanota"
+},
+{
+"id": "jump",
+"title": "Jump",
+"artist": "Rasmus Faber",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitroだー！",
+"set": "alice"
+},
+{
+"id": "kanagawa",
+"title": "Kanagawa Cyber Culvert",
+"artist": "南ゆに",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "base"
+},
+{
+"id": "matenrou",
+"title": "Kanjou no Matenrou ～Arr.Demetori",
+"artist": "Demetori",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "N•Ex•T",
+"set": "extend_2"
+},
+{
+"id": "laqryma",
+"title": "La'qryma of the Wasteland",
+"artist": "DJ Noriken",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "lapis",
+"title": "Lapis",
+"artist": "SHIKI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "extend"
+},
+{
+"id": "last",
+"title": "Last",
+"artist": "onoken",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Arcaea",
+"set": "epilogue"
+},
+{
+"id": "lastendconductor",
+"title": "lastendconductor",
+"artist": "zts",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "lawlesspoint",
+"title": "Lawless Point",
+"artist": "La prière",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance",
+"set": "extend_2"
+},
+{
+"id": "lazyaddiction",
+"title": "Lazy Addiction",
+"artist": "sky_delta",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro without Toaster.",
+"set": "ongeki"
+},
+{
+"id": "leaveallbehind",
+"title": "Leave All Behind",
+"artist": "rider",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance",
+"set": "extend_3"
+},
+{
+"id": "letyoudivermx",
+"title": "Let you DIVE! (nitro rmx)",
+"artist": "nitro (lowiro)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "wacca"
+},
+{
+"id": "letsrock",
+"title": "Let's Rock (Arcaea mix)",
+"artist": "ikaruga_nex vs FALCHiON",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance",
+"set": "extend_2"
+},
+{
+"id": "lethaeus",
+"title": "Lethaeus",
+"artist": "Silentroom",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "夜浪",
+"set": "mirai"
+},
+{
+"id": "libertas",
+"title": "Libertas",
+"artist": "Zekk",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak + Nitro",
+"set": "single"
+},
+{
+"id": "lifeispiano",
+"title": "Life is PIANO",
+"artist": "Junk",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "extend"
+},
+{
+"id": "lilly",
+"title": "Lilly",
+"artist": "Juggernaut.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "反水【天龍】",
+"set": "anima"
+},
+{
+"id": "linearaccelerator",
+"title": "Linear Accelerator",
+"artist": "THE SHAFT",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "THE TOAST",
+"set": "tonesphere"
+},
+{
+"id": "lightmyway",
+"title": "LIVHT MY WΔY",
+"artist": "かめりあ feat. STΔRLIVHT",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//eternal + nitro\n\"convergent future\"",
+"set": "single"
+},
+{
+"id": "lostcivilization",
+"title": "Lost Civilization",
+"artist": "Laur vs CK",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "base"
+},
+{
+"id": "lostdesire",
+"title": "Lost Desire",
+"artist": "Powerless feat. Sennzai",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Darkest Dream",
+"set": "vs"
+},
+{
+"id": "lostemotion",
+"title": "Lost Emotion feat. nomico",
+"artist": "Masayoshi Minoshima(ALR)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ポーカーフェイスのToaster",
+"set": "extend_2"
+},
+{
+"id": "lostintheabyss",
+"title": "Lost in the Abyss",
+"artist": "FELT",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "lovelessdress",
+"title": "Loveless Dress",
+"artist": "かねこちはる",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Final Prayer",
+"set": "epilogue"
+},
+{
+"id": "lunarossa",
+"title": "Luna Rossa",
+"artist": "r0y",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance",
+"set": "single"
+},
+{
+"id": "espebranch",
+"title": "LunarOrbit -believe in the Espebranch road-",
+"artist": "Apo11o program ft. 大瀬良あい",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "月刊Toaster",
+"set": "base"
+},
+{
+"id": "macromod",
+"title": "Macrocosmic Modulation",
+"artist": "JAKAZiD",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwas↕on",
+"set": "single"
+},
+{
+"id": "mahoroba",
+"title": "MAHOROBA",
+"artist": "Zekk",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "TaroNuke + Nitro",
+"set": "single"
+},
+{
+"id": "mantis",
+"title": "MANTIS (Arcaea Ultra-Bloodrush VIP)",
+"artist": "Akira Complex feat. kiraku",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ANTyMIS",
+"set": "extend_2"
+},
+{
+"id": "marenyx",
+"title": "MARENYX",
+"artist": "BlackY × Aoi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "raycast against. 零下",
+"set": "nextstage"
+},
+{
+"id": "maxrage",
+"title": "MAXRAGE",
+"artist": "EBIMAYO",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "EXSCHWASION",
+"set": "maimai_append_1"
+},
+{
+"id": "mazymetroplex",
+"title": "Mazy Metroplex",
+"artist": "aran",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "wacca"
+},
+{
+"id": "megalovania",
+"title": "MEGALOVANIA",
+"artist": "Toby Fox",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "瑞獣 ＬＶ１５",
+"set": "undertale"
+},
+{
+"id": "megalovaniarmx",
+"title": "MEGALOVANIA (Camellia Remix)",
+"artist": "Camellia",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論",
+"set": "single"
+},
+{
+"id": "meltyrhapsody",
+"title": "Melty Rhapsody",
+"artist": "lapix feat. PANXI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論_liquid",
+"set": "megarex"
+},
+{
+"id": "memoryforest",
+"title": "Memory Forest",
+"artist": "ETIA.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "nijuusei"
+},
+{
+"id": "mirrorrmx",
+"title": "MIRROR - kamome sano remix",
+"artist": "kamome sano",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "nora::neko",
+"set": "extend_4"
+},
+{
+"id": "mirzam",
+"title": "Mirzam",
+"artist": "Aoi vs. siqlo",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "東星※おおいぬ座β星",
+"set": "single"
+},
+{
+"id": "mod",
+"title": "mod",
+"artist": "kalsoer",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "karat",
+"set": "extend_4"
+},
+{
+"id": "modelista",
+"title": "Modelista",
+"artist": "HiTECH NINJA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NITRO",
+"set": "single"
+},
+{
+"id": "monochromeprincess",
+"title": "Monochrome Princess",
+"artist": "polysha",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "N↕TRO",
+"set": "base"
+},
+{
+"id": "namelesspassion",
+"title": "Nameless Passion",
+"artist": "天束 feat.Sennzai",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance",
+"set": "eden_append_2"
+},
+{
+"id": "newyorkbackraise",
+"title": "New York Back Raise",
+"artist": "saaa + kei_iwata + stuv + わかどり",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion 「ALL IN」",
+"set": "single"
+},
+{
+"id": "nhelv",
+"title": "Nhelv",
+"artist": "Silentroom",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro「Katastrophe」",
+"set": "base"
+},
+{
+"id": "nightmare",
+"title": "Nightmare",
+"artist": "M2U",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "零下",
+"set": "djmax"
+},
+{
+"id": "nulctrl",
+"title": "NULCTRL",
+"artist": "Silentroom",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "moonquay [NUL]",
+"set": "base"
+},
+{
+"id": "neokosmo",
+"title": "nέο κόsmo",
+"artist": "ak+q × Street",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro × Toaster",
+"set": "dividedheart"
+},
+{
+"id": "oblivion",
+"title": "OBLIVION",
+"artist": "ESTi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "djmax"
+},
+{
+"id": "oldschoolsalvage",
+"title": "Old School Salvage",
+"artist": "DJ SHARPNEL",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis + Nitro",
+"set": "extend_3"
+},
+{
+"id": "omajinai",
+"title": "OMAJINAI",
+"artist": "Tsubusare BOZZ × Madoka*",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Souplex",
+"set": "extend_4"
+},
+{
+"id": "omakeno",
+"title": "OMAKENO Stroke",
+"artist": "t+pazolite",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "groovecoaster"
+},
+{
+"id": "onandon",
+"title": "On And On!! feat. Jenga",
+"artist": "ETIA.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én and én!!",
+"set": "extend_2"
+},
+{
+"id": "onestepcloser",
+"title": "One Step Closer",
+"artist": "Mameyudoufu × 藍月なくる",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitroだー！",
+"set": "megarex"
+},
+{
+"id": "opspectheme",
+"title": "Operation Spectrum Battle Theme",
+"artist": "cybermiso, DOT96, tigerlily",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sidewaves: 危機等級18",
+"set": "arknights"
+},
+{
+"id": "oracle",
+"title": "Oracle",
+"artist": "TQ☆",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "dynamix"
+},
+{
+"id": "ouverture",
+"title": "Ouvertüre",
+"artist": "USAO & DJ Genki feat. ルーン(CV:河瀬茉希)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "るくあんす",
+"set": "wacca_append_1"
+},
+{
+"id": "override",
+"title": "Override",
+"artist": "吉田夜世",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sudo M理論",
+"set": "virtualsingers"
+},
+{
+"id": "parallax",
+"title": "Parallax",
+"artist": "xi vs ak+q (lowiro)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論 vs 夜浪",
+"set": "diversesystem"
+},
+{
+"id": "paranoidarc",
+"title": "Paranoid Arc",
+"artist": "t+pazolite",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion v.●/○/○",
+"set": "single"
+},
+{
+"id": "particle",
+"title": "Particle",
+"artist": "Lime / Kankitsu",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "M理論_charmq",
+"set": "extend_4"
+},
+{
+"id": "partyvinyl",
+"title": "Party Vinyl",
+"artist": "モリモリあつし",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Party Toaster",
+"set": "shiawase"
+},
+{
+"id": "phantasia",
+"title": "Phantasia",
+"artist": "Yunosuke",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "single"
+},
+{
+"id": "picopicotranslation",
+"title": "PICO-Pico-Translation!",
+"artist": "t+pazolite,ななひら,Cranky,Pico*",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Translated by én",
+"set": "single"
+},
+{
+"id": "primevaltexture",
+"title": "Primeval Texture",
+"artist": "くるぶっこちゃん",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG",
+"set": "eden_append_1"
+},
+{
+"id": "protoflicker",
+"title": "Protoflicker",
+"artist": "Silentroom",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis <prototype>",
+"set": "lanota_append_1"
+},
+{
+"id": "purpleverse",
+"title": "Purple Verse",
+"artist": "Hommarju",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "extend"
+},
+{
+"id": "qualia",
+"title": "qualia -ideaesthesia-",
+"artist": "nitro",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "-chartaesthesia-",
+"set": "base"
+},
+{
+"id": "quon",
+"title": "Quon",
+"artist": "Feryquitous",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "lanota"
+},
+{
+"id": "rainofconflict",
+"title": "Rain of Conflict in a Radiant Abyss",
+"artist": "ak+q",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro “v20170309”",
+"set": "single"
+},
+{
+"id": "ravenspride",
+"title": "Raven's Pride",
+"artist": "みーに feat. はらもりよしな",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "eden"
+},
+{
+"id": "raysofremnant",
+"title": "Rays of Remnant",
+"artist": "May × Felysrator",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "nora::nue",
+"set": "lephon"
+},
+{
+"id": "redandblue",
+"title": "Red and Blue",
+"artist": "Silentroom",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "-chartaesthesia-\nLEFT=BLUE RED=RIGHT",
+"set": "base"
+},
+{
+"id": "mukishitsu",
+"title": "Redraw the Colorless World",
+"artist": "MisomyL",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "antymis ~虹色~",
+"set": "base"
+},
+{
+"id": "remindthesouls",
+"title": "Remind the Souls (Short Version)",
+"artist": "Nhato",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "base"
+},
+{
+"id": "renegade",
+"title": "Renegade",
+"artist": "sky_delta",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "raycast, The Devout",
+"set": "lephon"
+},
+{
+"id": "revixy",
+"title": "ReviXy",
+"artist": "ikaruga_nex",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Revoke Kurorak",
+"set": "base"
+},
+{
+"id": "rgb",
+"title": "RGB",
+"artist": "MEMODEMO X AQUASINE",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NO₂",
+"set": "extend_2"
+},
+{
+"id": "riotsystem",
+"title": "Riot in the System",
+"artist": "Laur & Massive New Krew feat. 社築",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Interioter",
+"set": "extend_4"
+},
+{
+"id": "rugie",
+"title": "Rugie",
+"artist": "Feryquitous feat.Sennzai",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//urorak",
+"set": "base"
+},
+{
+"id": "sacrifice",
+"title": "SACRIFICE feat. ayame",
+"artist": "Masayoshi Minoshima(ALR)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance",
+"set": "single"
+},
+{
+"id": "sakurafubuki",
+"title": "Sakura Fubuki",
+"artist": "Street",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "base"
+},
+{
+"id": "scarletcage",
+"title": "Scarlet Cage",
+"artist": "Daisuke Kurosawa",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "赤Nitro",
+"set": "single"
+},
+{
+"id": "scarletlunar",
+"title": "Scarlet Lunar Empress",
+"artist": "technoplanet feat. 夕月ティア",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "青月sidewaves",
+"set": "anima"
+},
+{
+"id": "schrago",
+"title": "Schra Go (Uchina Time)",
+"artist": "REMO-CON",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NITRO",
+"set": "diversesystem"
+},
+{
+"id": "shrink",
+"title": "shrink",
+"artist": "Shohei Tsuchiya(ZUNTATA)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Dec18",
+"set": "single"
+},
+{
+"id": "signof",
+"title": "Sign of \"10.5km\"",
+"artist": "渡部恭久",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Dec18",
+"set": "groovecoaster_append_1"
+},
+{
+"id": "signal",
+"title": "Signal",
+"artist": "rejection feat. Such",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "megarex"
+},
+{
+"id": "smallcloud",
+"title": "Small Cloud Sugar Candy",
+"artist": "テヅカ x Aoi feat.桃雛なの",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "observer_append_2"
+},
+{
+"id": "someday",
+"title": "Someday",
+"artist": "NieN",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sidewaves + Exschwasion",
+"set": "extend_3"
+},
+{
+"id": "somniomancer",
+"title": "Somniomancer [null set]",
+"artist": "Crywolf",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Natsu",
+"set": "arknights"
+},
+{
+"id": "soundwitch",
+"title": "SOUNDWiTCH",
+"artist": "HATE",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NiTRO",
+"set": "yugamu"
+},
+{
+"id": "specta",
+"title": "Specta",
+"artist": "Junk",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "lanota"
+},
+{
+"id": "stager",
+"title": "STAGER (ALL STAGE CLEAR)",
+"artist": "Ras",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "KURORAK",
+"set": "tonesphere"
+},
+{
+"id": "stargateextreme",
+"title": "STARGATE EXTREME",
+"artist": "KARUT",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "single"
+},
+{
+"id": "straightintolights",
+"title": "Straight into the lights",
+"artist": "Cosmograph",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "nora::kuma",
+"set": "maimai_append_2"
+},
+{
+"id": "stratoliner",
+"title": "Stratoliner",
+"artist": "C-Show",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "wacca_append_1"
+},
+{
+"id": "strongholds",
+"title": "Strongholds",
+"artist": "Yooh",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "TΔroNuke",
+"set": "nijuusei"
+},
+{
+"id": "subsphere",
+"title": "Subsphere in Eclosion",
+"artist": "窓辺リカ",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro v.○/●/○",
+"set": "single"
+},
+{
+"id": "sucromania",
+"title": "Sucromania",
+"artist": "STEAKA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Souplex",
+"set": "single"
+},
+{
+"id": "sulfur",
+"title": "Sulfur",
+"artist": "ぺのれり",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Shirorak",
+"set": "rei"
+},
+{
+"id": "summerfireworks",
+"title": "Summer Fireworks of Love",
+"artist": "karatoPαnchii feat.はるの",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "夏のNitro",
+"set": "single"
+},
+{
+"id": "supernova",
+"title": "SUPERNOVA",
+"artist": "BACO",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "東超新星",
+"set": "base"
+},
+{
+"id": "swansong",
+"title": "Swan Song",
+"artist": "void (Mournfinale)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "小終点",
+"set": "lephon"
+},
+{
+"id": "synthesis",
+"title": "Synthesis.",
+"artist": "tn-shi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Souplex",
+"set": "single"
+},
+{
+"id": "syriana",
+"title": "Syriana",
+"artist": "BEXTER",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "RAYCAST [MX]",
+"set": "djmax_append_1"
+},
+{
+"id": "syro",
+"title": "Syro",
+"artist": "Mitomoro",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "base"
+},
+{
+"id": "technicolour",
+"title": "Technicolour",
+"artist": "Maozon",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "KLMNOP",
+"set": "eden_append_1"
+},
+{
+"id": "telepathy",
+"title": "Telepathy",
+"artist": "DECO*27",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": ";-b",
+"set": "virtualsingers"
+},
+{
+"id": "teriqma",
+"title": "Teriqma",
+"artist": "owl＊tree",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "theraft",
+"title": "The 'Raft' taught me: your heart will always find a way.",
+"artist": "庭師",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Interator",
+"set": "single"
+},
+{
+"id": "shinoukyoseki",
+"title": "The Forgotten Forest Haven",
+"artist": "ShiBa",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "extend_4"
+},
+{
+"id": "theformula",
+"title": "The Formula",
+"artist": "Junk",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Dec18",
+"set": "base"
+},
+{
+"id": "themessage",
+"title": "The Message",
+"artist": "Jun Kuroda",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "rei"
+},
+{
+"id": "thesurvivor",
+"title": "The Survivor (Game Edit)",
+"artist": "Taishi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "theultimacy",
+"title": "THE ULTIMACY",
+"artist": "aran vs Massive New Krew",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "東星 vs Toaster",
+"set": "single"
+},
+{
+"id": "thirdsun",
+"title": "Third Sun",
+"artist": "Ash Astral",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NEO NITRO",
+"set": "single"
+},
+{
+"id": "tothefurthestdream",
+"title": "To the Furthest Dream",
+"artist": "ii/night feat. 綺良雪",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "",
+"set": "single"
+},
+{
+"id": "trickmaster",
+"title": "Tr!cK Ma?tEr",
+"artist": "Nothing But Requiem",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "KAr?T",
+"set": "single"
+},
+{
+"id": "transientspace",
+"title": "Transient Space",
+"artist": "sleepless, Gardens, aspect",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG -liminal-",
+"set": "eden_append_2"
+},
+{
+"id": "trapcrow",
+"title": "Trap Crow",
+"artist": "Puru",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG + Nitro",
+"set": "base"
+},
+{
+"id": "trappola",
+"title": "trappola bewitching",
+"artist": "gmtn.",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//urorak",
+"set": "yugamu"
+},
+{
+"id": "turbocharger",
+"title": "Turbocharger",
+"artist": "A/I",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Toaster",
+"set": "extend"
+},
+{
+"id": "tasogare",
+"title": "Twilight Concerto",
+"artist": "Scarlette",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Exschwasion",
+"set": "single"
+},
+{
+"id": "ultimatetaste",
+"title": "Ultimate taste",
+"artist": "ぱらどっと",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Arcaea Charting Team【Full Flavor】",
+"set": "extend_2"
+},
+{
+"id": "un",
+"title": "un",
+"artist": "黒魔",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én「The Resolute」",
+"set": "konzetsu"
+},
+{
+"id": "undefined",
+"title": "undefined",
+"artist": "planless & 乃花こより",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sidewaves + Nitro",
+"set": "extend_4"
+},
+{
+"id": "usedtobe",
+"title": "Used to be",
+"artist": "KIVΛ",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Luxance + Nitro",
+"set": "cytusii"
+},
+{
+"id": "vallista",
+"title": "Vallista",
+"artist": "Sakuzyo",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sidewaves",
+"set": "extend_4"
+},
+{
+"id": "vandalism",
+"title": "Vandalism",
+"artist": "Ashrount",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Kurorak",
+"set": "extend"
+},
+{
+"id": "vector",
+"title": "VECTOЯ",
+"artist": "WHITEFISTS",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "base"
+},
+{
+"id": "vindication",
+"title": "Vindication",
+"artist": "Laur",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro vs Toaster",
+"set": "prelude"
+},
+{
+"id": "violaillyria",
+"title": "Viola Illyria",
+"artist": "Kolaa",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "sidewaves + Exschwasion",
+"set": "eclipse"
+},
+{
+"id": "virtus",
+"title": "ViRTUS",
+"artist": "Hiro",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "NiTRO",
+"set": "maimai_append_2"
+},
+{
+"id": "withu",
+"title": "with U",
+"artist": "t+pazolite & Massive New Krew feat. リリィ(CV:青木志貴)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "wacca"
+},
+{
+"id": "wontbackdown",
+"title": "Won't Back Down",
+"artist": "Pure 100% / KASA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én",
+"set": "extend_3"
+},
+{
+"id": "worldfragments",
+"title": "World Fragments III(radio edit)",
+"artist": "xi",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "én supported by Nitro",
+"set": "extend_2"
+},
+{
+"id": "xeraphinite",
+"title": "Xeraphinite",
+"artist": "BlackY",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "東星※空の宝石",
+"set": "single"
+},
+{
+"id": "xterfusion",
+"title": "Xterfusion",
+"artist": "REDALiCE × t+pazolite",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro -fuze- 夜浪",
+"set": "single"
+},
+{
+"id": "xxium",
+"title": "Xxium and Purple haze",
+"artist": "D.watt",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ẋx",
+"set": "extend_4"
+},
+{
+"id": "yomibitoshirazu",
+"title": "yomibito_shirazu",
+"artist": "Limonène (サノカモメ+月島春果)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "<!-- raycast -->",
+"set": "maimai_append_2"
+},
+{
+"id": "yozakurafubuki",
+"title": "Yosakura Fubuki",
+"artist": "A.SAKA",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "k//eternal",
+"set": "single"
+},
+{
+"id": "yourvoiceso",
+"title": "Your voice so... feat. Such",
+"artist": "PSYQUI",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro",
+"set": "single"
+},
+{
+"id": "zephyrlast",
+"title": "zephyrlasting",
+"artist": "s-don × nitro (lowiro)",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Souplex + Nitro",
+"set": "nextstage"
+},
+{
+"id": "mask",
+"title": "~_+",
+"artist": "AQUASINE ~ MEMODEMO + METAROOM",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "KARA+_~1.TMP",
+"set": "extend_4"
+},
+{
+"id": "azalea",
+"title": "ΛZΛLEΛ",
+"artist": "ak+q × onoken",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "Nitro「The Ephemeral」",
+"set": "nextstage"
+},
+{
+"id": "mu",
+"title": "μ",
+"artist": "Frums",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "N↕TRO v1.0.5",
+"set": "single"
+},
+{
+"id": "odysseia",
+"title": "ΟΔΥΣΣΕΙΑ",
+"artist": "Sober Bear",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ΤΟΑΣΤΕΡ",
+"set": "observer_append_1"
+},
+{
+"id": "tau",
+"title": "τ (tau)",
+"artist": "Wooden",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "ə (exschwasion)",
+"set": "extend_3"
+},
+{
+"id": "ichirin",
+"title": "〇、",
+"artist": "Kolaa & 熊子",
+"cls": "FTR",
+"rc": 2,
+"cc": 9,
+"designer": "CERiNG、",
+"set": "extend_3"
+}
+]
+}
