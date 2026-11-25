@@ -173,6 +173,7 @@ function parseCSV(text){
       lost: parseInt(c[ix.lost], 10) || 0,
       clear: c[ix.clear] || '',
       date: c[ix.date] || '',
+      ts: (ix.ts != null ? (parseInt(c[ix.ts], 10) || 0) : 0),
       pot: pot(cc, sc)
     });
   }
@@ -217,7 +218,11 @@ function cardHTML(r, i){
 function render(){
   var listEl = $('#list'), noteEl = $('#note');
   if (!ROWS.length){ noteEl.textContent = '还没有数据。把 scores.csv 粘进上面的框，或点「渲染」读取上次的成绩。'; listEl.innerHTML = ''; return; }
-  var sorted = ROWS.slice().sort(function(a, b){ return b.date.localeCompare(a.date); });
+  var sorted = ROWS.slice().sort(function(a, b){
+    if (a.ts && b.ts) return b.ts - a.ts;
+    var d = String(b.date).localeCompare(String(a.date));
+    return d !== 0 ? d : (b.pot - a.pot);
+  });
   var sel = sorted.slice(0, LIMIT);
   listEl.innerHTML = sel.map(cardHTML).join('');
   noteEl.textContent = sel.length ? ('最新一条 · 共 ' + ROWS.length + ' 条成绩。▲▼ 是相对上次查询的变化。') : '';
@@ -270,7 +275,11 @@ var CM_COLOR = {
 };
 
 function exportImage(){
-  var sorted = ROWS.slice().sort(function(a, b){ return b.date.localeCompare(a.date); }).slice(0, 1);
+  var sorted = ROWS.slice().sort(function(a, b){
+    if (a.ts && b.ts) return b.ts - a.ts;
+    var d = String(b.date).localeCompare(String(a.date));
+    return d !== 0 ? d : (b.pot - a.pot);
+  }).slice(0, 1);
   if (!sorted.length){ $('#note').textContent = '没有数据可以导出喵。'; return; }
   var btn = $('#exp'); var old = btn.textContent;
   btn.disabled = true; btn.textContent = '生成中…';
