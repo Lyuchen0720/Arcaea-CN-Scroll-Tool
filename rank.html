@@ -199,6 +199,23 @@
       + '<div class="dsc">' + esc(r.designer || '—') + '</div>'
       + '</div>';
   }
+  // 曲绘：每次重渲染后重新绑定（缓存命中时 load 不会重放，必须查 complete）
+  function bindJk(){
+    Array.prototype.forEach.call(document.querySelectorAll('img.jk'), function(im){
+      if (im.__jk) return;
+      im.__jk = 1;
+      im.referrerPolicy = 'no-referrer';
+      im.addEventListener('load', function(){ im.classList.add('jk-on'); });
+      im.addEventListener('error', function(){
+        var ph = document.createElement('div');
+        ph.className = 'jk ph';
+        ph.textContent = '♪';
+        if (im.parentNode) im.parentNode.replaceChild(ph, im);
+      });
+      if (im.complete && im.naturalWidth > 0) im.classList.add('jk-on');
+    });
+  }
+
   function render(){
     var groups = {}, order = [],
         sel = rows.filter(match);
@@ -215,6 +232,7 @@
     listEl.innerHTML = html || '<div class="note">没有符合条件的曲目，换个关键词试试喵。</div>';
     document.getElementById('total').textContent = rows.length;
     document.getElementById('fcount').textContent = sel.length + ' / ' + rows.length + ' 张';
+    bindJk();
   }
   fetch('songrank.json?x=' + Date.now()).then(function(r){ return r.json(); })
     .then(function(d){
@@ -239,17 +257,7 @@
         qT = setTimeout(function(){ FLT.q = qEl.value; render(); }, 180);
       });
 
-      // 曲绘加载成功淡入
-      Array.prototype.forEach.call(document.querySelectorAll('img.jk'), function(im){
-        im.referrerPolicy = 'no-referrer';
-        im.addEventListener('load', function(){ im.classList.add('jk-on'); });
-        im.addEventListener('error', function(){
-          var ph = document.createElement('div');
-          ph.className = 'jk ph';
-          ph.textContent = '♪';
-          if (im.parentNode) im.parentNode.replaceChild(ph, im);
-        });
-      });
+      bindJk();
     })
     .catch(function(e){
       listEl.innerHTML = '<div class="err">加载失败：' + esc(e.message) + '</div>';
