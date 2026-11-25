@@ -11,13 +11,18 @@
 
 模拟器 + 游戏内登录一次，就能一键导出 `a_t` 和成绩 CSV：
 
-**[下载 ArcaeaScoreTool 最新版](https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest)**
+| 下载方式 | 地址 |
+|---|---|
+| **蓝奏云（国内快）** | https://wwbgn.lanzouw.com/iPrkI4h8wufc 密码 **g676** |
+| **GitHub Releases** | https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest |
 
-- 需要模拟器（MuMu 已验证）里装好国服 Arcaea 并登录过
-- 首次启动会弹 UAC，点「是」（托盘图标需要管理员权限）
+介绍页（有截图和详细用法）：https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/tool.html
+
+- 需要模拟器（MuMu 已验证）里装好国服 Arcaea 并**登录过一次**
+- 首次启动会弹 UAC，点「是」（读模拟器私有数据需要管理员权限）
 - 托盘右键可「打开页面 / 重启服务 / 退出」
 - 导出 CSV 后粘进下面的网页即可看 B30 / R10
-- 当前版本 **v1.6.0**：全新图标 + 双列导出图（1080×1842）
+- **当前版本 v2.1.0**：一键同步（自动开模拟器 → 开游戏 → 等成绩同步）、内置 570 张曲绘、官网风界面、难度排行、双列导出长图
 
 在线版：https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/
 
