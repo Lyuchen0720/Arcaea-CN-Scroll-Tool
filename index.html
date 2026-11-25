@@ -93,6 +93,19 @@
   .sc small{display:block;color:var(--purple);font-size:10.5px;font-weight:700}
   .err{color:#d5284a;font-size:12px;margin-top:8px}
   .hide{display:none}
+  .dist{margin-top:6px}
+  .distbar{display:flex;align-items:center;gap:10px;margin:7px 0}
+  .distbar .nm{width:60px;flex:none;font-size:11.5px;font-weight:700;color:#6d6480;text-align:right}
+  .distbar .tr{flex:1;height:9px;border-radius:5px;background:#f4f1fa;overflow:hidden}
+  .distbar .tr i{display:block;height:100%;border-radius:5px;transition:width .5s ease}
+  .distbar .vl{width:40px;flex:none;font-family:ui-monospace,monospace;font-size:11.5px;
+    font-weight:700;color:#8b849c;text-align:right}
+  .distbar.pm .tr i{background:linear-gradient(90deg,#8b5cf6,#c084fc)}
+  .distbar.fc .tr i{background:linear-gradient(90deg,#2bb8d4,#5ce1e6)}
+  .distbar.tc .tr i{background:linear-gradient(90deg,#6b7fd7,#9aa9e8)}
+  .distbar.ec .tr i{background:linear-gradient(90deg,#d3a44a,#e8c56b)}
+  .distbar.hc .tr i{background:linear-gradient(90deg,#d3459a,#ec4899)}
+  .distbar.df .tr i{background:linear-gradient(90deg,#9b8fb8,#c3b9d6)}
   .note{color:var(--dim);font-size:11px;margin-top:10px;line-height:1.5}
   .tag{font-size:10px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);
        color:var(--dim);margin-left:6px;font-weight:600}
@@ -134,7 +147,7 @@
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v1.8.0</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.0.0</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -176,6 +189,11 @@
   <div id="recent" class="card hide">
     <h2>最近成绩</h2>
     <div id="recentBody"></div>
+  </div>
+
+  <div id="distCard" class="card hide">
+    <h2>成绩分布 <span class="avg" id="distTotal"></span></h2>
+    <div id="distBox"></div>
   </div>
 
   <div id="b30" class="card hide">
@@ -391,12 +409,53 @@ function avgOf(list){
   return list.reduce(function(s, x){ return s + x.pot; }, 0) / list.length;
 }
 
+function renderDist(rows){
+  var box = document.getElementById('distBox'); if (!box) return;
+  var card = document.getElementById('distCard');
+  if (card) card.classList.remove('hide');
+  var total = rows.length;
+  var dt = document.getElementById('distTotal');
+  if (dt) dt.textContent = total + ' 张';
+  var defs = [
+    ['PM', 'pm', ['Pure Memory', 'PM']],
+    ['FC', 'fc', ['Full Recall', 'FC']],
+    ['TC', 'tc', ['Track Complete', 'TC', 'Normal Clear', 'Clear']],
+    ['EC', 'ec', ['Easy Clear', 'EC']],
+    ['HC', 'hc', ['Hard Clear', 'HC']]
+  ];
+  var cnt = {}, rest = 0;
+  rows.forEach(function(r){
+    var c = (r.clear || '').trim(), hit = null;
+    for (var i = 0; i < defs.length; i++){
+      if (defs[i][2].indexOf(c) >= 0){ hit = defs[i][0]; break; }
+    }
+    if (hit) cnt[hit] = (cnt[hit] || 0) + 1; else rest++;
+  });
+  var max = 1;
+  defs.forEach(function(d){ if ((cnt[d[0]] || 0) > max) max = cnt[d[0]]; });
+  if (rest > max) max = rest;
+  var html = '';
+  defs.forEach(function(d){
+    var n = cnt[d[0]] || 0;
+    html += '<div class="distbar ' + d[1] + '"><span class="nm">' + d[0] + '</span>'
+         +  '<span class="tr"><i style="width:' + (n / max * 100).toFixed(1) + '%"></i></span>'
+         +  '<span class="vl">' + n + '</span></div>';
+  });
+  if (rest > 0){
+    html += '<div class="distbar df"><span class="nm">其他</span>'
+         +  '<span class="tr"><i style="width:' + (rest / max * 100).toFixed(1) + '%"></i></span>'
+         +  '<span class="vl">' + rest + '</span></div>';
+  }
+  box.innerHTML = html;
+}
+
 function renderStats(rows, sm){
   if (!rows.length){
     $('#csvState').textContent = '没有解析到成绩行';
     return;
   }
   LAST.rows = rows; LAST.sm = sm || {};
+  renderDist(rows);
   var b30 = computeBest(rows), r10 = computeRecent(rows);
   $('#b30avg').textContent = 'AVG ' + avgOf(b30).toFixed(3);
   $('#b30Body').innerHTML = b30.map(function(r, i){
