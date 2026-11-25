@@ -17,14 +17,14 @@ body{margin:0;background:var(--bg);color:var(--txt);
   padding:5px 12px;border-radius:8px;background:rgba(255,255,255,.55);backdrop-filter:blur(6px);transition:.15s}
 .topnav a:hover{color:var(--pink);background:rgba(255,255,255,.85)}
 .topnav a.on{background:#fff;color:var(--pink);box-shadow:0 2px 10px rgba(80,60,130,.12)}
-.head{position:relative;margin:0 0 22px;height:clamp(200px,28vw,340px);overflow:hidden}
-.head img{width:100%;height:100%;object-fit:cover;object-position:center 40%;display:block}
-.head .mk{position:absolute;left:50%;bottom:-42px;transform:translateX(-50%);
-  background:#fff;padding:16px 54px;clip-path:polygon(9% 0,91% 0,100% 50%,91% 100%,9% 100%,0 50%);
-  box-shadow:0 6px 24px rgba(60,40,100,.14);text-align:center;min-width:250px}
+.head{position:relative;margin:0 -16px;height:clamp(200px,26vw,330px);overflow:hidden;background:#e9ecf5}
+.head img{width:100%;height:100%;object-fit:cover;object-position:center 38%;display:block;opacity:.95}
+.head .mk{position:absolute;left:50%;bottom:-44px;transform:translateX(-50%);
+  background:#fff;padding:13px 46px;clip-path:polygon(9% 0,91% 0,100% 50%,91% 100%,9% 100%,0 50%);
+  box-shadow:0 6px 24px rgba(60,40,100,.14);text-align:center;min-width:220px}
 .head .mk b{display:block;font-size:26px;letter-spacing:.04em;color:#1d0b2e}
 .head .mk small{display:block;margin-top:5px;font-size:10px;letter-spacing:.28em;color:var(--dim)}
-.wrap{max-width:1100px;margin:0 auto;padding:60px 18px 60px}
+.wrap{max-width:1100px;margin:0 auto;padding:52px 18px 40px}
 .tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
 .tools textarea{flex:1;min-width:240px;height:44px;resize:vertical;padding:8px 10px;border:1px solid var(--line);
   border-radius:10px;font-family:ui-monospace,Consolas,monospace;font-size:11px}
@@ -33,7 +33,8 @@ button{border:1px solid var(--line);background:#fff;color:var(--txt);padding:9px
 button:hover{border-color:#d6cfef;background:#faf8ff}
 button.p{background:linear-gradient(135deg,#8b5cf6,#ec4899);border:0;color:#fff;font-weight:600}
 button.p:hover{filter:brightness(1.06)}
-.note{font-size:12px;color:var(--dim);margin:0 0 16px}
+.who{font-size:13px;color:var(--purple);font-weight:600;letter-spacing:.04em;margin:-10px 0 16px}.who.hide{display:none}
+  .note{font-size:12px;color:var(--dim);margin:0 0 16px}
 .list{display:flex;flex-direction:column;gap:14px}
 
 /* ===== 单条成绩卡片 ===== */
@@ -102,10 +103,12 @@ button.p:hover{filter:brightness(1.06)}
     <button id="exp">导出图片</button>
   </div>
   <p class="note" id="note">还没有数据。把 scores.csv 粘进上面的框，或点「渲染」读取上次的成绩。</p>
+  <p class="who hide" id="who"></p>
   <div class="list" id="list"></div>
 </div>
 <script>
 var SONG = {}, ROWS = [], PREV = {}, LIMIT = 1;
+var LAST_NAME = '', LAST_RATE = '';
 var CONST_FIX = 0.4;
 
 /* ---------- 工具 ---------- */
@@ -232,7 +235,7 @@ function render(){
   localStorage.setItem('arcaea_prev', JSON.stringify(snap));
 }
 
-/* ---------- 导出图片 ---------- */
+/* ---------- 导出图片（4:3 海报） ---------- */
 function rrPath(c, x, y, w, h, r){
   c.beginPath();
   c.moveTo(x + r, y);
@@ -260,7 +263,6 @@ function loadImg(src){
     im.src = src;
   });
 }
-
 var CM_COLOR = {
   pm: ['#efe4fb', '#7c3aed'], fc: ['#e2f6fa', '#0e90ad'],
   tc: ['#e8edfb', '#4557b8'], ec: ['#fdf3dd', '#a97a12'],
@@ -268,120 +270,138 @@ var CM_COLOR = {
 };
 
 function exportImage(){
-  var sorted = ROWS.slice().sort(function(a, b){ return b.date.localeCompare(a.date); }).slice(0, LIMIT);
+  var sorted = ROWS.slice().sort(function(a, b){ return b.date.localeCompare(a.date); }).slice(0, 1);
   if (!sorted.length){ $('#note').textContent = '没有数据可以导出喵。'; return; }
   var btn = $('#exp'); var old = btn.textContent;
   btn.disabled = true; btn.textContent = '生成中…';
 
-  var W = 1080, PAD = 36, GAP = 14, CARD_H = 212, HEAD_H = 148;
-  var H = HEAD_H + CARD_H + 52;
+  var W = 1080, H = 810;
   var cv = document.createElement('canvas');
   cv.width = W; cv.height = H;
   var c = cv.getContext('2d');
+  var r = sorted[0];
 
-  var bg = c.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, '#f9f7fd'); bg.addColorStop(1, '#f1ecfa');
-  c.fillStyle = bg; c.fillRect(0, 0, W, H);
-
-  var halo = c.createRadialGradient(W / 2, 0, 0, W / 2, 0, 520);
-  halo.addColorStop(0, 'rgba(139,92,246,.14)'); halo.addColorStop(1, 'rgba(139,92,246,0)');
-  c.fillStyle = halo; c.fillRect(0, 0, W, 520);
-
-  c.textBaseline = 'alphabetic';
-  c.textAlign = 'left';
-  c.fillStyle = '#1d0b2e';
-  c.font = '700 40px "Exo 2","Segoe UI",sans-serif';
-  c.fillText('RECENT SCORES', PAD, 76);
-  c.fillStyle = '#938fa0';
-  c.font = '600 15px "Exo 2","Segoe UI",sans-serif';
-  c.fillText('最近成绩 · Arcaea 国服', PAD + 3, 104);
-  c.fillStyle = '#b9b0cc';
-  c.font = '13px ui-monospace,Consolas,monospace';
-  c.textAlign = 'right';
-  c.fillText('共 ' + ROWS.length + ' 条中的最近 ' + sorted.length + ' 条', W - PAD, 104);
-  c.textAlign = 'left';
-
-  Promise.all(sorted.map(function(r){ return loadImg('jackets/' + r.id + '.webp'); })).then(function(imgs){
-    var y = HEAD_H;
-    for (var i = 0; i < sorted.length; i++){
-      var r = sorted[i], im = imgs[i];
-      var x = PAD, w = W - PAD * 2;
-
+  loadImg('jackets/' + r.id + '.webp').then(function(im){
+    // ---- 背景：曲绘模糊铺满 ----
+    c.fillStyle = '#150e26'; c.fillRect(0, 0, W, H);
+    if (im){
+      var sc = Math.max(W / im.width, H / im.height) * 1.25;
       c.save();
-      c.shadowColor = 'rgba(80,60,130,.10)';
-      c.shadowBlur = 22; c.shadowOffsetY = 5;
-      c.fillStyle = '#fff';
-      rrPath(c, x, y, w, CARD_H, 20); c.fill();
+      c.filter = 'blur(42px) saturate(1.2) brightness(.52)';
+      c.drawImage(im, (W - im.width * sc) / 2, (H - im.height * sc) / 2, im.width * sc, im.height * sc);
       c.restore();
+    }
+    var veil = c.createLinearGradient(0, 0, 0, H);
+    veil.addColorStop(0, 'rgba(18,12,32,.86)');
+    veil.addColorStop(.42, 'rgba(22,15,38,.68)');
+    veil.addColorStop(1, 'rgba(12,8,22,.94)');
+    c.fillStyle = veil; c.fillRect(0, 0, W, H);
+    var glow = c.createRadialGradient(W * .22, H * .18, 0, W * .22, H * .18, 620);
+    glow.addColorStop(0, 'rgba(139,92,246,.30)'); glow.addColorStop(1, 'rgba(139,92,246,0)');
+    c.fillStyle = glow; c.fillRect(0, 0, W, H);
 
-      var bar = c.createLinearGradient(0, y, 0, y + CARD_H);
-      bar.addColorStop(0, 'rgba(139,92,246,.88)'); bar.addColorStop(1, 'rgba(236,72,153,.88)');
-      c.save(); rrPath(c, x, y, w, CARD_H, 20); c.clip();
-      c.fillStyle = bar; c.fillRect(x, y, 6, CARD_H);
+    // ---- 顶部 ----
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+    c.fillStyle = 'rgba(255,255,255,.94)';
+    c.font = '700 15px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('R E C E N T   S C O R E', 62, 62);
+    c.fillStyle = 'rgba(196,181,253,.72)';
+    c.font = '600 13px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('最近成绩', 62, 86);
+
+    var uname = LAST_NAME || 'PLAYER';
+    var urate = LAST_RATE || '—';
+    c.textAlign = 'right';
+    c.fillStyle = 'rgba(255,255,255,.92)';
+    c.font = '600 19px "Exo 2","Segoe UI",sans-serif';
+    c.fillText(uname, W - 62, 66);
+    c.fillStyle = 'rgba(196,181,253,.95)';
+    c.font = '700 22px ui-monospace,Consolas,monospace';
+    c.fillText(urate, W - 62, 96);
+    c.textAlign = 'left';
+
+    // ---- 曲绘 ----
+    var cs = 402, cx = 62, cy = 148;
+    if (im){
+      c.save();
+      c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 34; c.shadowOffsetY = 10;
+      rrPath(c, cx, cy, cs, cs, 22); c.fillStyle = '#000'; c.fill();
       c.restore();
-
-      var cx = x + 26, cs = 150, cy = y + (CARD_H - cs) / 2;
-      if (im){
-        c.save(); rrPath(c, cx, cy, cs, cs, 16); c.clip();
-        c.drawImage(im, cx, cy, cs, cs); c.restore();
-      } else {
-        c.fillStyle = '#f1eef8'; rrPath(c, cx, cy, cs, cs, 16); c.fill();
-        c.fillStyle = '#c9c1dd'; c.font = '42px sans-serif'; c.textAlign = 'center';
-        c.fillText('♪', cx + cs / 2, cy + cs / 2 + 14); c.textAlign = 'left';
-      }
-
-      var tx = cx + cs + 26, tw = x + w - tx - 22;
-
-      c.textAlign = 'left';
-      c.fillStyle = '#2b2733'; c.font = '600 27px "Exo 2","Segoe UI","Microsoft YaHei",sans-serif';
-      var title = r.song || (SONG[r.id] && SONG[r.id].title) || r.id;
-      clipText(c, title, tx, y + 50, tw);
-
-      var badge = '[' + (r.cc + CONST_FIX).toFixed(1) + ']';
-      c.font = '700 14px ui-monospace,Consolas,monospace';
-      var bw = c.measureText(badge).width + 18;
-      c.fillStyle = '#f3eefb'; rrPath(c, tx, y + 62, bw, 24, 6); c.fill();
-      c.fillStyle = '#6b3fa0'; c.fillText(badge, tx + 9, y + 79);
-      c.fillStyle = '#938fa0'; c.font = '600 13px "Exo 2","Segoe UI",sans-serif';
-      c.fillText(String(r.diff).toUpperCase(), tx + bw + 12, y + 79);
-
-      c.fillStyle = '#2b2733'; c.font = '700 40px ui-monospace,Consolas,monospace';
-      var scTxt = r.score.toLocaleString();
-      c.fillText(scTxt, tx, y + 132);
-      var scW = c.measureText(scTxt).width;
-
-      var cm = cmOf(r.clear), col = CM_COLOR[cm.k] || CM_COLOR.tc;
-      c.font = '700 13px "Exo 2","Segoe UI",sans-serif';
-      var cw = c.measureText(cm.t).width + 20;
-      c.fillStyle = col[0]; rrPath(c, tx + scW + 16, y + 108, cw, 26, 6); c.fill();
-      c.fillStyle = col[1]; c.fillText(cm.t, tx + scW + 26, y + 127);
-
-      var potTxt = r.pot.toFixed(3);
-      c.font = '700 15px ui-monospace,Consolas,monospace';
-      var pw = c.measureText(potTxt).width + 22;
-      c.fillStyle = '#f6f1ff'; rrPath(c, x + w - pw - 24, y + 108, pw, 26, 8); c.fill();
-      c.fillStyle = '#8b5cf6'; c.fillText(potTxt, x + w - pw - 13, y + 127);
-
-      c.font = '14px "Exo 2","Segoe UI",sans-serif';
-      c.fillStyle = r.lost > 0 ? '#e07a7a' : '#8a839c';
-      c.fillText('PURE ' + r.pure + ' (+' + r.shiny + ')  ·  FAR ' + r.far + '  ·  LOST ' + r.lost, tx, y + 166);
-
-      var d = deltaOf(r);
-      c.font = '700 14px "Exo 2","Segoe UI",sans-serif';
-      if (d === null){ c.fillStyle = '#b9b0cc'; c.fillText('NEW', tx, y + 192); }
-      else if (d > 0){ c.fillStyle = '#1f9d6b'; c.fillText('▲ +' + d.toLocaleString(), tx, y + 192); }
-      else if (d < 0){ c.fillStyle = '#d3626c'; c.fillText('▼ ' + d.toLocaleString(), tx, y + 192); }
-      else { c.fillStyle = '#b9b0cc'; c.fillText('— 持平', tx, y + 192); }
-
-      c.fillStyle = '#c2bcd0'; c.font = '12.5px ui-monospace,Consolas,monospace';
-      c.textAlign = 'right'; c.fillText(String(r.date), x + w - 24, y + 192); c.textAlign = 'left';
-
-      y += CARD_H + GAP;
+      c.save(); rrPath(c, cx, cy, cs, cs, 22); c.clip();
+      c.drawImage(im, cx, cy, cs, cs); c.restore();
+      c.save(); rrPath(c, cx, cy, cs, cs, 22);
+      c.strokeStyle = 'rgba(255,255,255,.22)'; c.lineWidth = 2; c.stroke(); c.restore();
     }
 
-    c.fillStyle = '#b9b0cc'; c.font = '12px "Exo 2","Segoe UI",sans-serif';
-    c.textAlign = 'center';
-    c.fillText('定数已按 +0.4 修正 · ▲▼ 为与上次查询的分数差 · 曲绘版权归 lowiro 所有', W / 2, H - 22);
+    // ---- 右侧信息 ----
+    var tx = cx + cs + 46, tw = W - tx - 62;
+
+    c.fillStyle = '#fff';
+    c.font = '700 40px "Exo 2","Segoe UI","Microsoft YaHei",sans-serif';
+    var title = r.song || (SONG[r.id] && SONG[r.id].title) || r.id;
+    clipText(c, title, tx, cy + 52, tw);
+
+    var badge = '[' + (r.cc + CONST_FIX).toFixed(1) + ']';
+    c.font = '700 17px ui-monospace,Consolas,monospace';
+    var bw = c.measureText(badge).width + 24;
+    c.fillStyle = 'rgba(139,92,246,.30)'; rrPath(c, tx, cy + 78, bw, 32, 8); c.fill();
+    c.strokeStyle = 'rgba(196,181,253,.45)'; c.lineWidth = 1; rrPath(c, tx, cy + 78, bw, 32, 8); c.stroke();
+    c.fillStyle = '#ddd0ff'; c.fillText(badge, tx + 12, cy + 101);
+    c.fillStyle = 'rgba(255,255,255,.58)'; c.font = '600 15px "Exo 2","Segoe UI",sans-serif';
+    c.fillText(String(r.diff).toUpperCase(), tx + bw + 14, cy + 101);
+
+    var cm = cmOf(r.clear), col = CM_COLOR[cm.k] || CM_COLOR.tc;
+    c.font = '700 40px "Exo 2","Segoe UI",sans-serif';
+    var cw = c.measureText(cm.t).width + 56;
+    c.fillStyle = col[0]; rrPath(c, tx, cy + 116, cw, 62, 12); c.fill();
+    c.fillStyle = col[1]; c.fillText(cm.t, tx + 28, cy + 161);
+
+    c.fillStyle = '#fff'; c.font = '700 64px ui-monospace,Consolas,monospace';
+    var scTxt = r.score.toLocaleString();
+    c.fillText(scTxt, tx, cy + 248);
+
+    // 潜力块
+    c.fillStyle = 'rgba(255,255,255,.07)';
+    rrPath(c, tx, cy + 276, tw, 76, 12); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,.10)'; c.lineWidth = 1;
+    rrPath(c, tx, cy + 276, tw, 76, 12); c.stroke();
+    c.fillStyle = 'rgba(255,255,255,.45)'; c.font = '600 12.5px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('P O T E N T I A L', tx + 20, cy + 303);
+    c.fillStyle = '#c4b5fd'; c.font = '700 30px ui-monospace,Consolas,monospace';
+    c.fillText(r.pot.toFixed(3), tx + 20, cy + 338);
+
+    var d = deltaOf(r);
+    c.textAlign = 'right';
+    if (d === null){ c.fillStyle = 'rgba(255,255,255,.34)'; c.font = '700 17px "Exo 2",sans-serif'; c.fillText('NEW', tx + tw - 20, cy + 338); }
+    else if (d > 0){ c.fillStyle = '#4ade80'; c.font = '700 19px "Exo 2",sans-serif'; c.fillText('\u25b2 +' + d.toLocaleString(), tx + tw - 20, cy + 330); }
+    else if (d < 0){ c.fillStyle = '#f472b6'; c.font = '700 19px "Exo 2",sans-serif'; c.fillText('\u25bc ' + d.toLocaleString(), tx + tw - 20, cy + 330); }
+    else { c.fillStyle = 'rgba(255,255,255,.34)'; c.font = '700 17px "Exo 2",sans-serif'; c.fillText('\u2014', tx + tw - 20, cy + 330); }
+    c.textAlign = 'left';
+
+    // ---- 底部判定条 ----
+    var by = 620, bh = 54, gap = 16, bwid = (W - 124 - gap * 2) / 3;
+    var judges = [
+      ['PURE', r.pure + ' (+' + r.shiny + ')', ['rgba(168,85,247,.92)', 'rgba(126,34,206,.72)']],
+      ['FAR', String(r.far), ['rgba(217,119,6,.92)', 'rgba(146,80,12,.72)']],
+      ['LOST', String(r.lost), ['rgba(219,39,119,.92)', 'rgba(150,25,85,.72)']]
+    ];
+    for (var i = 0; i < 3; i++){
+      var bx = 62 + i * (bwid + gap);
+      var g = c.createLinearGradient(bx, 0, bx + bwid, 0);
+      g.addColorStop(0, judges[i][2][0]); g.addColorStop(1, judges[i][2][1]);
+      c.fillStyle = g; rrPath(c, bx, by, bwid, bh, 10); c.fill();
+      c.fillStyle = 'rgba(255,255,255,.88)'; c.font = '700 13px "Exo 2","Segoe UI",sans-serif';
+      c.fillText(judges[i][0], bx + 20, by + (bh / 2 + 5));
+      c.fillStyle = '#fff'; c.font = '700 22px ui-monospace,Consolas,monospace';
+      c.textAlign = 'right'; c.fillText(judges[i][1], bx + bwid - 20, by + (bh / 2 + 8)); c.textAlign = 'left';
+    }
+
+    // ---- 页脚 ----
+    c.fillStyle = 'rgba(255,255,255,.30)';
+    c.font = '12px "Exo 2","Segoe UI",sans-serif';
+    c.fillText(String(r.date), 62, H - 46);
+    c.textAlign = 'right';
+    c.fillText('定数 +0.4 修正 · 曲绘版权归 lowiro 所有', W - 62, H - 46);
     c.textAlign = 'left';
 
     cv.toBlob(function(b){
@@ -393,6 +413,31 @@ function exportImage(){
       btn.disabled = false; btn.textContent = old;
     }, 'image/png');
   });
+}
+
+
+/* ---------- 玩家信息 ---------- */
+var API_BASE = '__API_BASE__';
+function apiBase(){
+  if (window.__OFFLINE__) return '';
+  if (API_BASE && API_BASE !== '__API_BASE__') return API_BASE.replace(/\/+$/, '');
+  return '';
+}
+function loadPlayer(){
+  var tok = (window.__AUTOTOKEN__ || new URLSearchParams(location.search).get('t') || localStorage.getItem('arcaea_token') || '').trim();
+  if (!tok) return;
+  fetch(apiBase() + '/api/user/me', { headers: { 'X-Token': tok } })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      var v = j && (j.value || j);
+      if (!v || !v.name) return;
+      LAST_NAME = v.name;
+      LAST_RATE = (v.rating / 1000).toFixed(3);
+      var el = document.getElementById('who');
+      if (el){ el.textContent = LAST_NAME + ' · ' + LAST_RATE; el.classList.remove('hide'); }
+      if (ROWS.length) render();
+    })
+    .catch(function(){});
 }
 
 /* ---------- 数据装载 ---------- */
@@ -421,6 +466,7 @@ function boot(){
       ROWS = parseCSV(t);
     }
     render();
+    loadPlayer();
   });
 }
 document.addEventListener('DOMContentLoaded', boot);
