@@ -82,7 +82,7 @@
 <body>
 <div class="wrap">
   <h1>ARCAEA · 查分</h1>
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.45;margin-left:8px">v1.6.1</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.45;margin-left:8px">v1.6.2</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.55;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -103,10 +103,6 @@
     <div class="row" style="margin-top:8px">
       <button id="calc" class="ghost">只用 CSV 计算</button>
       <button id="expImg" class="ghost" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-color:transparent">导出图片</button>
-      <button id="jkBtn" class="ghost">导入封面 zip</button>
-      <button id="jkDirBtn" class="ghost" title="若是 exe 导出的 jackets 目录，可直接选那个文件夹；也可以在本页按 Ctrl+O 打开 index.html">选择曲绘目录</button>
-      <input id="jkFile" type="file" accept=".zip" style="display:none">
-      <input id="jkDir" type="file" webkitdirectory directory style="display:none">
       <span id="csvState" class="sub" style="margin:0"></span>
     </div>
   </div>
@@ -815,7 +811,6 @@ $('#expImg').onclick = exportScoreImage;
 
 (function init(){
   loadJackets();
-  bindJackets();
   var sp = new URLSearchParams(location.search);
   var qt = sp.get('t');
   var qc = sp.get('c');
@@ -935,54 +930,8 @@ function loadJackets(){
   return Object.keys(JACKETS).length;
 }
 
-/* ---------- 封面导入按钮 ---------- */
-function bindJackets(){
-  var btn = document.getElementById('jkBtn');
-  var file = document.getElementById('jkFile');
-  if (!btn || !file) return;
-  btn.onclick = function(){ file.click(); };
-  file.onchange = async function(){
-    var f = file.files && file.files[0];
-    if (!f) return;
-    var old = document.getElementById('csvState').textContent;
-    document.getElementById('csvState').textContent = '正在解压封面…';
-    try {
-      var buf = await f.arrayBuffer();
-      var imgs = await unzip(buf);
-      var n = 0;
-      Object.keys(imgs).forEach(function(k){ JACKETS[k] = imgs[k]; n++; });
-      saveJackets();
-      document.getElementById('csvState').textContent = '已导入 ' + n + ' 张封面';
-      // 重绘当前列表
-      if (document.getElementById('csv').value.trim()) renderFromCsv();
-    } catch (e) {
-      document.getElementById('csvState').textContent = '导入失败：' + e.message;
-      console.error(e);
-    }
-  };
-  // 选择本地曲绘目录（exe 导出的 jackets 文件夹）
-  var dirBtn = document.getElementById('jkDirBtn');
-  var dir = document.getElementById('jkDir');
-  if (dirBtn && dir){
-    dirBtn.onclick = function(){ dir.click(); };
-    dir.onchange = function(){
-      var fs = dir.files;
-      if (!fs || !fs.length) return;
-      // 用浏览器给的完整路径推出目录（只在本机 file:// 或本地服务下可用）
-      var full = (fs[0].path || '').replace(/\\/g, '/');
-      var dirPath = full ? full.substring(0, full.lastIndexOf('/')) : '';
-      if (!dirPath){
-        document.getElementById('csvState').textContent =
-          '浏览器没给出完整路径，请直接打开本地 index.html（Ctrl+O）后再试';
-        return;
-      }
-      setLocalDir('file:///' + dirPath);
-      document.getElementById('csvState').textContent =
-        '已绑定本地曲绘目录：' + dirPath + '（' + fs.length + ' 个文件）';
-      if (document.getElementById('csv').value.trim()) renderFromCsv();
-    };
-  }
-}
+/* 封面导入按钮已移除：曲绘本体内置于 exe / 仓库 */
+
 </script>
 </body>
 </html>
