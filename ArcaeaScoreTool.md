@@ -1,5 +1,8 @@
 # Arcaea 国服 · 成绩提取器 v2.2.8
 
+> 国内下载走镜像更快：<https://ghfast.top/https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest/download/ArcaeaScoreTool.exe>
+
+
 > 🎬 视频教程：[【韵律源点】Arcaea国服查分系统已发布！](https://www.bilibili.com/video/BV1vGykzgEL1/)
 
 
