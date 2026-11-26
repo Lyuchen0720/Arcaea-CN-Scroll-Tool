@@ -2,6 +2,9 @@
 
 # Arcaea-CN-Scroll-Tool
 
+> 🎬 **视频教程**：[【韵律源点】Arcaea国服查分系统已发布！](https://www.bilibili.com/video/BV1vGykzgEL1/)
+> 作者：B 站 @碱式碳酸铜_Offical · 约 5 分钟
+
 一个纯前端的 Arcaea（国服，`com.xd.arcaea.tapcn`）成绩查询页面，附带 Cloudflare Worker 代理脚本，可自托管或部署成在线站。
 
 - 账号卡：名称 / user code / 官方 rating
