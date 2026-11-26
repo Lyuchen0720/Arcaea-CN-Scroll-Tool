@@ -1,5 +1,8 @@
 # Arcaea 国服 · 成绩提取器 v2.2.8
 
+> 🎬 视频教程：[【韵律源点】Arcaea国服查分系统已发布！](https://www.bilibili.com/video/BV1vGykzgEL1/)
+
+
 一个本地小工具：从**模拟器里已登录的 Arcaea 国服**把成绩捞出来，导出 CSV，并显示 `a_t`。
 
 ## 下载
