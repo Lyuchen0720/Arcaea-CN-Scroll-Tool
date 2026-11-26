@@ -12,6 +12,16 @@
 - **B30 / R10**：粘贴成绩 CSV 后在**浏览器本地**计算
 - 支持 GitHub Pages 静态托管 + Worker 代理
 
+### 下载（国内推荐）
+
+| 渠道 | 链接 |
+|---|---|
+| 蓝奏云（最快） | <https://wwbgn.lanzouw.com/b01i61li9g> 密码 `3t5r` |
+| GitHub 加速镜像 | <https://ghfast.top/https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest/download/ArcaeaScoreTool.exe> |
+| GitHub 官方 | <https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest> |
+
+> `github.com` 在国内经常连不上，镜像走 `ghfast.top`，实测 200+ KB/s。
+
 ## 一键提取工具（推荐先用这个）
 
 模拟器 + 游戏内登录一次，就能一键导出 `a_t` 和成绩 CSV：
