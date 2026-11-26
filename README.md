@@ -22,16 +22,6 @@
 
 > `github.com` 在国内经常连不上，镜像走 `ghfast.top`，实测 200+ KB/s。
 
-## 访问地址
-
-| 用途 | 地址 | 说明 |
-|---|---|---|
-| **主站** | <https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/> | 内容最新，GitHub Pages |
-| **备用站** | <https://cdn.jsdelivr.net/gh/Lyuchen0720/Arcaea-CN-Scroll-Tool@main/> | jsDelivr CDN，国内更快，但缓存 12 小时 |
-
-> `github.io` 在国内偶尔抽风，打不开时用备用站。
-> 备用站走 jsDelivr（Cloudflare），首次访问会回源慢，之后都在 CDN 上。
-
 ## 一键提取工具（推荐先用这个）
 
 模拟器 + 游戏内登录一次，就能一键导出 `a_t` 和成绩 CSV：
