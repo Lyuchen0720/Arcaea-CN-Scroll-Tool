@@ -263,11 +263,15 @@ function clipText(c, t, x, y, maxW){
   }
   c.fillText(s.slice(0, lo) + '…', x, y);
 }
+var JK_TIMEOUT_MS = 6000;
 function loadImg(src){
   return new Promise(function(res){
+    var done = false;
+    function fin(v){ if (!done){ done = true; res(v); } }
     var im = new Image();
-    im.onload = function(){ res(im); };
-    im.onerror = function(){ res(null); };
+    im.onload = function(){ fin(im); };
+    im.onerror = function(){ fin(null); };
+    setTimeout(function(){ fin(null); }, JK_TIMEOUT_MS);   /* 图片卡住也要放行 */
     im.src = src;
   });
 }
@@ -488,6 +492,6 @@ function boot(){
 }
 boot();
 </script>
-<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.2.7 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a></div>
+<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.2.8 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a></div>
 </body>
 </html>
