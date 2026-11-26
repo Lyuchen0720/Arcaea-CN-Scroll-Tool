@@ -60,6 +60,14 @@ dl.faq dd{margin:0;font-size:12.8px;color:#736d82;line-height:1.8}
 .vid .vm b{display:block;font-size:15px;color:var(--txt);margin-bottom:4px}
 .vid .vm small{font-size:12px;color:var(--dim)}
 .vid .go{flex:none;font-size:13px;font-weight:700;color:var(--pink)}
+.tnav{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px clamp(16px,3.6vw,52px)}
+.tnav .tlg{display:flex;align-items:center;gap:9px;text-decoration:none}
+.tnav .tlg img{width:104px;height:auto;display:block;filter:drop-shadow(0 1px 3px rgba(255,255,255,.8))}
+.tnav ul{display:flex;gap:clamp(12px,2.4vw,38px);list-style:none;margin:0;padding:0;font-size:clamp(11px,1.1vw,14px);letter-spacing:.05em;font-weight:700;color:#3d3748;text-shadow:0 1px 2px rgba(255,255,255,.7)}
+.tnav li{padding-bottom:3px;border-bottom:2px solid transparent}
+.tnav li.on{border-bottom-color:var(--pink)}
+.tnav a{color:inherit;text-decoration:none}
+.tnav a:hover{color:var(--pink)}
 footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--dim);line-height:2}
 footer a{color:var(--purple);text-decoration:none}
 footer a:hover{color:var(--pink)}
@@ -70,6 +78,15 @@ footer a:hover{color:var(--pink)}
 <div class="head">
   <img src="off/hero_s.webp" alt="" fetchpriority="high" decoding="async">
   <div class="veil"></div>
+  <div class="tnav">
+    <a class="tlg" href="./"><img src="off/logo.png" alt="Arcaea"></a>
+    <ul>
+      <li><a href="index.html">成绩查询</a></li>
+      <li><a href="rank.html">难度排行</a></li>
+      <li><a href="recent.html">最近成绩</a></li>
+      <li class="on">提取工具</li>
+    </ul>
+  </div>
   <div class="hex"><b>成绩提取器</b><small>SCORE EXTRACTOR</small></div>
 </div>
 
