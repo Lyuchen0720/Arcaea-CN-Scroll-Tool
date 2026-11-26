@@ -53,6 +53,13 @@ ol.steps b{color:var(--txt)}
 dl.faq{margin:0}
 dl.faq dt{font-size:13.5px;font-weight:600;margin:16px 0 5px}
 dl.faq dd{margin:0;font-size:12.8px;color:#736d82;line-height:1.8}
+.vid{display:flex;align-items:center;gap:16px;margin:18px 0 0;padding:16px 20px;background:var(--soft);border:1px solid var(--line);border-radius:14px;text-decoration:none;transition:.18s}
+.vid:hover{border-color:var(--pink);box-shadow:0 6px 22px rgba(211,69,154,.13);transform:translateY(-1px)}
+.vid .play{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;background:linear-gradient(135deg,#8b5cf6,#ec4899)}
+.vid .vm{flex:1;min-width:0}
+.vid .vm b{display:block;font-size:15px;color:var(--txt);margin-bottom:4px}
+.vid .vm small{font-size:12px;color:var(--dim)}
+.vid .go{flex:none;font-size:13px;font-weight:700;color:var(--pink)}
 footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--dim);line-height:2}
 footer a{color:var(--purple);text-decoration:none}
 footer a:hover{color:var(--pink)}
@@ -96,6 +103,16 @@ footer a:hover{color:var(--pink)}
   <div class="meta" style="margin-top:12px">
     蓝奏云密码 <b style="color:var(--pink)">3t5r</b> · 单文件版约 30 MB，双击即用 · 需要 <b>Windows 10/11</b> · 首次运行会请求管理员权限（读模拟器需要）
   </div>
+
+  <h2 class="sec">视频教程</h2>
+  <a class="vid" href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">
+    <span class="play">▶</span>
+    <span class="vm">
+      <b>【韵律源点】Arcaea国服查分系统已发布！</b>
+      <small>B 站 · 碱式碳酸铜_Offical · 约 5 分钟</small>
+    </span>
+    <span class="go">去看 ↗</span>
+  </a>
 
   <h2 class="sec">怎么用</h2>
   <ol class="steps">
