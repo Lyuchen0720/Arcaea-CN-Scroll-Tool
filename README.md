@@ -1,3 +1,5 @@
+<p align="center"><img src="readme-header.webp" alt="Arcaea 国服查分工具" width="100%"></p>
+
 # Arcaea-CN-Scroll-Tool
 
 一个纯前端的 Arcaea（国服，`com.xd.arcaea.tapcn`）成绩查询页面，附带 Cloudflare Worker 代理脚本，可自托管或部署成在线站。
