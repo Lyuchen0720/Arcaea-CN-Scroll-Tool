@@ -776,8 +776,29 @@ function tplNote(){
   if (el) el.textContent = TDESC[TtGet()] || '';
 }
 
-/* 查分页：模板下拉框 */
+/* 查分页：模板选择（卡片式；没有卡片容器时退回老的下拉框） */
 (function mountTemplatePicker(){
+  function paint(){
+    var cur = TtGet();
+    var cs = document.querySelectorAll('#tplBox .tplcard');
+    for (var i = 0; i < cs.length; i++){
+      var on = cs[i].getAttribute('data-tpl') === cur;
+      cs[i].classList.toggle('on', on);
+      cs[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
+  }
+  var cards = document.querySelectorAll('#tplBox .tplcard');
+  if (cards.length){
+    for (let i = 0; i < cards.length; i++){
+      (function(btn){
+        var id = btn.getAttribute('data-tpl');
+        if (TDESC[id]) btn.title = TDESC[id];
+        btn.onclick = function(){ TtSet(id); paint(); tplNote(); };
+      })(cards[i]);
+    }
+    paint(); tplNote();
+    return;
+  }
   var el = document.getElementById('tplSel');
   if (!el) return;
   TLIST.forEach(function(t){
