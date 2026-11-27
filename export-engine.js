@@ -173,8 +173,9 @@ function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
 
   /* 判定占比条：把 PURE / FAR / LOST 按比例画成一条 3px 的细条挂在行底。
      金色 = PURE（其中 shiny 亮一档），紫色 = FAR，红色 = LOST。
-     没有判定数据（老 CSV / 纯 B30）就不画，行高不变。 */
-  if (opt && opt.judgeBar && typeof r.pure === 'number' && !isNaN(r.pure)){
+     没有判定数据（老 CSV / 纯 B30）就不画，行高不变。
+     judgeBar:false 可以关掉（默认开）。 */
+  if (!(opt && opt.judgeBar === false) && typeof r.pure === 'number' && !isNaN(r.pure)){
     var tot = r.pure + (r.far || 0) + (r.lost || 0);
     if (tot > 0){
       var bw = w - 10 * s, bh = 3 * s, by = y + H - 7 * s;
@@ -208,7 +209,7 @@ function f_drawBlock(G, x, y, w, list, cols, rowH, sm, imgs, opt){
   var colW = (w - gap * (cols - 1)) / cols;
   for (var i = 0; i < list.length; i++){
     var col = i % cols, row = Math.floor(i / cols);
-    f_drawSongRow(G, x + col * (colW + gap), y + row * rowH, colW, list[i], i + 1, imgs[list[i].id], sm, { rowH: rowH, judgeBar: !!(opt && opt.judgeBar) });
+    f_drawSongRow(G, x + col * (colW + gap), y + row * rowH, colW, list[i], i + 1, imgs[list[i].id], sm, { rowH: rowH, judgeBar: !(opt && opt.judgeBar === false) });
   }
 }
 
@@ -594,7 +595,7 @@ function renderPortrait(G, W, H, d, imgs){
     var hRec = HEAD + Math.ceil(recent.length / COLS) * ROW + 12;
     f_drawCard(G, PAD, y, CW, hRec);
     f_drawBlockHead(G, PAD, y, CW, '最近成绩', '', '');
-    f_drawBlock(G, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs, { judgeBar: true });
+    f_drawBlock(G, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs);
     y += hRec + GAP;
   }
   if (b30.length){
