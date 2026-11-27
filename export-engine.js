@@ -344,7 +344,10 @@ function drawWallTile(G, x, y, w, h, r, rank, im, opt){
   var c = G.c, s = G.s;
   opt = opt || {};
   c.save();
-  f_rrPath(G, x, y, w, h, 12);
+  /* 曲绘裁剪比卡片实际边界内收 0.75px：
+     浏览器把 canvas 缩放显示时（预览页 1080 -> 视口宽），圆角边缘的插值
+     会让曲绘的暗色像素"渗"出边框，看起来像溢出。内收一圈就彻底盖住。 */
+  f_rrPath(G, x + 0.75, y + 0.75, w - 1.5, h - 1.5, 11);
   c.clip();
   if (im){
     var sw = im.naturalWidth || im.width || 1, sh = im.naturalHeight || im.height || 1;
