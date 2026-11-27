@@ -170,15 +170,45 @@ function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
   c.fillText(potOf(r).toFixed(3), x + w - 10 * s, y + 31 * s);
 
   c.textAlign = 'left';
+
+  /* 判定占比条：把 PURE / FAR / LOST 按比例画成一条 3px 的细条挂在行底。
+     金色 = PURE（其中 shiny 亮一档），紫色 = FAR，红色 = LOST。
+     没有判定数据（老 CSV / 纯 B30）就不画，行高不变。 */
+  if (opt && opt.judgeBar && typeof r.pure === 'number' && !isNaN(r.pure)){
+    var tot = r.pure + (r.far || 0) + (r.lost || 0);
+    if (tot > 0){
+      var bw = w - 10 * s, bh = 3 * s, by = y + H - 7 * s;
+      var bx = x + 50 * s;
+      c.save();
+      f_rrPath(G, bx, by, bw, bh, bh / 2);
+      c.clip();
+      c.fillStyle = 'rgba(255,255,255,.07)';
+      c.fillRect(bx, by, bw, bh);
+      var wPure = bw * (r.pure / tot);
+      var wFar  = bw * ((r.far || 0) / tot);
+      var wLost = bw - wPure - wFar;
+      c.fillStyle = r.lost > 0 ? 'rgba(250,204,21,.92)' : 'rgba(253,224,71,.95)';
+      c.fillRect(bx, by, wPure, bh);
+      if (wFar > 0.5){
+        c.fillStyle = 'rgba(167,139,250,.92)';
+        c.fillRect(bx + wPure, by, wFar, bh);
+      }
+      if (wLost > 0.5){
+        c.fillStyle = 'rgba(248,113,113,.95)';
+        c.fillRect(bx + wPure + wFar, by, wLost, bh);
+      }
+      c.restore();
+    }
+  }
 }
 
 /* 多列排版：一列就是列表，两列就是双列 */
-function f_drawBlock(G, x, y, w, list, cols, rowH, sm, imgs){
+function f_drawBlock(G, x, y, w, list, cols, rowH, sm, imgs, opt){
   var gap = 16;
   var colW = (w - gap * (cols - 1)) / cols;
   for (var i = 0; i < list.length; i++){
     var col = i % cols, row = Math.floor(i / cols);
-    f_drawSongRow(G, x + col * (colW + gap), y + row * rowH, colW, list[i], i + 1, imgs[list[i].id], sm, { rowH: rowH });
+    f_drawSongRow(G, x + col * (colW + gap), y + row * rowH, colW, list[i], i + 1, imgs[list[i].id], sm, { rowH: rowH, judgeBar: !!(opt && opt.judgeBar) });
   }
 }
 
@@ -564,7 +594,7 @@ function renderPortrait(G, W, H, d, imgs){
     var hRec = HEAD + Math.ceil(recent.length / COLS) * ROW + 12;
     f_drawCard(G, PAD, y, CW, hRec);
     f_drawBlockHead(G, PAD, y, CW, '最近成绩', '', '');
-    f_drawBlock(G, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs);
+    f_drawBlock(G, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs, { judgeBar: true });
     y += hRec + GAP;
   }
   if (b30.length){
