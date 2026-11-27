@@ -318,7 +318,7 @@ function exportImage(){
   var btn = $('#exp'); var old = btn.textContent;
   btn.disabled = true; btn.textContent = '\u751f\u6210\u4e2d\u2026';
 
-  var W = 1080, H = 810, PAD = 32;
+  var W = 1080, H = 702, PAD = 32;   // 高度按内容实际底边收紧（原来 810 底部空了 150px）
   var cv = document.createElement('canvas');
   cv.width = W; cv.height = H;
   var c = cv.getContext('2d');
@@ -402,18 +402,27 @@ function exportImage(){
     c.textAlign = 'center';
     c.fillStyle = '#ffffff';
     c.font = '700 46px "Exo 2","Segoe UI","Microsoft YaHei",sans-serif';
+    // 右栏几何（结算等级 / 分数面板用）
+    var RX = 400, RW = W - RX - PAD;
+    // 歌名 / 难度 —— 整张图的正中央
+    var CX = W / 2;
     c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 18;
     var tmax = W - PAD * 2;
-    clipText(c, title, W / 2 - Math.min(tmax, c.measureText(title).width) / 2, ty, tmax);
+    c.font = '700 52px "Exo 2","Segoe UI",sans-serif';
+    c.textAlign = 'left';
+    clipText(c, title, CX - Math.min(tmax, c.measureText(title).width) / 2, ty, tmax);
+    c.textAlign = 'center';
     c.shadowBlur = 0;
 
-    c.fillStyle = 'rgba(255,255,255,.30)';
-    c.fillRect(W / 2 - 210, ty + 30, 88, 2);
-    c.fillRect(W / 2 + 122, ty + 30, 88, 2);
-
+    // 难度名（FUTURE）本身也居中，两侧短横线按它的实际宽度自动排
     var dstr = String(r.diff || '').toUpperCase();
     c.fillStyle = 'rgba(255,255,255,.72)'; c.font = '600 20px "Exo 2","Segoe UI",sans-serif';
-    c.fillText(dstr, W / 2, ty + 30);
+    var dW = c.measureText(dstr).width;
+    c.fillText(dstr, CX, ty + 30);
+    var gapLine = 18, lineW = 88;
+    c.fillStyle = 'rgba(255,255,255,.30)';
+    c.fillRect(CX - dW / 2 - gapLine - lineW, ty + 24, lineW, 2);
+    c.fillRect(CX + dW / 2 + gapLine, ty + 24, lineW, 2);
 
     // ===== 左栏 =====
     var LX = PAD + 10, LY = TB + 140;
@@ -449,14 +458,15 @@ function exportImage(){
     }
 
     // ===== 右栏 =====
-    var RX = 400, RW = W - RX - PAD;
 
-    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+    // 结算等级（TRACK COMPLETE 等）居中显示
+    c.textAlign = 'center'; c.textBaseline = 'alphabetic';
     c.font = '700 52px "Exo 2","Segoe UI",sans-serif';
     c.fillStyle = col[0];
     c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 14;
-    clipText(c, cm.t, RX, LY + 62, RW);
+    c.fillText(cm.t, RX + RW / 2, LY + 62);
     c.shadowBlur = 0;
+    c.textAlign = 'left';
 
     var SY = LY + 86, SH = 86;
     var sp = slantRect(RX, SY, RW, SH, 26, { tl: true, br: true });
@@ -632,6 +642,6 @@ function boot(){
 }
 boot();
 </script>
-<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.4.2 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a> · <a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener" style="color:#938fa0">视频教程</a></div>
+<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.4.3 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a> · <a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener" style="color:#938fa0">视频教程</a></div>
 </body>
 </html>
