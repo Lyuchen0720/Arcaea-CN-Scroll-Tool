@@ -24,8 +24,12 @@
   .bar .dl{background:linear-gradient(135deg,var(--purple),var(--pink));border:0;color:#fff;font-weight:600;padding:9px 20px;border-radius:9px;font-size:13.5px;cursor:pointer;font-family:inherit}
   .bar .dl:disabled{opacity:.5;cursor:default}
   .bar .sec{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#dcd6ee;padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit}
-  .stage{padding:24px;display:flex;justify-content:center}
-  #cv{max-width:min(100%,1100px);height:auto;border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,.55);display:none}
+  .stage{padding:20px;display:flex;justify-content:center;align-items:flex-start}
+  #cv{max-width:min(100%,1400px);max-height:calc(100vh - 175px);width:auto;height:auto;
+      border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,.55);display:none;
+      object-fit:contain;cursor:zoom-in}
+  #cv.fit{max-height:none;cursor:zoom-out}
+  .zoomtip{position:fixed;right:16px;bottom:14px;font-size:12px;color:rgba(255,255,255,.3)}
   .empty{color:rgba(255,255,255,.4);font-size:14px;line-height:2;text-align:center;padding:80px 20px}
   .empty a{color:#c4b5fd}
   .tip{text-align:center;font-size:12px;color:rgba(255,255,255,.28);padding:0 20px 18px}
@@ -49,7 +53,7 @@
   <button class="dl" id="dl" disabled>下载 PNG</button>
 </div>
 <div class="stage"><div class="empty" id="empty">正在生成…</div><canvas id="cv"></canvas></div>
-<div class="tip">曲绘版权归 lowiro 所有 · 定数已按 +0.4 修正 · 图片完全在你的浏览器里生成，不上传任何数据</div>
+<div class="tip">点图片可放大 / 再点缩小 · 曲绘版权归 lowiro 所有 · 定数已按 +0.4 修正 · 图片完全在你的浏览器里生成，不上传任何数据</div>
 
 <script src="export-engine.js"></script>
 <script>
@@ -108,16 +112,24 @@
       return u.replace(/[?#].*$/, '').replace(/[^/]*$/, '') + 'jackets/';
     } catch (e) { return 'jackets/'; }
   }
-  function loadOne(src){
+  /* 曲绘扩展名不定：仓库里是 .webp，老包可能是 .jpg。
+     逐个试，命中即缓存；全失败就画 ♫ 占位，别让一次 404 把渲染拖到超时。 */
+  var JEXT = ['.webp', '.jpg', '.png'], JCACHE = {};
+  function loadOne(id, dir){
+    var exts = JEXT, i = 0;
     return new Promise(function(res){
-      if (!src) return res(null);
-      var done = false;
-      function fin(v){ if (!done){ done = true; res(v); } }
-      var im = new Image();
-      im.onload = function(){ fin(im); };
-      im.onerror = function(){ fin(null); };
-      setTimeout(function(){ fin(null); }, 8000);
-      im.src = src;
+      if (!id) return res(null);
+      function next(){
+        if (i >= exts.length) return res(null);
+        var src = dir + id + exts[i++];
+        var im = new Image(), done = false;
+        function fin(v){ if (!done){ done = true; res(v); } }
+        im.onload = function(){ if (im.naturalWidth){ JCACHE[id] = im; fin(im); } else next(); };
+        im.onerror = function(){ next(); };
+        setTimeout(function(){ if (!done) next(); }, 5000);
+        im.src = src;
+      }
+      next();
     });
   }
   function hydrateJackets(){
@@ -125,7 +137,8 @@
     (state.data.rows || []).forEach(function(r){
       if (!r || !r.id || seen[r.id]) return;
       seen[r.id] = 1;
-      jobs.push(loadOne(dir + r.id + '.jpg'));
+      if (JCACHE[r.id]) return;
+      jobs.push(loadOne(r.id, dir));
     });
     return Promise.all(jobs);
   }
@@ -156,6 +169,7 @@
       box.width = state.cv.width; box.height = state.cv.height;
       box.getContext('2d').drawImage(state.cv, 0, 0);
       box.style.display = 'block';
+      box.classList.remove('fit');
       emp.style.display = 'none';
       $('#res').textContent = TPL_DESC[state.tpl] || state.tpl;
       $('#meta').textContent = state.cv.width + ' × ' + state.cv.height + ' px · ' + state.lv + '×';
@@ -166,6 +180,10 @@
       emp.textContent = '生成失败：' + (e && e.message ? e.message : e);
     }
   }
+  /* 点画布 → 放大到 1:1（超过视口就滚动看），再点回「适应窗口」 */
+  document.getElementById('cv').addEventListener('click', function(){
+    this.classList.toggle('fit');
+  });
   window.ARC_PREVIEW_RENDER = render;
 
   window.setup = function(p){
