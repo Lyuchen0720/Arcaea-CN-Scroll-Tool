@@ -150,7 +150,7 @@
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.2.9</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.3.0</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -170,6 +170,7 @@
     <textarea id="csv" placeholder="song,id,diff,const,score,...&#10;Grievous Lady,grievouslady,Future,11,9863372,..." spellcheck="false"></textarea>
     <div class="row" style="margin-top:8px">
       <button id="calc" class="ghost">只用 CSV 计算</button>
+      <select id="tplSel" class="ghost" title="导出模板" style="padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.05);color:#ece7ff;border:1px solid rgba(255,255,255,.14);font-family:inherit;font-size:13px"></select>
       <button id="expImg" class="ghost" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-color:transparent">导出图片</button>
       <span id="csvState" class="sub" style="margin:0"></span>
     </div>
@@ -697,235 +698,10 @@ function drawSongRow(c, x, y, w, r, rank, im, sm, opt){
 }
 
 // 统一块绘制：一列就列数=1，双列就列数=2
-function drawBlock(c, x, y, w, list, cols, rowH, sm, imgs){
-  var gap = 16;
-  var colW = (w - gap * (cols - 1)) / cols;
-  for (var i = 0; i < list.length; i++){
-    var col = i % cols, row = Math.floor(i / cols);
-    drawSongRow._h = rowH;
-    drawSongRow(c, x + col * (colW + gap), y + row * rowH, colW, list[i], i + 1, imgs[list[i].id], sm);
-  }
-}
-
-async function buildScoreImage(){
-  var rows = (LAST.rows && LAST.rows.length) ? LAST.rows : parseCSV($('#csv').value);
-  if (!rows || !rows.length) return null;
-  var sm = LAST.sm || {};
-  var me = LAST.me;
-  var b30 = computeBest(rows);
-  var r10 = computeRecent(rows);
-
-  var recent = [];
-  if (me && me.recent_score){
-    recent = me.recent_score.map(function(s){
-      var info = sm[s.song_id] || {};
-      var d = info.difficulties || {};
-      var cc = d[String(s.difficulty)];
-      var ccv = (cc == null) ? 0 : cc;
-      return { id: s.song_id, song: info.title || s.song_id, diff: s.difficulty,
-               cc: (cc == null ? '-' : cc), score: s.score,
-               pot: pot(ccv + CONST_FIX, s.score),
-               shiny: s.shiny_perfect_count || 0,
-               pure: (s.perfect_count != null ? s.perfect_count : (s.shiny_perfect_count || 0)),
-               far: s.near_count || 0, lost: s.miss_count || 0 };
-    });
-  }
-
-  // 预载所有曲绘
-  var need = {};
-  [b30, r10, recent].forEach(function(list){
-    list.forEach(function(r){ if (r.id && !need[r.id]) need[r.id] = jacketSrc(r.id); });
-  });
-  var imgs = {};
-  await Promise.all(Object.keys(need).map(function(id){
-    return imgLoad(need[id]).then(function(im){ imgs[id] = im; });
-  }));
-
-  var W = 1080, PAD = 40, CW = W - PAD * 2, ROW = 74, HEAD = 54, GAP = 14;
-  var COLS = 2;
-
-  var hHead = 96;
-  var hProf = me ? 132 : 0;
-  var nRow = function(n){ return Math.ceil(n / COLS); };
-  var hRec = recent.length ? HEAD + nRow(recent.length) * ROW + 12 : 0;
-  var hB30 = b30.length ? HEAD + nRow(b30.length) * ROW + 12 : 0;
-  var hR10 = r10.length ? HEAD + nRow(r10.length) * ROW + 12 : 0;
-  var hFoot = 62;
-  var H = 30 + hHead + GAP
-        + (hProf ? hProf + GAP : 0)
-        + (hRec ? hRec + GAP : 0)
-        + (hB30 ? hB30 + GAP : 0)
-        + (hR10 ? hR10 + GAP : 0)
-        + hFoot;
-
-  var cv = document.createElement('canvas');
-  cv.width = W; cv.height = H;
-  var c = cv.getContext('2d');
-
-  // 背景渐变
-  var bg = c.createLinearGradient(0, 0, W * 0.6, H);
-  bg.addColorStop(0, '#15111f');
-  bg.addColorStop(0.45, '#1b1529');
-  bg.addColorStop(1, '#110e19');
-  c.fillStyle = bg;
-  c.fillRect(0, 0, W, H);
-
-  // 顶部紫色光晕
-  var glow = c.createRadialGradient(W * 0.5, -80, 0, W * 0.5, -80, W * 0.95);
-  glow.addColorStop(0, 'rgba(139,92,246,.26)');
-  glow.addColorStop(0.55, 'rgba(139,92,246,.07)');
-  glow.addColorStop(1, 'rgba(139,92,246,0)');
-  c.fillStyle = glow;
-  c.fillRect(0, 0, W, 520);
-
-  c.textBaseline = 'top';
-  c.textAlign = 'left';
-  var y = 30;
-
-  // 标题
-  c.font = 'bold 42px "Microsoft YaHei","Segoe UI",sans-serif';
-  c.fillStyle = '#f0eaff';
-  c.fillText('ARCAEA', PAD, y);
-  var tw = c.measureText('ARCAEA').width;
-  c.font = '600 22px "Microsoft YaHei",sans-serif';
-  c.fillStyle = '#a78bfa';
-  c.fillText('国服成绩', PAD + tw + 16, y + 16);
-  c.font = '15px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.35)';
-  c.fillText('BEST 30 + RECENT 10', PAD, y + 58);
-
-  y += hHead;
-
-  // 账号卡
-  if (me){
-    drawCard(c, PAD, y, CW, hProf);
-    var av = 76, ax = PAD + 24, ay = y + (hProf - av) / 2;
-    var ag = c.createLinearGradient(ax, ay, ax + av, ay + av);
-    ag.addColorStop(0, '#8b5cf6');
-    ag.addColorStop(1, '#ec4899');
-    c.beginPath();
-    c.arc(ax + av / 2, ay + av / 2, av / 2, 0, Math.PI * 2);
-    c.fillStyle = ag;
-    c.fill();
-    c.fillStyle = '#fff';
-    c.font = 'bold 36px sans-serif';
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    c.fillText('✦', ax + av / 2, ay + av / 2 + 2);
-    c.textAlign = 'left';
-    c.textBaseline = 'top';
-
-    c.fillStyle = '#fff';
-    c.font = 'bold 30px "Microsoft YaHei","Segoe UI",sans-serif';
-    c.fillText(me.display_name || me.name || '—', ax + av + 22, y + 30);
-    c.font = '14px "Consolas",monospace';
-    c.fillStyle = 'rgba(255,255,255,.42)';
-    c.fillText('USER CODE ' + (me.user_code || ''), ax + av + 22, y + 76);
-
-    c.textAlign = 'right';
-    var rnum = ((me.rating || 0) / 1000).toFixed(3);
-    c.font = 'bold 46px "Consolas","Segoe UI",monospace';
-    var pg = c.createLinearGradient(W - PAD - 320, y, W - PAD - 40, y + hProf);
-    pg.addColorStop(0, '#a78bfa');
-    pg.addColorStop(1, '#f472b6');
-    c.fillStyle = pg;
-    c.fillText(rnum, W - PAD - 30, y + 26);
-    c.font = '12px "Consolas",monospace';
-    c.fillStyle = 'rgba(255,255,255,.38)';
-    c.fillText('POTENTIAL', W - PAD - 30, y + 82);
-    c.textAlign = 'left';
-    y += hProf + GAP;
-  }
-
-  // 最近成绩
-  if (recent.length){
-    drawCard(c, PAD, y, CW, hRec);
-    c.font = '600 20px "Microsoft YaHei",sans-serif';
-    c.fillStyle = '#e9e3ff';
-    c.fillText('最近成绩', PAD + 22, y + 18);
-    drawBlock(c, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs);
-    y += hRec + GAP;
-  }
-
-  // BEST 30
-  if (b30.length){
-    drawCard(c, PAD, y, CW, hB30);
-    c.font = '600 20px "Microsoft YaHei",sans-serif';
-    c.fillStyle = '#e9e3ff';
-    c.fillText('BEST 30', PAD + 22, y + 18);
-    c.textAlign = 'right';
-    c.font = 'bold 22px "Consolas",monospace';
-    c.fillStyle = '#c4b5fd';
-    c.fillText('AVG ' + avgOf(b30).toFixed(3), PAD + CW - 22, y + 17);
-    c.textAlign = 'left';
-    drawBlock(c, PAD + 14, y + HEAD, CW - 28, b30, COLS, ROW, sm, imgs);
-    y += hB30 + GAP;
-  }
-
-  // RECENT 10
-  if (r10.length){
-    drawCard(c, PAD, y, CW, hR10);
-    c.font = '600 20px "Microsoft YaHei",sans-serif';
-    c.fillStyle = '#e9e3ff';
-    c.fillText('RECENT 10', PAD + 22, y + 18);
-    c.textAlign = 'right';
-    c.font = 'bold 22px "Consolas",monospace';
-    c.fillStyle = '#f9a8d4';
-    c.fillText('AVG ' + avgOf(r10).toFixed(3), PAD + CW - 22, y + 17);
-    c.textAlign = 'left';
-    drawBlock(c, PAD + 14, y + HEAD, CW - 28, r10, COLS, ROW, sm, imgs);
-    y += hR10 + GAP;
-  }
-
-  // 页脚
-  c.font = '13px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.26)';
-  c.fillText('定数已按 +0.4 修正 · B30/R10 为本地估算，官方 rating 以游戏内为准', PAD, y + 6);
-  c.textAlign = 'right';
-  c.fillText('曲绘版权归 lowiro 所有 · 仅用于曲目识别', W - PAD, y + 6);
-  c.textAlign = 'left';
-
-  return cv;
-}
-
-async function exportScoreImage(){
-  var btn = $('#expImg');
-  var old = btn ? btn.textContent : '';
-  if (btn){ btn.disabled = true; btn.textContent = '生成中…'; }
-  try {
-    var cv = await buildScoreImage();
-    if (!cv){ alert('没有成绩数据。先粘贴 CSV 或点「查询」。'); return; }
-    var done = function(url, name){
-      var a = document.createElement('a');
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function(){ document.body.removeChild(a); }, 400);
-    };
-    var me = LAST.me;
-    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '.png';
-    if (cv.toBlob){
-      await new Promise(function(res){
-        cv.toBlob(function(b){
-          if (b) done(URL.createObjectURL(b), name);
-          else done(cv.toDataURL('image/png'), name);
-          res();
-        }, 'image/png');
-      });
-    } else {
-      done(cv.toDataURL('image/png'), name);
-    }
-  } catch (e) {
-    alert('生成失败：' + (e && e.message ? e.message : e));
-  } finally {
-    if (btn){ btn.disabled = false; btn.textContent = old || '导出图片'; }
-  }
-}
-
+/* 导出模板引擎在 export-engine.js 里，查分页和预览页共用同一份代码 */
+if (window.ARC_TPL){ $('#expImg').onclick = function(){ ARC_TPL.exportImage(); }; }
 $('#go').onclick = load;
 $('#calc').onclick = calcOnly;
-$('#expImg').onclick = exportScoreImage;
 
 
 
@@ -1058,5 +834,6 @@ function loadJackets(){
     <div><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool" target="_blank" rel="noopener">GitHub 仓库</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest" target="_blank" rel="noopener">下载提取工具</a><span class="sep">·</span><a href="https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/" target="_blank" rel="noopener">在线版</a></div>
     <div class="fa">作者 <b>Lyuchen0720</b> · 曲绘版权归 lowiro 所有，仅用于曲目识别</div>
   </div>
+<script src="export-engine.js"></script>
 </body>
 </html>
