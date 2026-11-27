@@ -96,6 +96,17 @@
   .sc small{display:block;color:var(--purple);font-size:10.5px;font-weight:700}
   .err{color:#d5284a;font-size:12px;margin-top:8px}
   .hide{display:none}
+  .tplpick{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  @media(max-width:640px){.tplpick{grid-template-columns:1fr}}
+  .tplcard{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;
+    background:#fbfaff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;
+    cursor:pointer;font-family:inherit;transition:.16s;color:var(--txt)}
+  .tplcard:hover{border-color:#cdbdf0;background:#f7f2ff}
+  .tplcard b{font-size:14px;font-weight:700;color:#2b2733}
+  .tplcard small{font-size:11px;color:var(--dim);line-height:1.4}
+  .tplcard.on{border-color:var(--pink);background:linear-gradient(135deg,#fdf2f9,#f7f2ff);
+    box-shadow:0 2px 12px rgba(211,69,154,.14)}
+  .tplcard.on b{color:var(--pink)}
   .dist{margin-top:6px}
   .distbar{display:flex;align-items:center;gap:10px;margin:7px 0}
   .distbar .nm{width:60px;flex:none;font-size:11.5px;font-weight:700;color:#6d6480;text-align:right}
@@ -150,7 +161,7 @@
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.3.0</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.3.1</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -170,9 +181,29 @@
     <textarea id="csv" placeholder="song,id,diff,const,score,...&#10;Grievous Lady,grievouslady,Future,11,9863372,..." spellcheck="false"></textarea>
     <div class="row" style="margin-top:8px">
       <button id="calc" class="ghost">只用 CSV 计算</button>
-      <select id="tplSel" class="ghost" title="导出模板" style="padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.05);color:#ece7ff;border:1px solid rgba(255,255,255,.14);font-family:inherit;font-size:13px"></select>
-      <button id="expImg" class="ghost" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-color:transparent">导出图片</button>
       <span id="csvState" class="sub" style="margin:0"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>导出成绩图 <span class="tag">三种排版</span></h2>
+    <div class="sub" style="margin:0 0 10px">
+      选好模板点「导出图片」，会先打开预览页，确认无误再下载 PNG。
+    </div>
+    <div class="tplpick" id="tplBox">
+      <button type="button" class="tplcard" data-tpl="portrait">
+        <b>竖版长图</b><small>B30 / R10 完整列表，发群塞满屏</small>
+      </button>
+      <button type="button" class="tplcard" data-tpl="wide">
+        <b>横版 16:9</b><small>1920×1080 横版，B30 六列，当壁纸</small>
+      </button>
+      <button type="button" class="tplcard" data-tpl="wall">
+        <b>曲绘墙</b><small>曲绘九宫格风格，只有图没有长文字</small>
+      </button>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button id="expImg" style="background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;border-color:transparent;padding:11px 26px">导出图片</button>
+      <span id="tplState" class="sub" style="margin:0"></span>
     </div>
   </div>
 
