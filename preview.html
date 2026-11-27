@@ -193,10 +193,20 @@
     render();
   };
 
+  // 同一个页面里连续导出时，后缀依次 +1：_1、_2、_3……（每种模板各数各的）
+  // 浏览器不给页面读「下载」目录的权限，所以只能按「本次会话导出了几次」编号。
+  function nextSeq(tpl){
+    var key = 'arcaea_export_seq_' + tpl, n = 0;
+    try { n = parseInt(sessionStorage.getItem(key) || '0', 10) || 0; } catch (e) { n = 0; }
+    n += 1;
+    try { sessionStorage.setItem(key, String(n)); } catch (e) {}
+    return n;
+  }
+
   function download(){
     if (!state.cv) return;
     var me = state.data.me;
-    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '-' + state.tpl + '.png';
+    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '-' + state.tpl + '_' + nextSeq(state.tpl) + '.png';
     var cv = state.cv;
     var go = function(url, obj){
       var a = document.createElement('a');
@@ -215,7 +225,17 @@
     }
   }
 
+  // 预览页关掉/被切走，就认为这一轮导出结束，下次重新从 1 数
+  function resetSeq(){
+    try {
+      ['portrait', 'wide', 'wall'].forEach(function(k){ sessionStorage.removeItem('arcaea_export_seq_' + k); });
+    } catch (e) {}
+  }
+  window.addEventListener('pagehide', resetSeq);
+  window.addEventListener('beforeunload', resetSeq);
+
   document.addEventListener('DOMContentLoaded', function(){
+    resetSeq();
     $('#dl').onclick = download;
     $('#back').onclick = function(){
       if (window.opener && !window.opener.closed){ window.opener.focus(); window.close(); }
