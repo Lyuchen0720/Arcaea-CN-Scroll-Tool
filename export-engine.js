@@ -455,17 +455,29 @@ function collectExportData(opt){
   return { sm: sm, me: me, b30: computeBest(rows), r10: computeRecent(rows), recent: buildRecentList(me, sm) };
 }
 
-/* 曲绘目录：默认 jackets/；预览页会把它改成查分页的绝对目录 */
+/* 曲绘目录：默认 jackets/；预览页会把它改成查分页的绝对目录。
+   仓库里的曲绘是 .webp，老版本包可能是 .jpg，所以按 JACKET_EXTS 依次回退。 */
 var ARC_FS_DIR = '', ARC_FS_EXT = '';
+var JACKET_EXTS = ['.webp', '.jpg', '.png'];
 
 function TjacketUrl(id){
   var src = '';
   if (typeof jacketSrc === 'function'){
     try { src = jacketSrc(id); } catch(e) { src = ''; }
   }
-  if (!src) src = 'jackets/' + id + (ARC_FS_EXT || '.jpg');
+  if (!src) src = 'jackets/' + id + (ARC_FS_EXT || '.webp');
   if (ARC_FS_DIR && !/^[a-z]+:/i.test(src) && src.charAt(0) !== '/') src = ARC_FS_DIR + src;
   return src;
+}
+
+/* 同一个 id 依次试 JACKET_EXTS，第一个能加载的就是它 */
+function TjacketUrls(id){
+  var base = TjacketUrl(id), out = [base], i = base.lastIndexOf('.');
+  if (i > 0){
+    var stem = base.slice(0, i);
+    JACKET_EXTS.forEach(function(e){ if (base.slice(i) !== e) out.push(stem + e); });
+  }
+  return out;
 }
 
 function jacketNeeds(d){
@@ -496,7 +508,15 @@ function loadJacketImages(need){
   var imgs = {};
   var loader = (typeof imgLoad === 'function') ? imgLoad : defaultImgLoad;
   return Promise.all(Object.keys(need).map(function(id){
-    return loader(need[id]).then(function(im){
+    var urls = TjacketUrls(id), i = 0;
+    function step(){
+      if (i >= urls.length) return Promise.resolve(null);
+      return loader(urls[i++]).then(function(im){
+        if (im) return im;
+        return step();
+      });
+    }
+    return step().then(function(im){
       imgs[id] = im;
       if (im) JACKET_CACHE[id] = im;
     });
