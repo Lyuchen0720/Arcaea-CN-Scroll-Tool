@@ -343,11 +343,17 @@ function drawFoot(G, W, H, PAD, alphabetic){
 function drawWallTile(G, x, y, w, h, r, rank, im, opt){
   var c = G.c, s = G.s;
   opt = opt || {};
+  /* 坐标一律对齐到整数像素：
+     tile 宽是 1080/5 这类除不尽的数（190.4），x/y 会带小数。
+     小数坐标下 clip() 的边界和 drawImage 的采样点对不上，
+     Chrome 的抗锯齿会让曲绘超出裁剪区域 1px，看起来像"溢出"。
+     先把格子对齐成整数、宽高也取整，裁剪边界就和像素格严丝合缝。 */
+  x = Math.round(x);
+  y = Math.round(y);
+  w = Math.round(w);
+  h = Math.round(h);
   c.save();
-  /* 曲绘裁剪比卡片实际边界内收 0.75px：
-     浏览器把 canvas 缩放显示时（预览页 1080 -> 视口宽），圆角边缘的插值
-     会让曲绘的暗色像素"渗"出边框，看起来像溢出。内收一圈就彻底盖住。 */
-  f_rrPath(G, x + 0.75, y + 0.75, w - 1.5, h - 1.5, 11);
+  f_rrPath(G, x + 0.5, y + 0.5, w - 1, h - 1, 11);
   c.clip();
   if (im){
     var sw = im.naturalWidth || im.width || 1, sh = im.naturalHeight || im.height || 1;
@@ -717,7 +723,10 @@ function renderWide(G, d, imgs){
 /* ---------- 模板三：曲绘墙（宽 1080，5 列成品字排） ---------- */
 function wallSize(d){
   var W = 1080, PAD = 40, COLS = 5, GAP = 12;
-  var tile = (W - PAD * 2 - GAP * (COLS - 1)) / COLS;
+  /* 取整：1080-80-48 = 952，除以 5 得 190.4 除不尽。
+     除不尽时 x/宽都带小数，clip() 和 drawImage 的采样点在像素格上错开，
+     抗锯齿会把曲绘"漏"出格子 1px。floor 成 190 后整块对齐到像素格。 */
+  var tile = Math.floor((W - PAD * 2 - GAP * (COLS - 1)) / COLS);
   var secH = function(n){ return n ? 54 + Math.ceil(n / COLS) * (tile + GAP) + 14 : 0; };
   var H = 30 + 96 + (d.me ? 132 + 14 : 0) + secH(d.recent.length) + secH(d.b30.length) + secH(d.r10.length) + 84;
   return { W: W, H: H, PAD: PAD, COLS: COLS, GAP: GAP, tile: tile };
@@ -751,7 +760,9 @@ function renderWall(G, W, H, d, imgs){
     c.textAlign = 'left';
     for (var i = 0; i < list.length; i++){
       var col = i % COLS, row = Math.floor(i / COLS);
-      drawWallTile(G, PAD + 18 + col * (tile + GAP), y + 46 + row * (tile + GAP), tile, tile, list[i], i + 1, imgs[list[i].id]);
+      /* 网格整体居中：190*5+12*4 = 998，左右各留 (1080-998)/2 = 41 */
+      drawWallTile(G, 41 + col * (tile + GAP), y + 46 + row * (tile + GAP),
+                   tile, tile, list[i], i + 1, imgs[list[i].id]);
     }
     y += h + 14;
   };
