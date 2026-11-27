@@ -877,6 +877,7 @@ return {
   build: buildScoreImage,
   buildScaled: buildScaled,
   setJacketDir: function(dir, ext){ ARC_FS_DIR = dir || ''; ARC_FS_EXT = ext || ''; },
+  jacketSrc: TjacketUrls,
   _collect: collectExportData,
   _size: tplSize
 };
