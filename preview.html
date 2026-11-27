@@ -45,8 +45,6 @@
   <div class="meta" id="meta"></div>
 </div>
 <div class="bar bar2">
-  <span class="dlbl">导出质量</span>
-  <div class="sw" id="swLv"></div>
   <span class="hint" id="hint"></span>
   <div class="sp"></div>
   <button class="sec" id="back">回查分页</button>
@@ -61,13 +59,7 @@
    模板引擎、B30/R10 计算全部复用查分页同一份 export-engine.js。 */
 (function(){
   var TPL_LIST = ARC_TPL.list, TPL_DESC = ARC_TPL.desc;
-  var LEVELS = [
-    { id: 1, name: '标准 1×',  note: '分享够清楚，文件最小' },
-    { id: 2, name: '高清 2×',  note: '分辨率翻倍，推荐' },
-    { id: 3, name: '超清 3×',  note: '文件较大，几百 KB 到几 MB' }
-  ];
-  var LV_KEY = 'arcaea_tpl_lv';
-  var state = { tpl: 'portrait', lv: 2, data: null, site: '', cv: null, url: '', busy: false, seq: 0 };
+  var state = { tpl: 'portrait', lv: 1, data: null, site: '', cv: null, url: '', busy: false, seq: 0 };
   function $(s){ return document.querySelector(s); }
   function qs(k, src){ var m = new RegExp('[?&]' + k + '=([^&]*)').exec(src || location.search); return m ? decodeURIComponent(m[1]) : ''; }
   function settingsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
@@ -83,16 +75,7 @@
       b.onclick = function(){ if (t.id !== state.tpl){ state.tpl = t.id; $('#res').textContent = t.name; paintSwitch(); render(); } };
       sw.appendChild(b);
     });
-    var swl = $('#swLv'); swl.innerHTML = '';
-    LEVELS.forEach(function(l){
-      var b = document.createElement('button');
-      b.textContent = l.name;
-      if (l.id === state.lv) b.className = 'on';
-      b.title = l.note;
-      b.onclick = function(){ if (l.id !== state.lv){ state.lv = l.id; settingsSet(LV_KEY, String(l.id)); paintSwitch(); render(); } };
-      swl.appendChild(b);
-    });
-    $('#hint').textContent = (LEVELS[state.lv - 1] || LEVELS[1]).note;
+    $('#hint').textContent = '先看效果，满意就下载 PNG';
   }
 
   /* 数据来源优先级：window 注入（同源新窗口） > localStorage 缓存 */
@@ -105,23 +88,43 @@
 
   /* 预览窗和查分页是两个窗口，跨窗口拿不到 JACKETS 缓存，
      所以在预览页按 siteUrl 推导曲绘绝对路径重新预载一遍（Image 走 HTTP 缓存，很快）。 */
+  /* 曲绘目录：exe / 本地服务下是站根 /jackets/，静态托管时才和页面同目录。
+     不按 site 猜目录 —— site 带 /site 或文件名时猜出来的是错的。 */
   function jacketDir(){
     try {
-      var u = state.data.site || state.data.base || '';
+      var u = (state.data && (state.data.site || state.data.base)) || '';
       if (!u) return 'jackets/';
+      var loc = location.href.replace(/[?#].*$/, '');
+      if (loc.charAt(0) === 'h'){
+        // http(s)：优先站根
+        return '/jackets/';
+      }
       return u.replace(/[?#].*$/, '').replace(/[^/]*$/, '') + 'jackets/';
     } catch (e) { return 'jackets/'; }
   }
+
+  /* 先把候选路径交给引擎试一遍（引擎有 jacketSrc / JACKET_EXTS 逻辑），
+     引擎给不出的再按本地规则兜底 */
+  var JEXT = ['.webp', '.jpg', '.png'], JCACHE = {};
+  function candidateList(id){
+    var out = [];
+    function push(v){ if (v && out.indexOf(v) < 0) out.push(v); }
+    if (typeof ARC_TPL !== 'undefined' && ARC_TPL.jacketSrc){
+      try { ARC_TPL.jacketSrc(id).forEach(push); } catch(e){}
+    }
+    var dir = jacketDir();
+    JEXT.forEach(function(e){ push(dir + id + e); push(id && !/^([a-z]+:)?\//i.test(dir) ? ('/jackets/' + id + e) : null); });
+    return out;
+  }
   /* 曲绘扩展名不定：仓库里是 .webp，老包可能是 .jpg。
      逐个试，命中即缓存；全失败就画 ♫ 占位，别让一次 404 把渲染拖到超时。 */
-  var JEXT = ['.webp', '.jpg', '.png'], JCACHE = {};
   function loadOne(id, dir){
-    var exts = JEXT, i = 0;
+    var urls = candidateList(id), i = 0;
     return new Promise(function(res){
       if (!id) return res(null);
       function next(){
-        if (i >= exts.length) return res(null);
-        var src = dir + id + exts[i++];
+        if (i >= urls.length) return res(null);
+        var src = urls[i++];
         var im = new Image(), done = false;
         function fin(v){ if (!done){ done = true; res(v); } }
         im.onload = function(){ if (im.naturalWidth){ JCACHE[id] = im; fin(im); } else next(); };
@@ -153,16 +156,9 @@
     emp.textContent = '正在生成「' + (TPL_DESC[state.tpl] || state.tpl) + '」…';
     try {
       await hydrateJackets();
-      var d = state.data, lv = state.lv;
+      var d = state.data;
       var opt = { rows: d.rows, me: d.me, sm: d.sm, tpl: state.tpl };
-      var cv;
-      if (lv > 1){
-        emp.textContent = '正在按 ' + lv + '× 渲染…';
-        await new Promise(function(r){ setTimeout(r, 16); });
-        cv = await ARC_TPL.buildScaled(Object.assign({ scale: lv }, opt));
-      } else {
-        cv = await ARC_TPL.build(opt);
-      }
+      var cv = await ARC_TPL.build(opt);
       if (seq !== state.seq) return;
       state.cv = cv;
       var box = $('#cv');
@@ -172,7 +168,7 @@
       box.classList.remove('fit');
       emp.style.display = 'none';
       $('#res').textContent = TPL_DESC[state.tpl] || state.tpl;
-      $('#meta').textContent = state.cv.width + ' × ' + state.cv.height + ' px · ' + state.lv + '×';
+      $('#meta').textContent = state.cv.width + ' × ' + state.cv.height + ' px';
       $('#dl').disabled = false;
       try { history.replaceState(null, '', '?tpl=' + state.tpl); } catch(e){}
       document.title = '导出预览 ' + state.cv.width + '×' + state.cv.height + ' · Arcaea';
@@ -200,7 +196,7 @@
   function download(){
     if (!state.cv) return;
     var me = state.data.me;
-    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '-' + state.tpl + (state.lv > 1 ? '@' + state.lv + 'x' : '') + '.png';
+    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '-' + state.tpl + '.png';
     var cv = state.cv;
     var go = function(url, obj){
       var a = document.createElement('a');
@@ -226,8 +222,6 @@
       else if (state.site) location.href = state.site;
       else history.back();
     };
-    var lv = parseInt(settingsGet(LV_KEY) || '2', 10);
-    if (lv >= 1 && lv <= 3) state.lv = lv;
     var t = qs('tpl');
     if (t && TPL_DESC[t]) state.tpl = t;
     var p = readPayload();
