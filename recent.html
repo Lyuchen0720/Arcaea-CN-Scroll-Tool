@@ -293,6 +293,21 @@ var CM_COLOR = {
   hc: ['#fde8f1', '#b02f74'], tl: ['#f8e6e8', '#c0414b']
 };
 
+// 连续导出时序号依次 +1：_1、_2、_3……；关掉页面就重新从 1 数
+// （浏览器不允许网页读下载目录，所以只能按「本页导出了几次」编号）
+var SEQ_KEY = 'arcaea_recent_seq';
+function nextSeq(){
+  var n = 0;
+  try { n = parseInt(sessionStorage.getItem(SEQ_KEY) || '0', 10) || 0; } catch (e) { n = 0; }
+  n += 1;
+  try { sessionStorage.setItem(SEQ_KEY, String(n)); } catch (e) {}
+  return n;
+}
+function resetSeq(){
+  try { sessionStorage.removeItem(SEQ_KEY); } catch (e) {}
+}
+window.addEventListener('pagehide', resetSeq);
+
 function exportImage(){
   var sorted = ROWS.slice().sort(function(a, b){
     if (a.ts && b.ts) return b.ts - a.ts;
@@ -540,10 +555,14 @@ function exportImage(){
     c.font = '12px "Exo 2","Segoe UI",sans-serif';
     c.fillText('\u5b9a\u6570 +0.4 \u4fee\u6b63 \u00b7 \u66f2\u7ed8\u7248\u6743\u5f52 lowiro \u6240\u6709', PAD, H - 18);
 
+    // 文件名：歌名-年月日_序号。日语/中文歌名必须保留，所以只清掉 Windows 文件名禁用字符
+    var d = new Date();
+    var ymd = '' + d.getFullYear() + ('0' + (d.getMonth() + 1)).slice(-2) + ('0' + d.getDate()).slice(-2);
+    var songName = (r.song || r.title || 'recent').toString().replace(/[\/:*?"<>|]/g, '_').replace(/\s+$/, '');
     cv.toBlob(function(b){
       var a = document.createElement('a');
       a.href = URL.createObjectURL(b);
-      a.download = 'arcaea-recent.png';
+      a.download = songName + '-' + ymd + '_' + nextSeq() + '.png';
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(function(){ URL.revokeObjectURL(a.href); }, 4000);
       btn.disabled = false; btn.textContent = old;
@@ -613,6 +632,6 @@ function boot(){
 }
 boot();
 </script>
-<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.4.1 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a> · <a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener" style="color:#938fa0">视频教程</a></div>
+<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.4.2 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a> · <a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener" style="color:#938fa0">视频教程</a></div>
 </body>
 </html>
