@@ -1,4 +1,4 @@
-# Arcaea 国服 · 成绩提取器 v2.4.5
+# Arcaea 国服 · 成绩提取器 v2.4.6
 
 > 国内下载走镜像更快：<https://ghfast.top/https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest/download/ArcaeaScoreTool.exe>
 
@@ -97,11 +97,11 @@ $('#tok').value = qt || (window.__AUTOTOKEN__ || savedTok);
 
 | 版本 | 主要变化 |
 |---|---|
-| **v2.4.5** | 防呆修复：没登录时不再把旧数据当新的返回；a_t 为空 / 0 条成绩会标黄提示；多开 MuMu 自动挑已开机实例；曲绘加载加 6 秒超时 |
-| v2.4.5 | 单实例 + 关页即退（关掉网页 15 秒后自动退出） |
-| v2.4.5 | 模拟器检测增强（注册表 + 扫盘） |
-| v2.4.5 | 数据目录归位到 `%LOCALAPPDATA%\ArcaeaScoreTool\` |
-| v2.4.5 | 曲绘懒加载，体积 31 MB → 27 MB |
+| **v2.4.6** | 防呆修复：没登录时不再把旧数据当新的返回；a_t 为空 / 0 条成绩会标黄提示；多开 MuMu 自动挑已开机实例；曲绘加载加 6 秒超时 |
+| v2.4.6 | 单实例 + 关页即退（关掉网页 15 秒后自动退出） |
+| v2.4.6 | 模拟器检测增强（注册表 + 扫盘） |
+| v2.4.6 | 数据目录归位到 `%LOCALAPPDATA%\ArcaeaScoreTool\` |
+| v2.4.6 | 曲绘懒加载，体积 31 MB → 27 MB |
 
 ## 出问题了先看这里
 
