@@ -13,6 +13,21 @@ function f_pot(cc, sc){
   if (sc >= 9800000) return cc + 1 + (sc - 9800000) / 200000;
   return Math.max(0, cc - (9800000 - sc) / 300000);
 }
+
+/* 行的 pot 可能来自不同数据源（CSV 原始行没有 pot），统一在这里兜底 */
+function potOf(r, a){
+  if (!r) return 0;
+  var v = r.pot;
+  if (typeof v === 'number' && isFinite(v)) return v;
+  if (v != null){
+    var n = parseFloat(v);
+    if (isFinite(n)) return n;
+  }
+  var cc = r.cc;
+  var ccn = (cc == null || cc === '-') ? 0 : parseFloat(cc);
+  if (!isFinite(ccn)) ccn = 0;
+  return f_pot(ccn + CONST_FIX, r.score || 0);
+}
 function f_diffLabel(d){
   var m = { 0: 'PAST', 1: 'PRESENT', 2: 'FUTURE', 3: 'BEYOND', 4: 'BEYOND' };
   if (typeof d === 'string') return d.toUpperCase();
@@ -152,7 +167,7 @@ function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
 
   c.font = '600 ' + (14 * s).toFixed(1) + 'px "Consolas",monospace';
   c.fillStyle = '#c4b5fd';
-  c.fillText(r.pot.toFixed(3), x + w - 10 * s, y + 31 * s);
+  c.fillText(potOf(r).toFixed(3), x + w - 10 * s, y + 31 * s);
 
   c.textAlign = 'left';
 }
@@ -370,7 +385,7 @@ function drawWallTile(G, x, y, w, h, r, rank, im, opt){
   c.fillText(f_fmt(r.score), x + w - 12 * s, y + h - 42 * s * (opt.a || 1));
   c.font = '600 ' + (12 * s * (opt.a || 1)).toFixed(1) + 'px "Consolas",monospace';
   c.fillStyle = '#c4b5fd';
-  c.fillText(r.pot.toFixed(3), x + w - 12 * s, y + h - 23 * s * (opt.a || 1));
+  c.fillText(potOf(r).toFixed(3), x + w - 12 * s, y + h - 23 * s * (opt.a || 1));
   c.textAlign = 'left';
 }
 
