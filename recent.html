@@ -289,138 +289,236 @@ function exportImage(){
     var d = String(b.date).localeCompare(String(a.date));
     return d !== 0 ? d : (b.pot - a.pot);
   }).slice(0, 1);
-  if (!sorted.length){ $('#note').textContent = '没有数据可以导出喵。'; return; }
+  if (!sorted.length){ $('#note').textContent = '\u6ca1\u6709\u6570\u636e\u53ef\u4ee5\u5bfc\u51fa\u55b5\u3002'; return; }
   var btn = $('#exp'); var old = btn.textContent;
-  btn.disabled = true; btn.textContent = '生成中…';
+  btn.disabled = true; btn.textContent = '\u751f\u6210\u4e2d\u2026';
 
-  var W = 1080, H = 810;
+  var W = 1080, H = 810, PAD = 32;
   var cv = document.createElement('canvas');
   cv.width = W; cv.height = H;
   var c = cv.getContext('2d');
   var r = sorted[0];
 
+  function poly(pts){
+    c.beginPath();
+    c.moveTo(pts[0][0], pts[0][1]);
+    for (var i = 1; i < pts.length; i++) c.lineTo(pts[i][0], pts[i][1]);
+    c.closePath();
+  }
+  function slantRect(x, y, w, h, cut, o){
+    o = o || {};
+    var p = [];
+    if (o.tl) p.push([x + cut, y]); else p.push([x, y]);
+    if (o.tr) p.push([x + w - cut, y]); else p.push([x + w, y]);
+    if (o.tr) p.push([x + w, y + cut]);
+    if (o.br) p.push([x + w, y + h - cut]); else p.push([x + w, y + h]);
+    if (o.br) p.push([x + w - cut, y + h]); else p.push([x + w, y + h]);
+    p.push([x, y + h]);
+    if (o.bl) p.push([x, y + h - cut]); else p.push([x, y + h]);
+    if (o.tl) p.push([x, y + cut]);
+    return p;
+  }
+
   loadImg('jackets/' + r.id + '.webp').then(function(im){
-    // ---- 背景：曲绘模糊铺满 ----
-    c.fillStyle = '#150e26'; c.fillRect(0, 0, W, H);
-    if (im){
-      var sc = Math.max(W / im.width, H / im.height) * 1.25;
-      c.save();
-      c.filter = 'blur(42px) saturate(1.2) brightness(.52)';
-      c.drawImage(im, (W - im.width * sc) / 2, (H - im.height * sc) / 2, im.width * sc, im.height * sc);
-      c.restore();
-    }
-    var veil = c.createLinearGradient(0, 0, 0, H);
-    veil.addColorStop(0, 'rgba(18,12,32,.86)');
-    veil.addColorStop(.42, 'rgba(22,15,38,.68)');
-    veil.addColorStop(1, 'rgba(12,8,22,.94)');
-    c.fillStyle = veil; c.fillRect(0, 0, W, H);
-    var glow = c.createRadialGradient(W * .22, H * .18, 0, W * .22, H * .18, 620);
-    glow.addColorStop(0, 'rgba(139,92,246,.30)'); glow.addColorStop(1, 'rgba(139,92,246,0)');
-    c.fillStyle = glow; c.fillRect(0, 0, W, H);
-
-    // ---- 顶部 ----
-    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
-    c.fillStyle = 'rgba(255,255,255,.94)';
-    c.font = '700 15px "Exo 2","Segoe UI",sans-serif';
-    c.fillText('R E C E N T   S C O R E', 62, 62);
-    c.fillStyle = 'rgba(196,181,253,.72)';
-    c.font = '600 13px "Exo 2","Segoe UI",sans-serif';
-    c.fillText('最近成绩', 62, 86);
-
-    var uname = LAST_NAME || 'PLAYER';
-    var urate = LAST_RATE || '—';
-    c.textAlign = 'right';
-    c.fillStyle = 'rgba(255,255,255,.92)';
-    c.font = '600 19px "Exo 2","Segoe UI",sans-serif';
-    c.fillText(uname, W - 62, 66);
-    c.fillStyle = 'rgba(196,181,253,.95)';
-    c.font = '700 22px ui-monospace,Consolas,monospace';
-    c.fillText(urate, W - 62, 96);
-    c.textAlign = 'left';
-
-    // ---- 曲绘 ----
-    var cs = 402, cx = 62, cy = 148;
-    if (im){
-      c.save();
-      c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 34; c.shadowOffsetY = 10;
-      rrPath(c, cx, cy, cs, cs, 22); c.fillStyle = '#000'; c.fill();
-      c.restore();
-      c.save(); rrPath(c, cx, cy, cs, cs, 22); c.clip();
-      c.drawImage(im, cx, cy, cs, cs); c.restore();
-      c.save(); rrPath(c, cx, cy, cs, cs, 22);
-      c.strokeStyle = 'rgba(255,255,255,.22)'; c.lineWidth = 2; c.stroke(); c.restore();
-    }
-
-    // ---- 右侧信息 ----
-    var tx = cx + cs + 46, tw = W - tx - 62;
-
-    c.fillStyle = '#fff';
-    c.font = '700 40px "Exo 2","Segoe UI","Microsoft YaHei",sans-serif';
     var title = r.song || (SONG[r.id] && SONG[r.id].title) || r.id;
-    clipText(c, title, tx, cy + 52, tw);
-
-    var badge = '[' + (r.cc + CONST_FIX).toFixed(1) + ']';
-    c.font = '700 17px ui-monospace,Consolas,monospace';
-    var bw = c.measureText(badge).width + 24;
-    c.fillStyle = 'rgba(139,92,246,.30)'; rrPath(c, tx, cy + 78, bw, 32, 8); c.fill();
-    c.strokeStyle = 'rgba(196,181,253,.45)'; c.lineWidth = 1; rrPath(c, tx, cy + 78, bw, 32, 8); c.stroke();
-    c.fillStyle = '#ddd0ff'; c.fillText(badge, tx + 12, cy + 101);
-    c.fillStyle = 'rgba(255,255,255,.58)'; c.font = '600 15px "Exo 2","Segoe UI",sans-serif';
-    c.fillText(String(r.diff).toUpperCase(), tx + bw + 14, cy + 101);
-
     var cm = cmOf(r.clear), col = CM_COLOR[cm.k] || CM_COLOR.tc;
-    c.font = '700 40px "Exo 2","Segoe UI",sans-serif';
-    var cw = c.measureText(cm.t).width + 56;
-    c.fillStyle = col[0]; rrPath(c, tx, cy + 116, cw, 62, 12); c.fill();
-    c.fillStyle = col[1]; c.fillText(cm.t, tx + 28, cy + 161);
+    var uname = LAST_NAME || 'PLAYER';
+    var urate = LAST_RATE || '\u2014';
 
-    c.fillStyle = '#fff'; c.font = '700 64px ui-monospace,Consolas,monospace';
-    var scTxt = r.score.toLocaleString();
-    c.fillText(scTxt, tx, cy + 248);
-
-    // 潜力块
-    c.fillStyle = 'rgba(255,255,255,.07)';
-    rrPath(c, tx, cy + 276, tw, 76, 12); c.fill();
-    c.strokeStyle = 'rgba(255,255,255,.10)'; c.lineWidth = 1;
-    rrPath(c, tx, cy + 276, tw, 76, 12); c.stroke();
-    c.fillStyle = 'rgba(255,255,255,.45)'; c.font = '600 12.5px "Exo 2","Segoe UI",sans-serif';
-    c.fillText('P O T E N T I A L', tx + 20, cy + 303);
-    c.fillStyle = '#c4b5fd'; c.font = '700 30px ui-monospace,Consolas,monospace';
-    c.fillText(r.pot.toFixed(3), tx + 20, cy + 338);
-
-    var d = deltaOf(r);
-    c.textAlign = 'right';
-    if (d === null){ c.fillStyle = 'rgba(255,255,255,.34)'; c.font = '700 17px "Exo 2",sans-serif'; c.fillText('NEW', tx + tw - 20, cy + 338); }
-    else if (d > 0){ c.fillStyle = '#4ade80'; c.font = '700 19px "Exo 2",sans-serif'; c.fillText('\u25b2 +' + d.toLocaleString(), tx + tw - 20, cy + 330); }
-    else if (d < 0){ c.fillStyle = '#f472b6'; c.font = '700 19px "Exo 2",sans-serif'; c.fillText('\u25bc ' + d.toLocaleString(), tx + tw - 20, cy + 330); }
-    else { c.fillStyle = 'rgba(255,255,255,.34)'; c.font = '700 17px "Exo 2",sans-serif'; c.fillText('\u2014', tx + tw - 20, cy + 330); }
-    c.textAlign = 'left';
-
-    // ---- 底部判定条 ----
-    var by = 620, bh = 54, gap = 16, bwid = (W - 124 - gap * 2) / 3;
-    var judges = [
-      ['PURE', r.pure + ' (+' + r.shiny + ')', ['rgba(168,85,247,.92)', 'rgba(126,34,206,.72)']],
-      ['FAR', String(r.far), ['rgba(217,119,6,.92)', 'rgba(146,80,12,.72)']],
-      ['LOST', String(r.lost), ['rgba(219,39,119,.92)', 'rgba(150,25,85,.72)']]
-    ];
-    for (var i = 0; i < 3; i++){
-      var bx = 62 + i * (bwid + gap);
-      var g = c.createLinearGradient(bx, 0, bx + bwid, 0);
-      g.addColorStop(0, judges[i][2][0]); g.addColorStop(1, judges[i][2][1]);
-      c.fillStyle = g; rrPath(c, bx, by, bwid, bh, 10); c.fill();
-      c.fillStyle = 'rgba(255,255,255,.88)'; c.font = '700 13px "Exo 2","Segoe UI",sans-serif';
-      c.fillText(judges[i][0], bx + 20, by + (bh / 2 + 5));
-      c.fillStyle = '#fff'; c.font = '700 22px ui-monospace,Consolas,monospace';
-      c.textAlign = 'right'; c.fillText(judges[i][1], bx + bwid - 20, by + (bh / 2 + 8)); c.textAlign = 'left';
+    // ===== 背景：清晰曲绘铺满 + 冷色 veil =====
+    c.fillStyle = '#1a1226'; c.fillRect(0, 0, W, H);
+    if (im){
+      var sc = Math.max(W / im.width, H / im.height);
+      var dw = im.width * sc, dh = im.height * sc;
+      c.drawImage(im, (W - dw) * 0.72, (H - dh) / 2, dw, dh);
+      var veilL = c.createLinearGradient(0, 0, W * 0.72, 0);
+      veilL.addColorStop(0, 'rgba(26,18,38,.93)');
+      veilL.addColorStop(.55, 'rgba(26,18,38,.72)');
+      veilL.addColorStop(1, 'rgba(26,18,38,.18)');
+      c.fillStyle = veilL; c.fillRect(0, 0, W, H);
+      var veilY = c.createLinearGradient(0, 0, 0, H);
+      veilY.addColorStop(0, 'rgba(16,10,26,.55)');
+      veilY.addColorStop(.35, 'rgba(16,10,26,.10)');
+      veilY.addColorStop(1, 'rgba(16,10,26,.75)');
+      c.fillStyle = veilY; c.fillRect(0, 0, W, H);
     }
 
-    // ---- 页脚 ----
-    c.fillStyle = 'rgba(255,255,255,.30)';
-    c.font = '12px "Exo 2","Segoe UI",sans-serif';
-    c.fillText(String(r.date), 62, H - 46);
+    // ===== 顶栏 =====
+    var TB = 52;
+    c.fillStyle = 'rgba(244,244,250,.92)'; c.fillRect(0, 0, W, TB);
+    c.fillStyle = 'rgba(180,175,200,.55)'; c.fillRect(0, TB, W, 2);
+
+    c.textBaseline = 'middle'; c.textAlign = 'left';
+    c.fillStyle = '#2b2438'; c.font = '600 21px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('Recent Play', PAD, TB / 2);
+
     c.textAlign = 'right';
-    c.fillText('定数 +0.4 修正 · 曲绘版权归 lowiro 所有', W - 62, H - 46);
+    c.fillStyle = 'rgba(60,52,78,.72)'; c.font = '500 19px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('Generated by Arcaea \u6210\u7ee9\u63d0\u53d6\u5668', W - PAD, TB / 2);
+
+    var avR = 21, avX = W / 2 - 62, avY = TB / 2;
+    if (im){
+      c.save(); c.beginPath(); c.arc(avX, avY, avR, 0, Math.PI * 2); c.clip();
+      c.drawImage(im, avX - avR, avY - avR, avR * 2, avR * 2); c.restore();
+      c.save(); c.beginPath(); c.arc(avX, avY, avR, 0, Math.PI * 2);
+      c.strokeStyle = 'rgba(255,255,255,.85)'; c.lineWidth = 2.5; c.stroke(); c.restore();
+    }
     c.textAlign = 'left';
+    c.fillStyle = '#2b2438'; c.font = '600 20px "Exo 2","Segoe UI",sans-serif';
+    c.fillText(uname, avX + avR + 12, avY - 8);
+    c.fillStyle = 'rgba(120,60,150,.95)'; c.font = '700 15px ui-monospace,Consolas,monospace';
+    c.fillText(urate, avX + avR + 12, avY + 12);
+
+    // ===== 歌名区（居中） =====
+    var ty = TB + 74;
+    c.textAlign = 'center';
+    c.fillStyle = '#ffffff';
+    c.font = '700 46px "Exo 2","Segoe UI","Microsoft YaHei",sans-serif';
+    c.shadowColor = 'rgba(0,0,0,.55)'; c.shadowBlur = 18;
+    var tmax = W - PAD * 2;
+    clipText(c, title, W / 2 - Math.min(tmax, c.measureText(title).width) / 2, ty, tmax);
+    c.shadowBlur = 0;
+
+    c.fillStyle = 'rgba(255,255,255,.30)';
+    c.fillRect(W / 2 - 210, ty + 30, 88, 2);
+    c.fillRect(W / 2 + 122, ty + 30, 88, 2);
+
+    var dstr = String(r.diff || '').toUpperCase();
+    c.fillStyle = 'rgba(255,255,255,.72)'; c.font = '600 20px "Exo 2","Segoe UI",sans-serif';
+    c.fillText(dstr, W / 2, ty + 30);
+
+    // ===== 左栏 =====
+    var LX = PAD + 10, LY = TB + 140;
+    var dmX = LX + 26, dmY = LY + 24, dmR = 26;
+    poly([[dmX, dmY - dmR], [dmX + dmR, dmY], [dmX, dmY + dmR], [dmX - dmR, dmY]]);
+    c.fillStyle = 'rgba(30,22,46,.78)'; c.fill();
+    c.strokeStyle = col[1]; c.lineWidth = 2; c.stroke();
+    c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#fff';
+    c.font = '700 19px ui-monospace,Consolas,monospace';
+    c.fillText((r.cc + CONST_FIX).toFixed(1), dmX, dmY + 1);
+
+    c.textAlign = 'left';
+    c.fillStyle = '#ffffff'; c.font = '700 22px "Exo 2","Segoe UI",sans-serif';
+    c.fillText(dstr, LX + 66, dmY - 12);
+    c.fillStyle = 'rgba(255,255,255,.62)'; c.font = '600 14px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('TIME PLAYED', LX + 66, dmY + 4);
+    c.fillStyle = 'rgba(255,255,255,.88)'; c.font = '600 16px ui-monospace,Consolas,monospace';
+    c.fillText(String(r.date || '').slice(0, 16), LX + 66, dmY + 24);
+
+    var JX = LX - 6, JY = LY + 66, JS = 330;
+    if (im){
+      c.save();
+      c.shadowColor = 'rgba(0,0,0,.6)'; c.shadowBlur = 30; c.shadowOffsetY = 8;
+      c.fillStyle = '#000'; c.fillRect(JX, JY, JS, JS); c.restore();
+      c.save(); c.beginPath(); c.rect(JX, JY, JS, JS); c.clip();
+      c.drawImage(im, JX, JY, JS, JS); c.restore();
+      c.strokeStyle = 'rgba(255,255,255,.55)'; c.lineWidth = 1.5;
+      c.strokeRect(JX + .75, JY + .75, JS - 1.5, JS - 1.5);
+      for (var si = 0; si < 14; si++){
+        c.fillStyle = si % 2 ? 'rgba(255,255,255,.20)' : 'rgba(255,255,255,.06)';
+        c.fillRect(JX + JS + 6 + si * 5, JY, 3, JS);
+      }
+    }
+
+    // ===== 右栏 =====
+    var RX = 400, RW = W - RX - PAD;
+
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+    c.font = '700 52px "Exo 2","Segoe UI",sans-serif';
+    c.fillStyle = col[0];
+    c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 14;
+    clipText(c, cm.t, RX, LY + 62, RW);
+    c.shadowBlur = 0;
+
+    var SY = LY + 86, SH = 86;
+    var sp = slantRect(RX, SY, RW, SH, 26, { tl: true, br: true });
+    c.fillStyle = 'rgba(238,232,248,.20)'; poly(sp); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,.28)'; c.lineWidth = 1.5; poly(sp); c.stroke();
+
+    var sFmt = String(r.score).replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillStyle = '#ffffff'; c.font = '700 56px ui-monospace,Consolas,monospace';
+    c.shadowColor = 'rgba(0,0,0,.5)'; c.shadowBlur = 12;
+    c.fillText(sFmt, RX + RW / 2, SY + SH / 2 + 3);
+    c.shadowBlur = 0;
+
+    var PY = SY + SH + 12, PH = 40;
+    var pp = slantRect(RX, PY, RW, PH, 20, { tl: true });
+    c.fillStyle = 'rgba(40,30,60,.55)'; poly(pp); c.fill();
+    var pv = c.createLinearGradient(RX, 0, RX + 150, 0);
+    pv.addColorStop(0, 'rgba(139,92,246,.90)'); pv.addColorStop(1, 'rgba(139,92,246,.10)');
+    c.fillStyle = pv; c.fillRect(RX, PY, 150, PH);
+
+    // POTENTIAL 条：定数与潜力居中排布（用户要求）
+    var ccv = (r.cc + CONST_FIX).toFixed(1);
+    var potTxt = r.pot.toFixed(3);
+    var fCc = '600 19px ui-monospace,Consolas,monospace';
+    var fAr = '600 15px "Exo 2",sans-serif';
+    var fPot = '700 22px ui-monospace,Consolas,monospace';
+    var padA = 12, padB = 14;
+    c.font = fCc;  var wCc = c.measureText(ccv).width;
+    c.font = fAr;  var wAr = c.measureText('▸').width;
+    c.font = fPot; var wPot = c.measureText(potTxt).width;
+    var gTot = wCc + padA + wAr + padB + wPot;
+    var gx = RX + (RW - gTot) / 2;                 // 这组整体居中
+    var gmid = PY + PH / 2;
+
+    c.textAlign = 'left'; c.textBaseline = 'middle';
+    c.fillStyle = 'rgba(255,255,255,.62)'; c.font = fCc;
+    c.fillText(ccv, gx, gmid);
+    c.fillStyle = 'rgba(255,255,255,.42)'; c.font = fAr;
+    c.fillText('▸', gx + wCc + padA, gmid);
+    c.fillStyle = '#ffffff'; c.font = fPot;
+    c.fillText(potTxt, gx + wCc + padA + wAr + padB, gmid);
+
+    // 变化量：接在这组右侧
+    var d = deltaOf(r);
+    c.textAlign = 'left';
+    var dvx = gx + gTot + 16;
+    if (d === null){ c.fillStyle = 'rgba(255,255,255,.45)'; c.font = '700 14px "Exo 2",sans-serif'; c.fillText('NEW', dvx, gmid); }
+    else if (d > 0){ c.fillStyle = '#6ee7a8'; c.font = '700 14px "Exo 2",sans-serif'; c.fillText('▲ +' + d.toLocaleString(), dvx, gmid); }
+    else if (d < 0){ c.fillStyle = '#f472b6'; c.font = '700 14px "Exo 2",sans-serif'; c.fillText('▼ ' + d.toLocaleString(), dvx, gmid); }
+    else { c.fillStyle = 'rgba(255,255,255,.45)'; c.font = '700 14px "Exo 2",sans-serif'; c.fillText('—', dvx, gmid); }
+    c.textAlign = 'left';
+
+    // EX + 判定：放在分数/POTENTIAL 之下，整体水平居中（用户要求）
+    var CBX = RX + RW / 2;                       // 居中基准线
+    var EXY = PY + PH + 26, EXH = 76, EXW = 210;
+    var exL = CBX - EXW / 2;
+    poly([[exL + 20, EXY], [exL + EXW, EXY], [exL + EXW - 20, EXY + EXH], [exL, EXY + EXH]]);
+    c.fillStyle = 'rgba(255,255,255,.90)'; c.fill();
+    c.strokeStyle = 'rgba(120,110,150,.35)'; c.lineWidth = 1.5; c.stroke();
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.fillStyle = '#5b4f7a'; c.font = '700 46px "Exo 2","Segoe UI",sans-serif';
+    var tot = (r.pure || 0) + (r.far || 0) + (r.lost || 0);
+    var grade = (r.pure > 0 && r.pure === tot) ? 'PM' : (r.lost === 0 ? 'EX' : (r.score >= 9500000 ? 'EX' : (r.score >= 9000000 ? 'AA' : 'A')));
+    c.fillText(grade, CBX, EXY + EXH / 2 + 2);
+
+    var JY2 = EXY + EXH + 18, PH2 = 30, PW = 210, PGAP = 8;
+    var jd = [
+      ['PURE', String(r.pure), 'rgba(168,85,247,.95)', 'rgba(110,40,180,.95)'],
+      ['FAR', String(r.far), 'rgba(234,160,60,.95)', 'rgba(170,100,10,.95)'],
+      ['LOST', String(r.lost), 'rgba(230,90,150,.95)', 'rgba(160,30,90,.95)']
+    ];
+    for (var ji = 0; ji < 3; ji++){
+      var jyy = JY2 + ji * (PH2 + PGAP);
+      var pl = CBX - PW / 2;                     // 药丸也居中
+      poly([[pl + 16, jyy], [pl + PW, jyy], [pl + PW - 16, jyy + PH2], [pl, jyy + PH2]]);
+      c.fillStyle = 'rgba(244,240,252,.86)'; c.fill();
+      c.fillStyle = jd[ji][2]; c.fillRect(pl + 2, jyy + 8, 4, PH2 - 16);
+      c.textAlign = 'left'; c.textBaseline = 'middle';
+      c.fillStyle = jd[ji][3]; c.font = '700 13px "Exo 2","Segoe UI",sans-serif';
+      c.fillText(jd[ji][0], pl + 18, jyy + PH2 / 2);
+      c.textAlign = 'right';
+      c.fillStyle = '#2b2438'; c.font = '700 19px ui-monospace,Consolas,monospace';
+      c.fillText(jd[ji][1], pl + PW - 24, jyy + PH2 / 2);
+    }
+
+    // ===== footer =====
+    c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+    c.fillStyle = 'rgba(255,255,255,.34)';
+    c.font = '12px "Exo 2","Segoe UI",sans-serif';
+    c.fillText('\u5b9a\u6570 +0.4 \u4fee\u6b63 \u00b7 \u66f2\u7ed8\u7248\u6743\u5f52 lowiro \u6240\u6709', PAD, H - 18);
 
     cv.toBlob(function(b){
       var a = document.createElement('a');
@@ -432,6 +530,7 @@ function exportImage(){
     }, 'image/png');
   });
 }
+
 
 
 /* ---------- 玩家信息 ---------- */
@@ -494,6 +593,6 @@ function boot(){
 }
 boot();
 </script>
-<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.3.9 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a> · <a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener" style="color:#938fa0">视频教程</a></div>
+<div style="text-align:center;font-size:11px;color:#b9b0cc;padding:0 0 26px">v2.4.0 · <a href="index.html" style="color:#938fa0">成绩查询</a> · <a href="rank.html" style="color:#938fa0">难度排行</a> · <a href="tool.html" style="color:#938fa0">提取工具</a> · <a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener" style="color:#938fa0">视频教程</a></div>
 </body>
 </html>
