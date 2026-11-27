@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>导出预览 · Arcaea 国服查分</title>
+<style>
+  :root{--pink:#d3459a;--purple:#8b5cf6}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d0b14;color:#e7e2f5;font-family:"Exo 2","Segoe UI","Microsoft YaHei",system-ui,sans-serif;min-height:100vh}
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;background:rgba(13,11,20,.92);backdrop-filter:blur(8px);z-index:5}
+  .bar .ttl{font-weight:700;font-size:15px;letter-spacing:.04em;margin-right:6px}
+  .bar .ttl small{font-weight:500;color:rgba(255,255,255,.35);margin-left:8px;font-size:12px}
+  .sw{display:flex;gap:6px;background:rgba(255,255,255,.05);padding:4px;border-radius:10px}
+  .sw button{background:none;border:0;color:rgba(255,255,255,.62);padding:7px 16px;border-radius:7px;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+  .sw button:hover{color:#fff}
+  .sw button.on{background:linear-gradient(135deg,var(--purple),var(--pink));color:#fff;font-weight:600}
+  .bar .sp{flex:1}
+  .bar .res{font-size:12px;color:rgba(255,255,255,.32)}
+  .bar2{border-bottom:1px solid rgba(255,255,255,.07);padding-top:10px;padding-bottom:10px}
+  .bar2 .dlbl{font-size:12.5px;color:rgba(255,255,255,.42);margin-right:2px}
+  .bar2 .hint{font-size:12px;color:rgba(255,255,255,.30);margin-left:6px}
+  .bar .meta{font-size:12px;color:rgba(255,255,255,.38);font-variant-numeric:tabular-nums}
+  .bar .dl{background:linear-gradient(135deg,var(--purple),var(--pink));border:0;color:#fff;font-weight:600;padding:9px 20px;border-radius:9px;font-size:13.5px;cursor:pointer;font-family:inherit}
+  .bar .dl:disabled{opacity:.5;cursor:default}
+  .bar .sec{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#dcd6ee;padding:9px 16px;border-radius:9px;font-size:13px;cursor:pointer;font-family:inherit}
+  .stage{padding:24px;display:flex;justify-content:center}
+  #cv{max-width:min(100%,1100px);height:auto;border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,.55);display:none}
+  .empty{color:rgba(255,255,255,.4);font-size:14px;line-height:2;text-align:center;padding:80px 20px}
+  .empty a{color:#c4b5fd}
+  .tip{text-align:center;font-size:12px;color:rgba(255,255,255,.28);padding:0 20px 18px}
+  .busy{color:#c4b5fd;font-size:14px;padding:90px 0;text-align:center}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="ttl">导出预览<small>先看效果，满意再下载</small></div>
+  <div class="sw" id="sw"></div>
+  <div class="sp"></div>
+  <span class="res" id="res">竖版长图</span>
+  <div class="meta" id="meta"></div>
+</div>
+<div class="bar bar2">
+  <span class="dlbl">导出质量</span>
+  <div class="sw" id="swLv"></div>
+  <span class="hint" id="hint"></span>
+  <div class="sp"></div>
+  <button class="sec" id="back">回查分页</button>
+  <button class="dl" id="dl" disabled>下载 PNG</button>
+</div>
+<div class="stage"><div class="empty" id="empty">正在生成…</div><canvas id="cv"></canvas></div>
+<div class="tip">曲绘版权归 lowiro 所有 · 定数已按 +0.4 修正 · 图片完全在你的浏览器里生成，不上传任何数据</div>
+
+<script src="export-engine.js"></script>
+<script>
+/* 预览页只干三件事：拿到数据 → 生成 → 下载。
+   模板引擎、B30/R10 计算全部复用查分页同一份 export-engine.js。 */
+(function(){
+  var TPL_LIST = ARC_TPL.list, TPL_DESC = ARC_TPL.desc;
+  var LEVELS = [
+    { id: 1, name: '标准 1×',  note: '分享够清楚，文件最小' },
+    { id: 2, name: '高清 2×',  note: '分辨率翻倍，推荐' },
+    { id: 3, name: '超清 3×',  note: '文件较大，几百 KB 到几 MB' }
+  ];
+  var LV_KEY = 'arcaea_tpl_lv';
+  var state = { tpl: 'portrait', lv: 2, data: null, site: '', cv: null, url: '', busy: false, seq: 0 };
+  function $(s){ return document.querySelector(s); }
+  function qs(k, src){ var m = new RegExp('[?&]' + k + '=([^&]*)').exec(src || location.search); return m ? decodeURIComponent(m[1]) : ''; }
+  function settingsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
+  function settingsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+
+  function paintSwitch(){
+    var sw = $('#sw'); sw.innerHTML = '';
+    TPL_LIST.forEach(function(t){
+      var b = document.createElement('button');
+      b.textContent = t.name;
+      if (t.id === state.tpl) b.className = 'on';
+      b.title = TPL_DESC[t.id] || '';
+      b.onclick = function(){ if (t.id !== state.tpl){ state.tpl = t.id; $('#res').textContent = t.name; paintSwitch(); render(); } };
+      sw.appendChild(b);
+    });
+    var swl = $('#swLv'); swl.innerHTML = '';
+    LEVELS.forEach(function(l){
+      var b = document.createElement('button');
+      b.textContent = l.name;
+      if (l.id === state.lv) b.className = 'on';
+      b.title = l.note;
+      b.onclick = function(){ if (l.id !== state.lv){ state.lv = l.id; settingsSet(LV_KEY, String(l.id)); paintSwitch(); render(); } };
+      swl.appendChild(b);
+    });
+    $('#hint').textContent = (LEVELS[state.lv - 1] || LEVELS[1]).note;
+  }
+
+  /* 数据来源优先级：window 注入（同源新窗口） > localStorage 缓存 */
+  function readPayload(){
+    if (window.ARC_PREVIEW && window.ARC_PREVIEW.rows && window.ARC_PREVIEW.rows.length) return window.ARC_PREVIEW;
+    var raw = settingsGet('arcaea_preview_' + ARC_TPL.ver);
+    if (raw){ try { return JSON.parse(raw); } catch(e){} }
+    return null;
+  }
+
+  /* 预览窗和查分页是两个窗口，跨窗口拿不到 JACKETS 缓存，
+     所以在预览页按 siteUrl 推导曲绘绝对路径重新预载一遍（Image 走 HTTP 缓存，很快）。 */
+  function jacketDir(){
+    try {
+      var u = state.data.site || state.data.base || '';
+      if (!u) return 'jackets/';
+      return u.replace(/[?#].*$/, '').replace(/[^/]*$/, '') + 'jackets/';
+    } catch (e) { return 'jackets/'; }
+  }
+  function loadOne(src){
+    return new Promise(function(res){
+      if (!src) return res(null);
+      var done = false;
+      function fin(v){ if (!done){ done = true; res(v); } }
+      var im = new Image();
+      im.onload = function(){ fin(im); };
+      im.onerror = function(){ fin(null); };
+      setTimeout(function(){ fin(null); }, 8000);
+      im.src = src;
+    });
+  }
+  function hydrateJackets(){
+    var dir = jacketDir(), seen = {}, jobs = [];
+    (state.data.rows || []).forEach(function(r){
+      if (!r || !r.id || seen[r.id]) return;
+      seen[r.id] = 1;
+      jobs.push(loadOne(dir + r.id + '.jpg'));
+    });
+    return Promise.all(jobs);
+  }
+
+  async function render(){
+    if (!state.data) return;
+    var seq = ++state.seq;
+    $('#dl').disabled = true;
+    $('#cv').style.display = 'none';
+    var emp = $('#empty');
+    emp.style.display = 'block';
+    emp.textContent = '正在生成「' + (TPL_DESC[state.tpl] || state.tpl) + '」…';
+    try {
+      await hydrateJackets();
+      var d = state.data, lv = state.lv;
+      var opt = { rows: d.rows, me: d.me, sm: d.sm, tpl: state.tpl };
+      var cv;
+      if (lv > 1){
+        emp.textContent = '正在按 ' + lv + '× 渲染…';
+        await new Promise(function(r){ setTimeout(r, 16); });
+        cv = await ARC_TPL.buildScaled(Object.assign({ scale: lv }, opt));
+      } else {
+        cv = await ARC_TPL.build(opt);
+      }
+      if (seq !== state.seq) return;
+      state.cv = cv;
+      var box = $('#cv');
+      box.width = state.cv.width; box.height = state.cv.height;
+      box.getContext('2d').drawImage(state.cv, 0, 0);
+      box.style.display = 'block';
+      emp.style.display = 'none';
+      $('#res').textContent = TPL_DESC[state.tpl] || state.tpl;
+      $('#meta').textContent = state.cv.width + ' × ' + state.cv.height + ' px · ' + state.lv + '×';
+      $('#dl').disabled = false;
+      try { history.replaceState(null, '', '?tpl=' + state.tpl); } catch(e){}
+      document.title = '导出预览 ' + state.cv.width + '×' + state.cv.height + ' · Arcaea';
+    } catch (e) {
+      emp.textContent = '生成失败：' + (e && e.message ? e.message : e);
+    }
+  }
+  window.ARC_PREVIEW_RENDER = render;
+
+  window.setup = function(p){
+    if (!p || !p.rows || !p.rows.length) return;
+    state.data = p;
+    state.site = p.site || p.siteUrl || '';
+    if (p.tpl && TPL_DESC[p.tpl]) state.tpl = p.tpl;
+    var q = qs('tpl');
+    if (q && TPL_DESC[q]) state.tpl = q;
+    paintSwitch();
+    render();
+  };
+
+  function download(){
+    if (!state.cv) return;
+    var me = state.data.me;
+    var name = 'arcaea-' + ((me && (me.name || me.display_name)) || 'score') + '-' + state.tpl + (state.lv > 1 ? '@' + state.lv + 'x' : '') + '.png';
+    var cv = state.cv;
+    var go = function(url, obj){
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      if (obj) setTimeout(function(){ URL.revokeObjectURL(obj); }, 6000);
+    };
+    if (cv.toBlob){
+      cv.toBlob(function(b){
+        if (b) go(URL.createObjectURL(b), b);
+        else go(cv.toDataURL('image/png'), null);
+      }, 'image/png');
+    } else {
+      go(cv.toDataURL('image/png'), null);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    $('#dl').onclick = download;
+    $('#back').onclick = function(){
+      if (window.opener && !window.opener.closed){ window.opener.focus(); window.close(); }
+      else if (state.site) location.href = state.site;
+      else history.back();
+    };
+    var lv = parseInt(settingsGet(LV_KEY) || '2', 10);
+    if (lv >= 1 && lv <= 3) state.lv = lv;
+    var t = qs('tpl');
+    if (t && TPL_DESC[t]) state.tpl = t;
+    var p = readPayload();
+    if (!p || !p.rows || !p.rows.length){
+      paintSwitch();
+      $('#empty').innerHTML = '没有拿到成绩数据喵。<br>请从 <a href="index.html">查分页</a> 点「导出图片」打开这里。';
+      return;
+    }
+    setup(p);
+  });
+})();
+</script>
+</body>
+</html>
