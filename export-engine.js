@@ -631,7 +631,7 @@ function jacketNeeds(d){
   return need;
 }
 
-/* 标题 logo：优先用 off/logo_white.png（黑底已抠成透明），失败就算了，head 会退回文字版 */
+/* 标题 logo：优先用 off/logo_white.png（官方紫色标识，透明底），失败就算了，head 会退回文字版 */
 var LOGO_IMG = null, LOGO_TRIED = false;
 function loadLogo(){
   if (LOGO_TRIED) return Promise.resolve(LOGO_IMG);
