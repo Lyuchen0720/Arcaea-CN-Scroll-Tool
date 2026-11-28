@@ -248,6 +248,124 @@ var TDESC = {
 
 /* ---------- 明暗主题：全局一份，导出图跟着走 ---------- */
 var THEME_KEY = 'arcaea_theme';
+/* ---------- 当前搭档卡片 ----------
+   数据来自 /user/me：value.character 是当前搭档 id，
+   value.character_stats[] 里能找到 level / display_name / profile_image(哈希)。
+   立绘由页面侧异步下载后传进来（imgs.charImg），拿不到就退回纯文字卡片。 */
+var CHAR_H = 224;
+
+function charInfo(me){
+  if (!me) return null;
+  var cid = me.character;
+  if (cid == null) return null;
+  var stats = me.character_stats || [];
+  for (var i = 0; i < stats.length; i++){
+    if (stats[i] && stats[i].character_id === cid){
+      var st = stats[i], dn = st.display_name || {};
+      return {
+        id: cid,
+        name: dn['zh-Hans'] || dn.en || st.name || ('#' + cid),
+        level: st.level || 0,
+        frag: st.frag || 0,
+        prog: st.prog || 0,
+        over: st.overdrive || 0,
+        profile: st.profile_image || '',
+        capped: !!st.is_uncapped
+      };
+    }
+  }
+  return { id: cid, name: '#' + cid, level: 0, frag: 0, prog: 0, over: 0, profile: '' };
+}
+
+function charNeeds(d){ var ci = charInfo(d && d.me); return ci && ci.id != null ? [ci] : []; }
+
+/* 立绘缓存：以 profile 哈希做 key，同一角色不会重复下载 */
+var CHAR_CACHE = {};
+function charLoad(src){
+  if (CHAR_CACHE[src]) return Promise.resolve(CHAR_CACHE[src]);
+  return new Promise(function(res){
+    var im = new Image(), done = false;
+    function fin(v){ if (!done){ done = true; CHAR_CACHE[src] = v; res(v); } }
+    im.onload = function(){ fin(im); };
+    im.onerror = function(){ fin(null); };
+    /* 同源本地图不需要 crossOrigin；设了反而在某些浏览器上触发额外预检 */
+    im.src = src;
+    if (im.complete && im.naturalWidth) fin(im);
+  });
+}
+
+/* 立绘来源：站内 off/chars/<角色 id>.webp（从游戏 APK 的 assets/char/1080 转出来的）。
+   CDN 的 webassets 不给 Access-Control-Allow-Origin，画进 canvas 会污染画布、
+   toDataURL 直接抛 SecurityError，所以本地图是唯一可靠来源。 */
+var ARC_CHAR_DIR = 'off/chars/';
+var ARC_CHAR_EXT = '.webp';
+function charSrc(ci){
+  if (!ci || ci.id == null) return '';
+  return ARC_CHAR_DIR + ci.id + ARC_CHAR_EXT;
+}
+function setCharDir(dir, ext){
+  if (dir != null) ARC_CHAR_DIR = dir;
+  if (ext != null) ARC_CHAR_EXT = ext;
+}
+function loadCharImage(d){
+  var ci = charInfo(d && d.me);
+  if (!ci || ci.id == null) return Promise.resolve(null);
+  return charLoad(charSrc(ci));
+}
+
+/* 画「当前搭档」卡片：立绘贴右上角，卡片落在成绩模块下方。 */
+function f_drawCharacter(G, x, y, w, h, ci, im){
+  var c = G.c, s = G.s, T = G_theme(G);
+  f_drawCard(G, x, y, w, h);
+
+  var hasImg = !!(im && im.naturalWidth);
+  /* 立绘：右边缘对齐、底边略高于卡片底，不压到文字 */
+  if (hasImg){
+    var pad = 18 * s;
+    var maxW = w * 0.50, maxH = h - pad * 2;
+    var k = Math.min(maxW / im.naturalWidth, maxH / im.naturalHeight);
+    var dw = im.naturalWidth * k, dh = im.naturalHeight * k;
+    var dx = x + w - dw - pad, dy = y + h - dh - pad;
+    c.drawImage(im, dx, dy, dw, dh);
+  }
+
+  var tx = x + 28 * s, ty = y + 24 * s;
+  var tw = w - (hasImg ? w * 0.50 + 28 * s : 56 * s);
+
+  c.textAlign = 'left';
+  c.textBaseline = 'top';
+  c.font = '600 ' + (12.5 * s).toFixed(1) + 'px "Consolas",monospace';
+  c.fillStyle = T.dim;
+  c.fillText('CURRENT PARTNER', tx, ty);
+
+  c.font = 'bold ' + (34 * s).toFixed(1) + 'px "Microsoft YaHei","Segoe UI",sans-serif';
+  c.fillStyle = T.text;
+  c.fillText(f_clipText(G, String(ci.name), tw), tx, ty + 20 * s);
+
+  c.font = '600 ' + (15 * s).toFixed(1) + 'px "Consolas",monospace';
+  c.fillStyle = T.purple;
+  c.fillText('Lv.' + ci.level, tx, ty + 66 * s);
+
+  /* 三个数值横排 */
+  var items = [
+    ['FRAGMENT', ci.frag.toFixed(1)],
+    ['PROGRESS', ci.prog.toFixed(1)],
+    ['OVERDRIVE', ci.over.toFixed(1)]
+  ];
+  var gx = tx, gy = ty + 92 * s;
+  for (var i = 0; i < items.length; i++){
+    c.font = '600 ' + (10.5 * s).toFixed(1) + 'px "Consolas",monospace';
+    c.fillStyle = T.dim2;
+    c.fillText(items[i][0], gx, gy);
+    c.font = 'bold ' + (22 * s).toFixed(1) + 'px "Consolas","Segoe UI",monospace';
+    c.fillStyle = T.text;
+    c.fillText(items[i][1], gx, gy + 15 * s);
+    gx += Math.min(118 * s, tw / 3);
+  }
+  c.textAlign = 'left';
+  c.textBaseline = 'top';
+}
+
 function ThGet(){
   try { return localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light'; }
   catch(e){ return 'light'; }
@@ -730,7 +848,8 @@ function portraitSize(d){
   var hR10 = d.r10.length ? HEAD + Math.ceil(d.r10.length / COLS) * ROW + 12 : 0;
   return {
     W: 1080,
-    H: 30 + 96 + GAP + (d.me ? 132 + GAP : 0) + (hRec ? hRec + GAP : 0)
+    H: 30 + 96 + GAP + (d.me ? 132 + GAP : 0) + (charInfo(d.me) ? CHAR_H + GAP : 0)
+       + (hRec ? hRec + GAP : 0)
        + (hB30 ? hB30 + GAP : 0) + (hR10 ? hR10 + GAP : 0) + 62
   };
 }
@@ -750,6 +869,11 @@ function renderPortrait(G, W, H, d, imgs, opts){
   if (me){
     f_drawProfile(G, PAD, y, CW, 132, me);
     y += 132 + GAP;
+  }
+  var ci = charInfo(me);
+  if (ci){
+    f_drawCharacter(G, PAD, y, CW, CHAR_H, ci, imgs && imgs.charImg);
+    y += CHAR_H + GAP;
   }
   if (recent.length){
     var hRec = HEAD + Math.ceil(recent.length / COLS) * ROW + 12;
@@ -922,7 +1046,8 @@ function wallSize(d){
      抗锯齿会把曲绘"漏"出格子 1px。floor 成 190 后整块对齐到像素格。 */
   var tile = Math.floor((W - PAD * 2 - GAP * (COLS - 1)) / COLS);
   var secH = function(n){ return n ? 54 + Math.ceil(n / COLS) * (tile + GAP) + 14 : 0; };
-  var H = 30 + 96 + (d.me ? 132 + 14 : 0) + secH(d.recent.length) + secH(d.b30.length) + secH(d.r10.length) + 84;
+  var H = 30 + 96 + (d.me ? 132 + 14 : 0) + (charInfo(d.me) ? CHAR_H + 14 : 0)
+        + secH(d.recent.length) + secH(d.b30.length) + secH(d.r10.length) + 84;
   return { W: W, H: H, PAD: PAD, COLS: COLS, GAP: GAP, tile: tile };
 }
 
@@ -941,6 +1066,11 @@ function renderWall(G, W, H, d, imgs, opts){
   if (d.me){
     f_drawProfile(G, PAD, y, W - PAD * 2, 132, d.me);
     y += 132 + 14;
+  }
+  var ci = charInfo(d.me);
+  if (ci){
+    f_drawCharacter(G, PAD, y, W - PAD * 2, CHAR_H, ci, imgs && imgs.charImg);
+    y += CHAR_H + 14;
   }
   var drawSec = function(title, list, color){
     if (!list || !list.length) return;
@@ -990,8 +1120,9 @@ async function buildScoreImage(opt){
   var d = opt.data || collectExportData(opt);
   if (!d) return null;
   var tpl = opt.tpl || TtGet();
-  var got = await Promise.all([loadJacketImages(jacketNeeds(d)), loadLogo()]);
+  var got = await Promise.all([loadJacketImages(jacketNeeds(d)), loadLogo(), loadCharImage(d)]);
   var imgs = got[0];
+  imgs.charImg = got[2];
   var S = tplSize(tpl, d);
   var cv = document.createElement('canvas');
   cv.width = Math.max(1, Math.round(S.W));
@@ -1010,12 +1141,13 @@ function buildScaled(opt){
   var tpl = opt.tpl || TtGet();
   var S = tplSize(tpl, d);
   var k = Math.max(1, Math.min(4, Math.round(opt.scale || 1)));
-  return Promise.all([loadJacketImages(jacketNeeds(d)), loadLogo()]).then(function(got){
+  return Promise.all([loadJacketImages(jacketNeeds(d)), loadLogo(), loadCharImage(d)]).then(function(got){
     var cv = document.createElement('canvas');
     cv.width = Math.round(S.W * k);
     cv.height = Math.round(S.H * k);
     var G = G_make(cv, k, 1);
     G.logo = got[1];
+    got[0].charImg = got[2];
     drawTemplate(G, tpl, S.W, S.H, d, got[0], { theme: opt.theme || ThGet() });
     return cv;
   });
@@ -1097,6 +1229,10 @@ return {
   setJacketDir: function(dir, ext){ ARC_FS_DIR = dir || ''; ARC_FS_EXT = ext || ''; },
   jacketSrc: TjacketUrls,
   _collect: collectExportData,
-  _size: tplSize
+  _size: tplSize,
+  charInfo: charInfo,
+  charSrc: charSrc,
+  setCharDir: setCharDir,
+  charNeeds: charNeeds
 };
 })();
