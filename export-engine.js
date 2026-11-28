@@ -347,7 +347,7 @@ function f_drawHead(G, W, PAD, opt){
   c.textBaseline = 'top';
   if (light && G.logo && G.logo.naturalWidth){
     /* 白纸主题：左上角直接放 ARCAEA 官方 logo（黑底已抠成透明 PNG） */
-    var lh = (opt.logoH || 44) * s;
+    var lh = (opt.logoH || 66) * s;
     var lw = lh * (G.logo.naturalWidth / G.logo.naturalHeight);
     var maxW = W - PAD * 2 - (opt.badge ? 220 * s : 0);
     if (lw > maxW){ lw = maxW; lh = lw * (G.logo.naturalHeight / G.logo.naturalWidth); }
@@ -386,9 +386,11 @@ function f_drawHead(G, W, PAD, opt){
     c.fillStyle = '#a78bfa';
     c.fillText('国服成绩', PAD + tw2 + 16 * s, y + Math.round(big * 0.38));
   }
-  c.font = (15 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
+  c.font = (12 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
   c.fillStyle = light ? T.dim : 'rgba(255,255,255,.35)';
-  c.fillText(opt.sub || 'BEST 30 + RECENT 10', PAD, y + 58);
+  c.textAlign = 'right';
+  c.fillText(opt.sub || 'BEST 30 + RECENT 10', W - PAD, y + 58);
+  c.textAlign = 'left';
   if (opt.badge){
     c.textAlign = 'right';
     c.font = '600 ' + (13 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
