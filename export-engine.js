@@ -246,6 +246,21 @@ var TDESC = {
   wall:     '曲绘九宫格风格，只有图没有长文字'
 };
 
+/* ---------- 明暗主题：全局一份，导出图跟着走 ---------- */
+var THEME_KEY = 'arcaea_theme';
+function ThGet(){
+  try { return localStorage.getItem(THEME_KEY) === 'dark' ? 'dark' : 'light'; }
+  catch(e){ return 'light'; }
+}
+function ThSet(v){
+  v = v === 'dark' ? 'dark' : 'light';
+  try { localStorage.setItem(THEME_KEY, v); } catch(e){}
+  try { document.documentElement.setAttribute('data-theme', v); } catch(e){}
+  try { window.dispatchEvent(new CustomEvent('arcaea-theme', { detail: { theme: v } })); } catch(e){}
+  return v;
+}
+function ThToggle(){ return ThSet(ThGet() === 'dark' ? 'light' : 'dark'); }
+
 function TtGet(){ try { return localStorage.getItem(TPL_KEY) || 'portrait'; } catch(e){ return 'portrait'; } }
 function TtSet(v){ try { localStorage.setItem(TPL_KEY, v); } catch(e){} }
 function tplSet(v){ try { localStorage.setItem(TPL_KEY, v); } catch(e){} }
@@ -705,11 +720,12 @@ function portraitSize(d){
   };
 }
 
-function renderPortrait(G, W, H, d, imgs){
+function renderPortrait(G, W, H, d, imgs, opts){
   var PAD = 40, CW = W - PAD * 2, ROW = 74, HEAD = 54, GAP = 14, COLS = 2;
   var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent, sm = d.sm;
-  G.TH = THEME_LIGHT;
-  paintBg(G, W, H, { light: true });
+  var _dark = (opts && opts.theme) ? (opts.theme === 'dark') : (ThGet() === 'dark');
+  G.TH = _dark ? THEME_DARK : THEME_LIGHT;
+  paintBg(G, W, H, { light: !_dark });
   G.c.textBaseline = 'top';
   G.c.textAlign = 'left';
   var y = 30;
@@ -750,13 +766,14 @@ var WIDE_W = 1920, WIDE_H = 1080;
 
 function wideSize(){ return { W: WIDE_W, H: WIDE_H }; }
 
-function renderWide(G, d, imgs){
+function renderWide(G, d, imgs, opts){
   var c = G.c, s = G.s;
-  G.TH = THEME_LIGHT;
-  var T = THEME_LIGHT;
+  var _dark = (opts && opts.theme) ? (opts.theme === 'dark') : (ThGet() === 'dark');
+  G.TH = _dark ? THEME_DARK : THEME_LIGHT;
+  var T = G.TH;
   var W = WIDE_W, H = WIDE_H, PAD = 60, GAP = 18;
   var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent;
-  paintBg(G, W, H, { light: true });
+  paintBg(G, W, H, { light: !_dark, glow2: _dark });
   c.textBaseline = 'top';
   c.textAlign = 'left';
   f_drawHead(G, W, PAD, { big: 46, sub: 'BEST 30', badge: '国服 · 本地成绩提取' });
@@ -894,12 +911,13 @@ function wallSize(d){
   return { W: W, H: H, PAD: PAD, COLS: COLS, GAP: GAP, tile: tile };
 }
 
-function renderWall(G, W, H, d, imgs){
+function renderWall(G, W, H, d, imgs, opts){
   var c = G.c, s = G.s;
-  G.TH = THEME_LIGHT;
-  var T = THEME_LIGHT;
+  var _dark = (opts && opts.theme) ? (opts.theme === 'dark') : (ThGet() === 'dark');
+  G.TH = _dark ? THEME_DARK : THEME_LIGHT;
+  var T = G.TH;
   var L = wallSize(d), PAD = L.PAD, COLS = L.COLS, GAP = L.GAP, tile = L.tile;
-  paintBg(G, W, H, { light: true });
+  paintBg(G, W, H, { light: !_dark });
   c.textBaseline = 'top';
   c.textAlign = 'left';
   var y = 30;
@@ -944,10 +962,10 @@ function tplSize(tpl, d){
   return portraitSize(d);
 }
 
-function drawTemplate(G, tpl, W, H, d, imgs){
-  if (tpl === 'wide') renderWide(G, d, imgs);
-  else if (tpl === 'wall') renderWall(G, W, H, d, imgs);
-  else renderPortrait(G, W, H, d, imgs);
+function drawTemplate(G, tpl, W, H, d, imgs, opts){
+  if (tpl === 'wide') renderWide(G, d, imgs, opts);
+  else if (tpl === 'wall') renderWall(G, W, H, d, imgs, opts);
+  else renderPortrait(G, W, H, d, imgs, opts);
   G.TH = null;          /* 还原默认深色，后续模板不受影响 */
 }
 
@@ -965,7 +983,7 @@ async function buildScoreImage(opt){
   cv.height = Math.max(1, Math.round(S.H));
   var G = G_make(cv, 1, 1);
   G.logo = got[1];
-  drawTemplate(G, tpl, S.W, S.H, d, imgs);
+  drawTemplate(G, tpl, S.W, S.H, d, imgs, { theme: opt.theme || ThGet() });
   return cv;
 }
 
@@ -983,7 +1001,7 @@ function buildScaled(opt){
     cv.height = Math.round(S.H * k);
     var G = G_make(cv, k, 1);
     G.logo = got[1];
-    drawTemplate(G, tpl, S.W, S.H, d, got[0]);
+    drawTemplate(G, tpl, S.W, S.H, d, got[0], { theme: opt.theme || ThGet() });
     return cv;
   });
 }
@@ -1037,10 +1055,10 @@ function exportScoreImage(){
   var tpl = TtGet();
   var rows = csvRows();
   if (!rows.length){ alert('没有成绩数据。先粘贴 CSV 或点「查询」。'); return; }
-  var w = window.open('preview.html?tpl=' + encodeURIComponent(tpl), '_blank');
+  var w = window.open('preview.html?tpl=' + encodeURIComponent(tpl) + '&theme=' + ThGet(), '_blank');
   if (!w){ alert('预览窗被浏览器拦了，右上角允许弹窗再试。'); return; }
   var me = (typeof LAST !== 'undefined' && LAST) ? (LAST.me || null) : null;
-  try { w.ARC_PREVIEW = { rows: rows, me: me, tpl: tpl, site: location.href.split('#')[0] }; } catch (e) {}
+  try { w.ARC_PREVIEW = { rows: rows, me: me, tpl: tpl, theme: ThGet(), site: location.href.split('#')[0] }; } catch (e) {}
   try {
     localStorage.setItem(PREVIEW_CACHE_KEY, JSON.stringify({ rows: rows, me: me, site: location.href.split('#')[0] }));
   } catch (e) {}
@@ -1053,6 +1071,9 @@ return {
   desc: TDESC,
   get: TtGet,
   set: TtSet,
+  themeGet: ThGet,
+  themeSet: ThSet,
+  themeToggle: ThToggle,
   note: tplNote,
   signature: TSIG,
   exportImage: exportScoreImage,
