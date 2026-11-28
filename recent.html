@@ -304,7 +304,7 @@ function verifyCsv(rows){
 /* 成绩排序：时间新的在前。
    优先用 ts（真 unix 秒）；没有 ts 的旧 CSV 就从 date 字符串解析，
    实在解析不出来才退到 pot。以前的写法是「两边都有 ts 才算时间」，
-   只要有一行 ts=0（v2.7.4 及以前的 CSV 全如此）就整盘退化成按 pot 排，
+   只要有一行 ts=0（v2.7.5 及以前的 CSV 全如此）就整盘退化成按 pot 排，
    于是「最新打歌」显示的是 pot 最高的那首老歌。 */
 function tsOf(r){
   if (r.ts > 0) return r.ts;
@@ -796,7 +796,7 @@ document.getElementById('themeBtn').onclick = function(){
 };
 paintTheme();
 </script>
-<div class="pgfoot">v2.7.4<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
+<div class="pgfoot">v2.7.5<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
 <script>
 /* 本地版（exe 里的服务）：/index.html 是提取器页，查分页在 /site。
    线上 GitHub Pages 没有这个判断，链接照原样走。 */
