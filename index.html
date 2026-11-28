@@ -12,6 +12,41 @@
     --bg:#fff; --panel:#fff; --line:#eae7f0; --line2:#f4f1fa;
     --pink:#d3459a; --cyan:#2bb8d4; --purple:#6b3fa0; --txt:#2b2733; --dim:#938fa0;
   }
+  /* 暗色：同一套变量换值，所有卡片/输入框自动跟着变 */
+  html[data-theme=dark]{
+    --bg:#14111d; --panel:#1b1727; --line:#2c2540; --line2:#221d31;
+    --pink:#f472b6; --cyan:#4cc9e0; --purple:#a78bfa; --txt:#ece8f6; --dim:#9a93ad;
+  }
+  html[data-theme=dark] body{background:var(--bg);color:var(--txt)}
+  html[data-theme=dark] .card{background:var(--panel)}
+  html[data-theme=dark] button.ghost{background:var(--line2);border-color:var(--line);color:var(--txt)}
+  html[data-theme=dark] .tplcard{background:var(--panel);border-color:var(--line)}
+  html[data-theme=dark] .tplcard b{color:var(--txt)}
+  html[data-theme=dark] .tplcard:hover{background:#241e35;border-color:#4b3f6b}
+  html[data-theme=dark] .tplcard.on{background:linear-gradient(135deg,#2a1f33,#241e35);border-color:var(--pink)}
+  html[data-theme=dark] .tplcard.on b{color:var(--pink)}
+  html[data-theme=dark] .pagehead{background:#1a1526}
+  html[data-theme=dark] .pageheadnav a{color:var(--dim)}
+  html[data-theme=dark] .pageheadnav li.on a,html[data-theme=dark] .pageheadnav a:hover{color:var(--pink)}
+
+  /* ---------------------------------------------------------------
+     右下角明暗悬浮窗：点一下切主题，选择记在 localStorage 里。
+     --------------------------------------------------------------- */
+  .tgBtn{
+    position:fixed;right:22px;bottom:22px;z-index:9999;
+    width:48px;height:48px;border-radius:50%;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--txt);
+    font-size:20px;line-height:1;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 22px rgba(80,60,120,.18);transition:transform .16s,box-shadow .16s;
+  }
+  .tgBtn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 26px rgba(80,60,120,.26)}
+  .tgBtn:active{transform:scale(.94)}
+  .tgTip{
+    position:fixed;right:22px;bottom:78px;z-index:9999;pointer-events:none;
+    padding:5px 10px;border-radius:8px;font-size:12px;white-space:nowrap;
+    background:var(--txt);color:var(--bg);opacity:0;transition:opacity .18s;
+  }
+  .tgBtn:hover + .tgTip,.tgBtn:focus + .tgTip{opacity:.92}
   *{box-sizing:border-box;margin:0;padding:0}
   body{
     min-height:100vh;font:14px/1.6 "Exo 2","Segoe UI","Microsoft YaHei",system-ui,sans-serif;
@@ -161,7 +196,7 @@
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.6.0</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.7.0</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -199,6 +234,15 @@
       </button>
       <button type="button" class="tplcard" data-tpl="wall">
         <b>曲绘墙</b><small>曲绘九宫格风格，只有图没有长文字</small>
+      </button>
+    </div>
+    <div class="sub" style="margin:14px 0 8px">导出色调 · 和右下角悬浮窗同一份设置</div>
+    <div class="tplpick" id="themeBox" style="grid-template-columns:repeat(2,1fr)">
+      <button type="button" class="tplcard" data-th="light">
+        <b>亮色</b><small>白纸底，适合发群 / 白天看</small>
+      </button>
+      <button type="button" class="tplcard" data-th="dark">
+        <b>暗色</b><small>紫黑底，适合当壁纸 / 夜里看</small>
       </button>
     </div>
     <div class="row" style="margin-top:12px">
@@ -732,6 +776,49 @@ function drawSongRow(c, x, y, w, r, rank, im, sm, opt){
 // 统一块绘制：一列就列数=1，双列就列数=2
 /* 导出模板引擎在 export-engine.js 里，查分页和预览页共用同一份代码 */
 // 引擎在 body 末尾的 <script src> 里加载，这时还不能直接绑；用 DOMContentLoaded 兜住
+/* ---------- 明暗主题：悬浮窗 + 导出卡片两个入口，共用 localStorage ---------- */
+function paintTheme(){
+  var t = (window.ARC_TPL && ARC_TPL.themeGet) ? ARC_TPL.themeGet() : (function(){ try { return localStorage.getItem('arcaea_theme') === 'dark' ? 'dark' : 'light'; } catch(e){ return 'light'; } })();
+  document.documentElement.setAttribute('data-theme', t);
+  var b = document.getElementById('themeBtn');
+  var tip = document.getElementById('themeTip');
+  if (b) b.textContent = (t === 'dark') ? '☀' : '☾';
+  if (tip) tip.textContent = (t === 'dark') ? '切到亮色' : '切到暗色';
+  var cs = document.querySelectorAll('#themeBox .tplcard');
+  for (var i = 0; i < cs.length; i++){
+    var on = cs[i].getAttribute('data-th') === t;
+    cs[i].classList.toggle('on', on);
+    cs[i].setAttribute('aria-pressed', on ? 'true' : 'false');
+  }
+}
+function curTheme(){
+  if (window.ARC_TPL && ARC_TPL.themeGet) return ARC_TPL.themeGet();
+  try { return localStorage.getItem('arcaea_theme') === 'dark' ? 'dark' : 'light'; } catch(e){ return 'light'; }
+}
+function setTheme(t){
+  if (window.ARC_TPL && ARC_TPL.themeSet) ARC_TPL.themeSet(t);
+  else {
+    try { localStorage.setItem('arcaea_theme', (t === 'dark' ? 'dark' : 'light')); } catch(e){}
+    document.documentElement.setAttribute('data-theme', (t === 'dark' ? 'dark' : 'light'));
+  }
+  paintTheme();
+}
+function hookTheme(){
+  var b = document.getElementById('themeBtn');
+  if (b) b.onclick = function(){ setTheme(curTheme() === 'dark' ? 'light' : 'dark'); };
+  var cs = document.querySelectorAll('#themeBox .tplcard');
+  for (var i = 0; i < cs.length; i++){
+    (function(btn){ btn.onclick = function(){ setTheme(btn.getAttribute('data-th')); }; })(cs[i]);
+  }
+  window.addEventListener('storage', function(e){ if (e.key === 'arcaea_theme') paintTheme(); });
+  window.addEventListener('arcaea-theme', paintTheme);
+  paintTheme();
+}
+// 尽早给 html 打上 theme，避免刷新时闪一下白
+(function(){ try { document.documentElement.setAttribute('data-theme', localStorage.getItem('arcaea_theme') === 'dark' ? 'dark' : 'light'); } catch(e){} })();
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hookTheme);
+else hookTheme();
+
 (function bindExport(){
   function go(){
     var el = document.getElementById('expImg');
@@ -876,5 +963,7 @@ function loadJackets(){
     <div><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool" target="_blank" rel="noopener">GitHub 仓库</a><span class="sep">·</span><a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest" target="_blank" rel="noopener">下载提取工具</a><span class="sep">·</span><a href="https://lyuchen0720.github.io/Arcaea-CN-Scroll-Tool/" target="_blank" rel="noopener">在线版</a></div>
     <div class="fa">作者 <b>Lyuchen0720</b> · 曲绘版权归 lowiro 所有，仅用于曲目识别</div>
   </div>
+<button type="button" class="tgBtn" id="themeBtn" aria-label="切换明暗">☾</button>
+<div class="tgTip" id="themeTip">切到暗色</div>
 </body>
 </html>
