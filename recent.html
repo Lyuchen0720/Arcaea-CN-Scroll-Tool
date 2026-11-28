@@ -172,7 +172,9 @@ try { document.documentElement.setAttribute('data-theme', localStorage.getItem('
   <div class="list" id="list"></div>
 </div>
 <script>
-var SONG = {}, ROWS = [], PREV = {}, LIMIT = 1;
+/* 显示最近多少条。以前是 1，页面上只有一张卡，
+   用户很容易把「只显示了一条」理解成「选错了歌」（v2.7.9）。 */
+var SONG = {}, ROWS = [], PREV = {}, LIMIT = 10;
 var LAST_NAME = '', LAST_RATE = '';
 var CONST_FIX = 0.4;
 
@@ -303,7 +305,7 @@ function verifyCsv(rows){
 /* 成绩排序：时间新的在前。
    优先用 ts（真 unix 秒）；没有 ts 的旧 CSV 就从 date 字符串解析，
    实在解析不出来才退到 pot。以前的写法是「两边都有 ts 才算时间」，
-   只要有一行 ts=0（v2.7.8 及以前的 CSV 全如此）就整盘退化成按 pot 排，
+   只要有一行 ts=0（v2.7.9 及以前的 CSV 全如此）就整盘退化成按 pot 排，
    于是「最新打歌」显示的是 pot 最高的那首老歌。 */
 function tsOf(r){
   if (r.ts > 0) return r.ts;
@@ -314,7 +316,7 @@ function tsOf(r){
 }
 
 /* 排序必须和查分页 index.html 的「最近成绩」完全同一套，
-   否则同一个 CSV 在两页会选出不同的「最新一条」（v2.7.8 踩过）。
+   否则同一个 CSV 在两页会选出不同的「最新一条」（v2.7.9 踩过）。
    date 里自带时分，字符串比较就是时间比较；ts 只作同分时的补充。 */
 function byRecent(a, b){
   var d = String(b.date || '').localeCompare(String(a.date || ''));
@@ -367,7 +369,7 @@ function render(){
   var vf = verifyCsv(ROWS);
   noteEl.className = 'note sig-' + vf.level;
   noteEl.textContent = sel.length
-    ? ('最新一条 · 共 ' + ROWS.length + ' 条成绩。▲▼ 是相对上次查询的变化。 · ' + vf.text)
+    ? ('最近 ' + sel.length + ' 条 · 共 ' + ROWS.length + ' 条成绩。▲▼ 是相对上次查询的变化。 · ' + vf.text)
     : '';
   // 绑定封面占位。注意两种竞态：
   //   1) 图片在绑定前就已加载失败 -> error 事件已经发完，绑不上
@@ -455,7 +457,7 @@ function resetSeq(){
 window.addEventListener('pagehide', resetSeq);
 
 function exportImage(){
-  var sorted = ROWS.slice().sort(byRecent).slice(0, 1);
+  var sorted = ROWS.slice().sort(byRecent).slice(0, LIMIT);
   if (!sorted.length){ $('#note').textContent = '\u6ca1\u6709\u6570\u636e\u53ef\u4ee5\u5bfc\u51fa\u55b5\u3002'; return; }
   var btn = $('#exp'); var old = btn.textContent;
   btn.disabled = true; btn.textContent = '\u751f\u6210\u4e2d\u2026';
@@ -796,7 +798,7 @@ document.getElementById('themeBtn').onclick = function(){
 };
 paintTheme();
 </script>
-<div class="pgfoot">v2.7.8<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
+<div class="pgfoot">v2.7.9<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
 <script>
 /* 本地版（exe 里的服务）：/index.html 是提取器页，查分页在 /site。
    线上 GitHub Pages 没有这个判断，链接照原样走。 */
