@@ -173,8 +173,8 @@ try { document.documentElement.setAttribute('data-theme', localStorage.getItem('
 </div>
 <script>
 /* 显示最近多少条。以前是 1，页面上只有一张卡，
-   用户很容易把「只显示了一条」理解成「选错了歌」（v2.7.9）。 */
-var SONG = {}, ROWS = [], PREV = {}, LIMIT = 10;
+   用户很容易把「只显示了一条」理解成「选错了歌」（v2.7.10）。 */
+var SONG = {}, ROWS = [], PREV = {}, LIMIT = 1;
 var LAST_NAME = '', LAST_RATE = '';
 var CONST_FIX = 0.4;
 
@@ -305,7 +305,7 @@ function verifyCsv(rows){
 /* 成绩排序：时间新的在前。
    优先用 ts（真 unix 秒）；没有 ts 的旧 CSV 就从 date 字符串解析，
    实在解析不出来才退到 pot。以前的写法是「两边都有 ts 才算时间」，
-   只要有一行 ts=0（v2.7.9 及以前的 CSV 全如此）就整盘退化成按 pot 排，
+   只要有一行 ts=0（v2.7.10 及以前的 CSV 全如此）就整盘退化成按 pot 排，
    于是「最新打歌」显示的是 pot 最高的那首老歌。 */
 function tsOf(r){
   if (r.ts > 0) return r.ts;
@@ -316,7 +316,7 @@ function tsOf(r){
 }
 
 /* 排序必须和查分页 index.html 的「最近成绩」完全同一套，
-   否则同一个 CSV 在两页会选出不同的「最新一条」（v2.7.9 踩过）。
+   否则同一个 CSV 在两页会选出不同的「最新一条」（v2.7.10 踩过）。
    date 里自带时分，字符串比较就是时间比较；ts 只作同分时的补充。 */
 function byRecent(a, b){
   var d = String(b.date || '').localeCompare(String(a.date || ''));
@@ -324,6 +324,67 @@ function byRecent(a, b){
   var ta = a.ts || 0, tb = b.ts || 0;
   if (ta !== tb) return tb - ta;
   return (b.pot || 0) - (a.pot || 0);
+}
+
+
+/* ---------- 选歌：优先用服务端记录的「最后一次游玩」 ----------
+   CSV 里每曲只留最高分，主人再打一次更低的成绩不会覆盖它，
+   于是按 date 排会一直停在「刷新纪录那次」——看起来像选错了歌。
+   /user/me 的 recent_score[0] 带 time_played（毫秒）与 song_id/difficulty，
+   它是「最后一次游玩」，不管这次有没有破纪录。拿它来选就对上了。 */
+var PICK = null;   // {id, diff, score, time}
+/* clear_type 的数字含义，跟 core.py 的 CLEAR 表对齐 */
+var CLEAR_NAME = ['Track Lost', 'Normal Clear', 'Full Recall', 'Pure Memory',
+                  'Easy Clear', 'Hard Clear', 'Track Complete', 'Pure Memory'];
+
+
+function pickFromRecent(me){
+  var v = (me && (me.value || me)) || null;
+  var rs = (v && v.recent_score) || [];
+  if (!rs.length) return null;
+  var s = rs[0];
+  if (!s || !s.song_id) return null;
+  var tp = parseInt(s.time_played, 10) || 0;
+  return {
+    id: String(s.song_id),
+    diff: s.difficulty,
+    score: parseInt(s.score, 10) || 0,
+    time: tp ? new Date(tp).toLocaleString('zh-CN', { hour12: false }).replace(/\//g, '-') : ''
+  };
+}
+
+/* CSV 行里找 PICK 对应的那条（同曲、难度名对得上）。
+   难度名在 CSV 里是 Future/Beyond 这类字符串，接口里是 0-4 的数字。 */
+var DIFF_NUM = { Past: 0, Present: 1, Future: 2, Beyond: 3, Eternal: 3 };
+function rowOfPick(rows, pk){
+  if (!pk) return null;
+  var want = null;
+  for (var k in DIFF_NUM){ if (DIFF_NUM[k] === pk.diff) want = k; }
+  for (var i = 0; i < rows.length; i++){
+    var r = rows[i];
+    if (r.id !== pk.id) continue;
+    if (want == null || String(r.diff).toLowerCase() === want.toLowerCase()) return r;
+  }
+  return null;
+}
+
+/* CSV 那条是「历史最高分」，服务端那条才是「这一次」。拿服务端的数字覆盖，
+   卡片才是主人刚打出来的样子。潜力按本曲定数重算，日期用服务端的游玩时间。 */
+function applyPick(row, pk){
+  if (!row || !pk) return row;
+  var c = {
+    id: row.id, song: row.song, diff: row.diff, cc: row.cc,
+    score: pk.score || row.score,
+    shiny: pk.shiny || row.shiny,
+    pure: pk.pure || row.pure,
+    far: pk.far || row.far,
+    lost: pk.lost || row.lost,
+    clear: pk.clear || row.clear,
+    sig: row.sig, ts: row.ts
+  };
+  c.pot = pot(c.cc, c.score);
+  c.date = pk.time || row.date;
+  return c;
 }
 
 function keyOf(r){ return r.id + '|' + r.diff; }
@@ -363,13 +424,18 @@ function cardHTML(r, i){
 function render(){
   var listEl = $('#list'), noteEl = $('#note');
   if (!ROWS.length){ noteEl.textContent = '请先进行成绩查询喵 —— 回到「成绩查询」页查一次，或者把 scores.csv 粘进上面的框。'; listEl.innerHTML = ''; return; }
+  /* 有服务端「最后一次游玩」就按它选，没有才退回 CSV 按 date 排。 */
   var sorted = ROWS.slice().sort(byRecent);
-  var sel = sorted.slice(0, LIMIT);
+  var pk = applyPick(rowOfPick(sorted, PICK), PICK);
+  var sel = pk ? [pk] : sorted.slice(0, LIMIT);
+  var fromServer = !!pk;
   listEl.innerHTML = sel.map(cardHTML).join('');
   var vf = verifyCsv(ROWS);
   noteEl.className = 'note sig-' + vf.level;
   noteEl.textContent = sel.length
-    ? ('最近 ' + sel.length + ' 条 · 共 ' + ROWS.length + ' 条成绩。▲▼ 是相对上次查询的变化。 · ' + vf.text)
+    ? ('最近一条 · 共 ' + ROWS.length + ' 条成绩。'
+       + (fromServer ? '按服务端记录的最后一次游玩（' + (PICK.time || '') + '）选定；' : '')
+       + '▲▼ 是相对上次查询的变化。 · ' + vf.text)
     : '';
   // 绑定封面占位。注意两种竞态：
   //   1) 图片在绑定前就已加载失败 -> error 事件已经发完，绑不上
@@ -457,7 +523,9 @@ function resetSeq(){
 window.addEventListener('pagehide', resetSeq);
 
 function exportImage(){
-  var sorted = ROWS.slice().sort(byRecent).slice(0, LIMIT);
+  var allSorted = ROWS.slice().sort(byRecent);
+  var pkRow = applyPick(rowOfPick(allSorted, PICK), PICK);
+  var sorted = pkRow ? [pkRow] : allSorted.slice(0, LIMIT);
   if (!sorted.length){ $('#note').textContent = '\u6ca1\u6709\u6570\u636e\u53ef\u4ee5\u5bfc\u51fa\u55b5\u3002'; return; }
   var btn = $('#exp'); var old = btn.textContent;
   btn.disabled = true; btn.textContent = '\u751f\u6210\u4e2d\u2026';
@@ -745,6 +813,7 @@ function loadPlayer(){
       LAST_RATE = (v.rating / 1000).toFixed(3);
       var el = document.getElementById('who');
       if (el){ el.textContent = LAST_NAME + ' · ' + LAST_RATE; el.classList.remove('hide'); }
+      PICK = pickFromRecent(v);
       if (ROWS.length) render();
     })
     .catch(function(){});
@@ -798,7 +867,7 @@ document.getElementById('themeBtn').onclick = function(){
 };
 paintTheme();
 </script>
-<div class="pgfoot">v2.7.9<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
+<div class="pgfoot">v2.7.10<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
 <script>
 /* 本地版（exe 里的服务）：/index.html 是提取器页，查分页在 /site。
    线上 GitHub Pages 没有这个判断，链接照原样走。 */
