@@ -195,6 +195,8 @@
       try { th = (window.ARC_TPL && ARC_TPL.themeGet) ? ARC_TPL.themeGet() : (localStorage.getItem('arcaea_theme') || 'light'); } catch(e){ th = 'light'; }
     }
     state.theme = (th === 'dark') ? 'dark' : 'light';
+    /* 数据来源校验结果：查分页导出时随 payload 带过来 */
+    window.__ARC_VERIFY__ = p.verify || window.__ARC_VERIFY__ || null;
     paintSwitch();
     render();
   };
