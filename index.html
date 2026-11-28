@@ -133,6 +133,11 @@
   h2{font-size:12px;letter-spacing:.16em;color:var(--dim);margin:0 0 10px;font-weight:700;
      display:flex;justify-content:space-between;align-items:baseline}
   h2 .avg{font-size:13px;color:var(--purple);letter-spacing:.04em;font-weight:700}
+  h2 .h2t{display:inline-flex;align-items:baseline;gap:10px;min-width:0;letter-spacing:.16em}
+  h2 .sig{font-size:11px;letter-spacing:.02em;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  h2 .sig.sig-ok{color:var(--cyan)}
+  h2 .sig.sig-bad{color:#d9534f}
+  h2 .sig.sig-none{color:var(--dim2)}
   .song{display:flex;align-items:center;gap:10px;padding:8px 8px;border-radius:10px}
   .song:nth-child(odd){background:#fbfaff}
   .song:hover{background:#f4effc}
@@ -216,7 +221,7 @@
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.7.5</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.7.6</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -302,7 +307,7 @@
   </div>
 
   <div id="recent" class="card hide">
-    <h2>最近成绩</h2>
+    <h2><span class="h2t">最近成绩<span class="sig" id="recentSig"></span></span></h2>
     <div id="recentBody"></div>
   </div>
 
@@ -660,10 +665,12 @@ function renderStats(rows, sm){
   LAST.verify = vf;
   window.__ARC_VERIFY__ = vf;   // 导出引擎画脚注时读它
   var st = $('#csvState');
-  if (st){
-    var color = vf.level === 'ok' ? 'var(--cyan)' : (vf.level === 'bad' ? '#d9534f' : 'var(--dim)');
-    st.innerHTML = rows.length + ' 条成绩已载入 <span style="color:' + color + ';margin-left:8px">'
-      + (vf.level === 'ok' ? '✓ ' : (vf.level === 'bad' ? '⚠ ' : '○ ')) + vf.text + '</span>';
+  if (st) st.textContent = rows.length + ' 条成绩已载入';
+  // 签名状态挂到「最近成绩」标题右边，别再挤在页面上方的工具条里
+  var sg = $('#recentSig');
+  if (sg){
+    sg.className = 'sig sig-' + vf.level;
+    sg.textContent = (vf.level === 'ok' ? '✓ ' : (vf.level === 'bad' ? '⚠ ' : '○ ')) + vf.text;
   }
   bindJacketFallback();
 }
