@@ -573,11 +573,28 @@ function drawWallTile(G, x, y, w, h, r, rank, im, opt){
 }
 
 
-/* ---------- 数据层：B30 / R10 一次算好，所有模板共用 ---------- */
+/* ---------- 数据层：B30 / R10 / recent 一次算好，所有模板共用 ---------- */
 function csvRows(){
   if (typeof LAST !== 'undefined' && LAST && LAST.rows && LAST.rows.length) return LAST.rows;
   var el = document.querySelector('#csv');
   return (el && typeof parseCSV === 'function') ? parseCSV(el.value) : [];
+}
+
+function buildRecentList(me, sm){
+  if (!me || !me.recent_score) return [];
+  sm = sm || {};
+  return me.recent_score.map(function(s){
+    var info = sm[s.song_id] || {};
+    var d = info.difficulties || {};
+    var cc = d[String(s.difficulty)];
+    var ccv = (cc == null) ? 0 : cc;
+    return { id: s.song_id, song: info.title || s.song_id, diff: s.difficulty,
+             cc: (cc == null ? '-' : cc), score: s.score,
+             pot: f_pot(ccv + CONST_FIX, s.score),
+             shiny: s.shiny_perfect_count || 0,
+             pure: (s.perfect_count != null ? s.perfect_count : (s.shiny_perfect_count || 0)),
+             far: s.near_count || 0, lost: s.miss_count || 0 };
+  });
 }
 
 function computeBest(rows){
@@ -618,7 +635,7 @@ function collectExportData(opt){
   var me = (opt.me !== undefined) ? opt.me
          : ((typeof LAST !== 'undefined' && LAST) ? LAST.me : null);
   var sm = opt.sm || (typeof LAST !== 'undefined' && LAST && LAST.sm) || {};
-  return { sm: sm, me: me, b30: computeBest(rows), r10: computeRecent(rows) };
+  return { sm: sm, me: me, b30: computeBest(rows), r10: computeRecent(rows), recent: buildRecentList(me, sm) };
 }
 
 /* 曲绘目录：默认 jackets/；预览页会把它改成查分页的绝对目录。
@@ -648,7 +665,7 @@ function TjacketUrls(id){
 
 function jacketNeeds(d){
   var need = {};
-  [d.b30, d.r10].forEach(function(list){
+  [d.b30, d.r10, d.recent].forEach(function(list){
     if (!list) return;
     list.forEach(function(r){ if (r.id && !need[r.id]) need[r.id] = TjacketUrl(r.id); });
   });
@@ -708,18 +725,19 @@ function loadJacketImages(need){
 /* ---------- 模板一：竖版长图（沿用第一版查分页的原版布局） ---------- */
 function portraitSize(d){
   var HEAD = 54, ROW = 74, COLS = 2, GAP = 14;
+  var hRec = d.recent.length ? HEAD + Math.ceil(d.recent.length / COLS) * ROW + 12 : 0;
   var hB30 = d.b30.length ? HEAD + Math.ceil(d.b30.length / COLS) * ROW + 12 : 0;
   var hR10 = d.r10.length ? HEAD + Math.ceil(d.r10.length / COLS) * ROW + 12 : 0;
   return {
     W: 1080,
-    H: 30 + 96 + GAP + (d.me ? 132 + GAP : 0)
+    H: 30 + 96 + GAP + (d.me ? 132 + GAP : 0) + (hRec ? hRec + GAP : 0)
        + (hB30 ? hB30 + GAP : 0) + (hR10 ? hR10 + GAP : 0) + 62
   };
 }
 
 function renderPortrait(G, W, H, d, imgs, opts){
   var PAD = 40, CW = W - PAD * 2, ROW = 74, HEAD = 54, GAP = 14, COLS = 2;
-  var me = d.me, b30 = d.b30, r10 = d.r10, sm = d.sm;
+  var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent, sm = d.sm;
   var _dark = (opts && opts.theme) ? (opts.theme === 'dark') : (ThGet() === 'dark');
   G.TH = _dark ? THEME_DARK : THEME_LIGHT;
   paintBg(G, W, H, { light: !_dark });
@@ -732,6 +750,13 @@ function renderPortrait(G, W, H, d, imgs, opts){
   if (me){
     f_drawProfile(G, PAD, y, CW, 132, me);
     y += 132 + GAP;
+  }
+  if (recent.length){
+    var hRec = HEAD + Math.ceil(recent.length / COLS) * ROW + 12;
+    f_drawCard(G, PAD, y, CW, hRec);
+    f_drawBlockHead(G, PAD, y, CW, '最近成绩', '', '');
+    f_drawBlock(G, PAD + 14, y + HEAD, CW - 28, recent, COLS, ROW, sm, imgs);
+    y += hRec + GAP;
   }
   if (b30.length){
     var hB30 = HEAD + Math.ceil(b30.length / COLS) * ROW + 12;
@@ -762,7 +787,7 @@ function renderWide(G, d, imgs, opts){
   G.TH = _dark ? THEME_DARK : THEME_LIGHT;
   var T = G.TH;
   var W = WIDE_W, H = WIDE_H, PAD = 60, GAP = 18;
-  var me = d.me, b30 = d.b30, r10 = d.r10;
+  var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent;
   paintBg(G, W, H, { light: !_dark, glow2: _dark });
   c.textBaseline = 'top';
   c.textAlign = 'left';
@@ -808,7 +833,8 @@ function renderWide(G, d, imgs, opts){
 
     var stats = [
       ['B30 均值', avgOf(b30).toFixed(3), T.purple],
-      ['R10 均值', avgOf(r10).toFixed(3), T.pink]
+      ['R10 均值', avgOf(r10).toFixed(3), T.pink],
+      ['最近成绩', String(recent.length) + ' 条', T.text]
     ];
     var sy = LY + 456;
     for (var i = 0; i < stats.length; i++){
@@ -846,7 +872,7 @@ function renderWide(G, d, imgs, opts){
   c.fillText('最近成绩', RX + 20, RHY + 14);
   var ts = 54, tgap = 12;
   var slotW = (RW - 40 - tgap * 9) / 10;
-  var recentList = r10;
+  var recentList = recent.length ? recent : r10;
   for (var j = 0; j < 10; j++){
     var rj = recentList[j];
     var tx = RX + 20 + j * (slotW + tgap);
@@ -896,7 +922,7 @@ function wallSize(d){
      抗锯齿会把曲绘"漏"出格子 1px。floor 成 190 后整块对齐到像素格。 */
   var tile = Math.floor((W - PAD * 2 - GAP * (COLS - 1)) / COLS);
   var secH = function(n){ return n ? 54 + Math.ceil(n / COLS) * (tile + GAP) + 14 : 0; };
-  var H = 30 + 96 + (d.me ? 132 + 14 : 0) + secH(d.b30.length) + secH(d.r10.length) + 84;
+  var H = 30 + 96 + (d.me ? 132 + 14 : 0) + secH(d.recent.length) + secH(d.b30.length) + secH(d.r10.length) + 84;
   return { W: W, H: H, PAD: PAD, COLS: COLS, GAP: GAP, tile: tile };
 }
 
@@ -937,6 +963,7 @@ function renderWall(G, W, H, d, imgs, opts){
     }
     y += h + 14;
   };
+  drawSec('最近成绩', d.recent, T.purple);
   drawSec('BEST 30', d.b30, T.purple);
   drawSec('RECENT 10', d.r10, T.pink);
   drawFoot(G, W, H, PAD);
