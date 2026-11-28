@@ -488,6 +488,21 @@ function drawFoot(G, W, H, PAD, alphabetic){
   c.textAlign = 'right';
   c.fillText('曲绘版权归 lowiro 所有 · 仅用于曲目识别', W - PAD, H - 60.5);
   c.textAlign = 'left';
+
+  /* 数据来源标记：页面把 verifyCsv() 的结果塞进 window.__ARC_VERIFY__，
+     有就画一行，没有（预览页/第三方嵌入）就不画，不打扰。 */
+  var vf = (typeof window !== 'undefined') ? window.__ARC_VERIFY__ : null;
+  if (vf && vf.text){
+    var col = vf.level === 'ok' ? (G_isLight(G) ? '#2bb8d4' : '#4cc9e0')
+            : vf.level === 'bad' ? '#d9534f'
+            : (G_isLight(G) ? '#b3adc0' : 'rgba(255,255,255,.34)');
+    var mark = vf.level === 'ok' ? '✓ ' : (vf.level === 'bad' ? '⚠ ' : '○ ');
+    c.font = (12 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
+    c.fillStyle = col;
+    c.textAlign = 'center';
+    c.fillText(mark + vf.text, W / 2, H - 34.5);
+    c.textAlign = 'left';
+  }
 }
 
 /* 曲绘格子（横版网格 / 曲绘墙共用）：封面铺满 + 底部渐隐 + 分数 */
@@ -1058,7 +1073,7 @@ function exportScoreImage(){
   var w = window.open('preview.html?tpl=' + encodeURIComponent(tpl) + '&theme=' + ThGet(), '_blank');
   if (!w){ alert('预览窗被浏览器拦了，右上角允许弹窗再试。'); return; }
   var me = (typeof LAST !== 'undefined' && LAST) ? (LAST.me || null) : null;
-  try { w.ARC_PREVIEW = { rows: rows, me: me, tpl: tpl, theme: ThGet(), site: location.href.split('#')[0] }; } catch (e) {}
+  try { w.ARC_PREVIEW = { rows: rows, me: me, tpl: tpl, theme: ThGet(), verify: window.__ARC_VERIFY__ || null, site: location.href.split('#')[0] }; } catch (e) {}
   try {
     localStorage.setItem(PREVIEW_CACHE_KEY, JSON.stringify({ rows: rows, me: me, site: location.href.split('#')[0] }));
   } catch (e) {}
