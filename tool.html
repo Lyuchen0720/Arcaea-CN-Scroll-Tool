@@ -68,6 +68,21 @@ dl.faq dd{margin:0;font-size:12.8px;color:#736d82;line-height:1.8}
 .tnav li.on{border-bottom-color:var(--pink)}
 .tnav a{color:inherit;text-decoration:none}
 .tnav a:hover{color:var(--pink)}
+/* 页面中下部左右两侧的「光」与「对立」立绘（v2.7.11）
+   只在够宽的屏幕上出现，窄屏自动隐藏，绝不压住正文。 */
+.pairfx{position:relative;height:0}
+/* 两张立绘都按「统一高度」缩放：光 731x900、对立 539x899 宽度差很多，
+   按宽度缩会让光显得比对立小一圈，所以这里按高度对齐。 */
+.pairfx .ch{position:absolute;bottom:0;opacity:.95;
+  filter:drop-shadow(0 12px 30px rgba(90,60,150,.18))}
+.pairfx .ch img{display:block;height:clamp(260px,30vw,400px);width:auto}
+/* 光保持原方向，对立镜像（方案 C） */
+.pairfx .ch.tairitsu img{transform:scaleX(-1)}
+.pairfx .ch.hikari{left:calc(50% - 430px - clamp(200px,24vw,320px))}
+.pairfx .ch.tairitsu{right:calc(50% - 430px - clamp(200px,24vw,320px))}
+.pairfx .ch .nm{display:block;margin-top:5px;font-size:10.5px;letter-spacing:.26em;
+  color:var(--dim);text-align:center}
+@media(max-width:1180px){.pairfx{display:none}}
 footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);text-align:center;font-size:12px;color:var(--dim);line-height:2}
 footer a{color:var(--purple);text-decoration:none}
 footer a:hover{color:var(--pink)}
@@ -93,10 +108,10 @@ footer a:hover{color:var(--pink)}
 <div class="wrap">
 
   <div class="lead">
-    <div class="badge">Windows · 免安装 · 31 MB</div>
+    <div class="badge">Windows · 免安装 · 57 MB</div>
     <h1>把手机里的 Arcaea 成绩，搬到网页上</h1>
     <p>国服 Arcaea 没有公开的成绩接口，网页版只能看到 rating 和最近一条记录。
-       这个小工具从模拟器里读一次本地成绩库，把完整的 131 条成绩、B30、R10 全部导出来，
+       这个小工具从模拟器里读一次本地成绩库，把完整的 150 条成绩、B30、R10 全部导出来，
        之后就能在查分页上用一辈子。</p>
   </div>
 
@@ -110,6 +125,8 @@ footer a:hover{color:var(--pink)}
     <div class="feat"><i>⚡</i><b>一键同步</b><span>自动启动 MuMu、打开游戏、等成绩同步完成，不用手动点来点去。</span></div>
     <div class="feat"><i>🔑</i><b>导出登录凭证</b><span>提取 a_t 并一键复制，粘到网页里就能查自己的分数。</span></div>
     <div class="feat"><i>🎨</i><b>内置 570 张曲绘</b><span>不用联网找封面，导出长图时每首歌都带图。</span></div>
+    <div class="feat"><i>👤</i><b>当前搭档立绘</b><span>从游戏包里带出 145 张搭档立绘，查分页和导出长图里都会显示你现在用的角色。</span></div>
+    <div class="feat"><i>🌗</i><b>明暗主题</b><span>页面右下角一键切换，白天晚上都看得清，导出长图也跟着走。</span></div>
   </div>
 
   <h2 class="sec">下载</h2>
@@ -119,7 +136,7 @@ footer a:hover{color:var(--pink)}
     <a class="btn s" href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool/releases/latest">GitHub 页面</a>
   </div>
   <div class="meta" style="margin-top:12px">
-    蓝奏云密码 <b style="color:var(--pink)">3t5r</b> · 单文件版约 30 MB，双击即用 · 「加速下载」走 ghfast.top 镜像，国内直连更快 · 需要 <b>Windows 10/11</b> · 首次运行会请求管理员权限（读模拟器需要）
+    蓝奏云密码 <b style="color:var(--pink)">3t5r</b> · 单文件版约 57 MB（565 张曲绘 + 145 张搭档立绘都打在里面了），双击即用 · 「加速下载」走 ghfast.top 镜像，国内直连更快 · 需要 <b>Windows 10/11</b> · 首次运行会请求管理员权限（读模拟器需要）
   </div>
 
   <h2 class="sec">视频教程</h2>
@@ -135,19 +152,26 @@ footer a:hover{color:var(--pink)}
   <h2 class="sec">怎么用</h2>
   <ol class="steps">
     <li><b>装好模拟器</b>：推荐 MuMu 12，装好后在里面安装 TapTap + Arcaea 国服，<b>登录并打完一次歌</b>（只需一次）。</li>
-    <li><b>双击 exe</b>：托盘会出现一个小图标，浏览器自动打开工具页面。</li>
+    <li><b>双击 exe</b>：托盘会出现一个小图标，浏览器自动打开 <code>http://127.0.0.1:8770/</code>。</li>
     <li><b>点「一键同步并提取」</b>：等 1~2 分钟，看到账号、成绩数、B30 就成功了。</li>
     <li><b>复制 a_t</b>：粘到查分页的输入框，之后随时打开网页就能看成绩、导出长图。</li>
   </ol>
   <div class="warn">
     <b>注意：</b>exe 请放在可写目录（比如桌面、D 盘），<b>不要放 C:\Program Files</b>，否则会报
     <code>Could not create temporary directory!</code>。
+    <br><b>MuMu 用户：</b>请在 <b>设置 → 其他设置（开发者选项）</b> 里把 <b>Root 权限</b> 打开再重启模拟器，否则读不到游戏的私有数据目录。
   </div>
+
+  <div class="pairfx" aria-hidden="true">
+    <div class="ch hikari"><img src="off/chars/0.webp" alt="" loading="lazy" decoding="async"><span class="nm">HIKARI</span></div>
+    <div class="ch tairitsu"><img src="off/chars/1.webp" alt="" loading="lazy" decoding="async"><span class="nm">TAIRITSU</span></div>
+  </div>
+
 
   <h2 class="sec">常见问题</h2>
   <dl class="faq">
     <dt>每次打完歌都要重新提取吗？</dt>
-    <dd>a_t 不用重新提取，长期有效。但完整的 B30 数据来自本地成绩库，打完歌想看到更新，需要再点一次「一键同步并提取」。</dd>
+    <dd>a_t 不用重新提取，长期有效。「最近成绩」页会直接读服务端记录的最后一次游玩，打完歌刷新网页就能看到；但完整的 B30 / 全部成绩来自本地成绩库，想看最新数据要再点一次「一键同步并提取」。</dd>
 
     <dt>能不能查别人的成绩？</dt>
     <dd>不能。国服接口只开放了 <code>/webapi/user/me</code>，没有任何读取他人成绩的端点。这不是工具的限制，是服务端没开。</dd>
@@ -161,6 +185,9 @@ footer a:hover{color:var(--pink)}
     <dt>为什么需要管理员权限？</dt>
     <dd>要执行 <code>adb root</code> 才能读游戏的私有数据目录。普通权限下 Android 会直接拒绝访问。</dd>
 
+    <dt>为什么「最近成绩」显示的不是我刚打的那一首？</dt>
+    <dd>本地成绩库（以及导出的 CSV）每首歌只保留<strong>历史最高分</strong>，你后来打了更低的成绩游戏不会覆盖它，所以按成绩日期排会一直停在「刷新纪录那次」。工具因此优先用官方接口的 <code>recent_score</code> （服务端记的最后一次游玩，不受最高分规则影响）来选歌。页面说明里会标明这次的选歌依据。</dd>
+
     <dt>数据会传到哪里？</dt>
     <dd>不会。所有读取和计算都在这台电脑上完成，成绩数据只写进你本地的 CSV，不会上传到任何服务器。</dd>
   </dl>
@@ -169,7 +196,7 @@ footer a:hover{color:var(--pink)}
     <div><a href="./">成绩查询页</a> · <a href="rank.html">难度排行</a> ·
       <a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool">GitHub 仓库</a></div>
     <div>作者 Lyuchen0720 · 曲绘与素材版权归 lowiro 所有，仅用于曲目识别</div>
-    <div style="font-size:11px;opacity:.6;margin-top:4px">v2.7.10</div>
+    <div style="font-size:11px;opacity:.6;margin-top:4px">v2.7.11</div>
   </footer>
 
 </div>
