@@ -90,9 +90,10 @@ function f_drawJacket(G, im, x, y, size){
   if (im){
     c.drawImage(im, x, y, size, size);
   } else {
-    c.fillStyle = 'rgba(255,255,255,.07)';
+    var Tj = G_theme(G);
+    c.fillStyle = G_isLight(G) ? Tj.barBg : 'rgba(255,255,255,.07)';
     c.fillRect(x, y, size, size);
-    c.fillStyle = 'rgba(255,255,255,.28)';
+    c.fillStyle = G_isLight(G) ? Tj.dim2 : 'rgba(255,255,255,.28)';
     c.font = (22 * s).toFixed(1) + 'px sans-serif';
     c.textAlign = 'center';
     c.textBaseline = 'middle';
@@ -476,7 +477,7 @@ function drawFoot(G, W, H, PAD, alphabetic){
 
 /* 曲绘格子（横版网格 / 曲绘墙共用）：封面铺满 + 底部渐隐 + 分数 */
 function drawWallTile(G, x, y, w, h, r, rank, im, opt){
-  var c = G.c, s = G.s;
+  var c = G.c, s = G.s, T = G_theme(G), light = G_isLight(G);
   opt = opt || {};
   /* 坐标一律对齐到整数像素：
      tile 宽是 1080/5 这类除不尽的数（190.4），x/y 会带小数。
@@ -495,9 +496,9 @@ function drawWallTile(G, x, y, w, h, r, rank, im, opt){
     var sc = Math.max(w / sw, h / sh);
     c.drawImage(im, x + (w - sw * sc) / 2, y + (h - sh * sc) / 2, sw * sc, sh * sc);
   } else {
-    c.fillStyle = 'rgba(255,255,255,.07)';
+    c.fillStyle = light ? T.barBg : 'rgba(255,255,255,.07)';
     c.fillRect(x, y, w, h);
-    c.fillStyle = 'rgba(255,255,255,.22)';
+    c.fillStyle = light ? T.dim2 : 'rgba(255,255,255,.22)';
     c.font = (26 * s) + 'px sans-serif';
     c.textAlign = 'center';
     c.textBaseline = 'middle';
@@ -505,30 +506,38 @@ function drawWallTile(G, x, y, w, h, r, rank, im, opt){
     c.textAlign = 'left';
     c.textBaseline = 'top';
   }
-  var shade = c.createLinearGradient(0, y + h * 0.42, 0, y + h);
-  shade.addColorStop(0, 'rgba(8,6,14,0)');
-  shade.addColorStop(1, 'rgba(8,6,14,.86)');
+  /* 深色主题压一层黑渐变托字；白纸主题改用"白雾"，否则白底上的深字会糊进曲绘 */
+  var shade = c.createLinearGradient(0, y + h * (light ? 0.50 : 0.42), 0, y + h);
+  if (light){
+    shade.addColorStop(0, 'rgba(255,255,255,0)');
+    shade.addColorStop(1, 'rgba(255,255,255,.92)');
+  } else {
+    shade.addColorStop(0, 'rgba(8,6,14,0)');
+    shade.addColorStop(1, 'rgba(8,6,14,.86)');
+  }
   c.fillStyle = shade;
   c.fillRect(x, y, w, h);
   c.restore();
 
   f_rrPath(G, x + 0.5, y + 0.5, w - 1, h - 1, 12);
-  c.strokeStyle = 'rgba(255,255,255,.10)';
+  c.strokeStyle = light ? T.cardLine : 'rgba(255,255,255,.10)';
   c.lineWidth = 1;
   c.stroke();
 
   c.textAlign = 'left';
   c.textBaseline = 'top';
   c.font = '700 ' + (13 * s).toFixed(1) + 'px "Consolas",monospace';
-  c.fillStyle = rank <= 3 ? '#f472b6' : 'rgba(255,255,255,.55)';
+  c.fillStyle = rank <= 3
+    ? (light ? T.pink : '#f472b6')
+    : (light ? '#ffffff' : 'rgba(255,255,255,.55)');
   c.fillText(String(rank), x + 12 * s, y + 10);
 
   c.textAlign = 'right';
   c.font = '600 ' + (17 * s * (opt.a) ).toFixed(1) + 'px "Consolas","Segoe UI",monospace';
-  c.fillStyle = '#fff';
+  c.fillStyle = light ? T.mark : '#fff';
   c.fillText(f_fmt(r.score), x + w - 12 * s, y + h - 42 * s * (opt.a || 1));
   c.font = '600 ' + (12 * s * (opt.a || 1)).toFixed(1) + 'px "Consolas",monospace';
-  c.fillStyle = '#c4b5fd';
+  c.fillStyle = light ? T.purple : '#c4b5fd';
   c.fillText(potOf(r).toFixed(3), x + w - 12 * s, y + h - 23 * s * (opt.a || 1));
   c.textAlign = 'left';
 }
@@ -743,10 +752,11 @@ function wideSize(){ return { W: WIDE_W, H: WIDE_H }; }
 
 function renderWide(G, d, imgs){
   var c = G.c, s = G.s;
-  G.TH = THEME_DARK;
+  G.TH = THEME_LIGHT;
+  var T = THEME_LIGHT;
   var W = WIDE_W, H = WIDE_H, PAD = 60, GAP = 18;
   var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent;
-  paintBg(G, W, H, { glow2: true });
+  paintBg(G, W, H, { light: true });
   c.textBaseline = 'top';
   c.textAlign = 'left';
   f_drawHead(G, W, PAD, { big: 46, sub: 'BEST 30', badge: '国服 · 本地成绩提取' });
@@ -768,11 +778,11 @@ function renderWide(G, d, imgs){
     c.textBaseline = 'middle';
     c.fillText('✦', ax + av / 2, ay + av / 2 + 3);
     c.textBaseline = 'top';
-    c.fillStyle = '#fff';
+    c.fillStyle = T.text;
     c.font = 'bold ' + (34 * s).toFixed(1) + 'px "Microsoft YaHei","Segoe UI",sans-serif';
     c.fillText(f_clipText(G, String(me.display_name || me.name || '—'), LW - 40), LX + LW / 2, ay + av + 26);
     c.font = (14 * s).toFixed(1) + 'px "Consolas",monospace';
-    c.fillStyle = 'rgba(255,255,255,.42)';
+    c.fillStyle = T.dim;
     c.fillText('USER CODE ' + (me.user_code || ''), LX + LW / 2, ay + av + 74);
 
     var pb = c.createLinearGradient(LX + 40, 0, LX + LW - 40, 0);
@@ -786,23 +796,23 @@ function renderWide(G, d, imgs){
     c.fillText(pText, LX + (LW - pW) / 2, LY + 300);
     c.textAlign = 'center';
     c.font = (13 * s).toFixed(1) + 'px "Consolas",monospace';
-    c.fillStyle = 'rgba(255,255,255,.38)';
+    c.fillStyle = T.dim2;
     c.fillText('OFFICIAL RATING', LX + LW / 2, LY + 396);
 
     var stats = [
-      ['B30 均值', avgOf(b30).toFixed(3), '#c4b5fd'],
-      ['R10 均值', avgOf(r10).toFixed(3), '#f9a8d4'],
-      ['最近成绩', String(recent.length) + ' 条', 'rgba(255,255,255,.72)']
+      ['B30 均值', avgOf(b30).toFixed(3), T.purple],
+      ['R10 均值', avgOf(r10).toFixed(3), T.pink],
+      ['最近成绩', String(recent.length) + ' 条', T.text]
     ];
     var sy = LY + 456;
     for (var i = 0; i < stats.length; i++){
       f_rrPath(G, LX + 28, sy, LW - 56, 74, 12);
-      c.fillStyle = 'rgba(255,255,255,.045)';
+      c.fillStyle = T.barBg;
       c.fill();
       c.textAlign = 'left';
       c.textBaseline = 'top';
       c.font = (15 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-      c.fillStyle = 'rgba(255,255,255,.40)';
+      c.fillStyle = T.dim;
       c.fillText(stats[i][0], LX + 48, sy + 27);
       c.textAlign = 'right';
       c.font = 'bold ' + (26 * s).toFixed(1) + 'px "Consolas",monospace';
@@ -813,7 +823,7 @@ function renderWide(G, d, imgs){
     c.textAlign = 'left';
   } else {
     c.font = (16 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-    c.fillStyle = 'rgba(255,255,255,.35)';
+    c.fillStyle = T.dim;
     c.textAlign = 'center';
     c.fillText('未查询账号', LX + LW / 2, LY + LH / 2 - 20);
     c.textAlign = 'left';
@@ -826,7 +836,7 @@ function renderWide(G, d, imgs){
   c.textAlign = 'left';
   c.textBaseline = 'top';
   c.font = '600 ' + (18 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = '#e9e3ff';
+  c.fillStyle = T.mark;
   c.fillText('最近成绩', RX + 20, RHY + 14);
   var ts = 54, tgap = 12;
   var slotW = (RW - 40 - tgap * 9) / 10;
@@ -839,11 +849,11 @@ function renderWide(G, d, imgs){
       c.textAlign = 'center';
       c.textBaseline = 'top';
       c.font = (11 * s).toFixed(1) + 'px "Consolas",monospace';
-      c.fillStyle = 'rgba(255,255,255,.5)';
+      c.fillStyle = T.dim;
       c.fillText(f_fmt(rj.score).slice(2), tx + ts / 2, RHY + 108);
     } else {
       f_rrPath(G, tx, RHY + 50, ts, ts, 8);
-      c.fillStyle = 'rgba(255,255,255,.04)';
+      c.fillStyle = T.barBg;
       c.fill();
     }
     c.textAlign = 'left';
@@ -853,11 +863,11 @@ function renderWide(G, d, imgs){
   var BY = RHY + RHh + GAP, BH = H - BY - 84;
   f_drawCard(G, RX, BY, RW, BH);
   c.font = '600 ' + (18 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = '#e9e3ff';
+  c.fillStyle = T.mark;
   c.fillText('BEST 30', RX + 20, BY + 14);
   c.textAlign = 'right';
   c.font = 'bold ' + (22 * s).toFixed(1) + 'px "Consolas",monospace';
-  c.fillStyle = '#c4b5fd';
+  c.fillStyle = T.purple;
   c.fillText('AVG ' + avgOf(b30).toFixed(3), RX + RW - 20, BY + 11);
   c.textAlign = 'left';
 
@@ -886,9 +896,10 @@ function wallSize(d){
 
 function renderWall(G, W, H, d, imgs){
   var c = G.c, s = G.s;
-  G.TH = THEME_DARK;
+  G.TH = THEME_LIGHT;
+  var T = THEME_LIGHT;
   var L = wallSize(d), PAD = L.PAD, COLS = L.COLS, GAP = L.GAP, tile = L.tile;
-  paintBg(G, W, H, null);
+  paintBg(G, W, H, { light: true });
   c.textBaseline = 'top';
   c.textAlign = 'left';
   var y = 30;
@@ -904,7 +915,7 @@ function renderWall(G, W, H, d, imgs){
     f_drawCard(G, PAD, y, W - PAD * 2, h);
     c.textAlign = 'left';
     c.font = '600 ' + (20 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-    c.fillStyle = '#e9e3ff';
+    c.fillStyle = T.mark;
     c.fillText(title, PAD + 24, y + 18);
     c.textAlign = 'right';
     c.font = 'bold ' + (20 * s).toFixed(1) + 'px "Consolas",monospace';
@@ -919,9 +930,9 @@ function renderWall(G, W, H, d, imgs){
     }
     y += h + 14;
   };
-  drawSec('最近成绩', d.recent, '#c4b5fd');
-  drawSec('BEST 30', d.b30, '#c4b5fd');
-  drawSec('RECENT 10', d.r10, '#f9a8d4');
+  drawSec('最近成绩', d.recent, T.purple);
+  drawSec('BEST 30', d.b30, T.purple);
+  drawSec('RECENT 10', d.r10, T.pink);
   drawFoot(G, W, H, PAD);
 }
 
