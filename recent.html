@@ -303,7 +303,7 @@ function verifyCsv(rows){
 /* 成绩排序：时间新的在前。
    优先用 ts（真 unix 秒）；没有 ts 的旧 CSV 就从 date 字符串解析，
    实在解析不出来才退到 pot。以前的写法是「两边都有 ts 才算时间」，
-   只要有一行 ts=0（v2.7.6 及以前的 CSV 全如此）就整盘退化成按 pot 排，
+   只要有一行 ts=0（v2.7.7 及以前的 CSV 全如此）就整盘退化成按 pot 排，
    于是「最新打歌」显示的是 pot 最高的那首老歌。 */
 function tsOf(r){
   if (r.ts > 0) return r.ts;
