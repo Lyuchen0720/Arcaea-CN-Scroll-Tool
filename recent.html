@@ -85,7 +85,6 @@ button.p:hover{filter:brightness(1.08)}
 }
 .tgBtn:hover + .tgTip,.tgBtn:focus + .tgTip{opacity:.92}
 .pgfoot{margin:22px 0 6px;padding-top:14px;border-top:1px solid var(--line);text-align:center;
-.pgfoot{margin:22px 0 6px;padding-top:14px;border-top:1px solid var(--line);text-align:center;
   font-size:11.5px;color:#a9a4b6;line-height:1.8}
 .pgfoot a{color:var(--purple);text-decoration:none;font-weight:600}
 .pgfoot a:hover{text-decoration:underline}
@@ -314,14 +313,15 @@ function tsOf(r){
   return isNaN(t) ? 0 : Math.floor(t / 1000);
 }
 
+/* 排序必须和查分页 index.html 的「最近成绩」完全同一套，
+   否则同一个 CSV 在两页会选出不同的「最新一条」（v2.7.7 踩过）。
+   date 里自带时分，字符串比较就是时间比较；ts 只作同分时的补充。 */
 function byRecent(a, b){
-  var ta = tsOf(a), tb = tsOf(b);
-  if (ta && tb && ta !== tb) return tb - ta;   // 时间不同：新的在前
-  if (ta && !tb) return -1;
-  if (tb && !ta) return 1;
-  // 时间相同（同一天/同一分钟）：先按 date 字符串，再按 pot 兜底
-  var d = String(b.date).localeCompare(String(a.date));
-  return d !== 0 ? d : (b.pot - a.pot);
+  var d = String(b.date || '').localeCompare(String(a.date || ''));
+  if (d !== 0) return d;
+  var ta = a.ts || 0, tb = b.ts || 0;
+  if (ta !== tb) return tb - ta;
+  return (b.pot || 0) - (a.pot || 0);
 }
 
 function keyOf(r){ return r.id + '|' + r.diff; }
@@ -796,7 +796,7 @@ document.getElementById('themeBtn').onclick = function(){
 };
 paintTheme();
 </script>
-<div class="pgfoot">v2.7.6<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
+<div class="pgfoot">v2.7.7<span class="sep">·</span><a href="index.html">成绩查询</a><span class="sep">·</span><a href="rank.html">难度排行</a><span class="sep">·</span><a href="tool.html">提取工具</a><span class="sep">·</span><a href="https://www.bilibili.com/video/BV1vGykzgEL1/" target="_blank" rel="noopener">视频教程</a><div class="fa">曲绘版权归 <b>lowiro</b> 所有，仅用于曲目识别</div></div>
 <script>
 /* 本地版（exe 里的服务）：/index.html 是提取器页，查分页在 /site。
    线上 GitHub Pages 没有这个判断，链接照原样走。 */
