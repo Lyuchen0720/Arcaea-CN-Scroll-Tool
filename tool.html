@@ -169,9 +169,19 @@ footer a:hover{color:var(--pink)}
     <div><a href="./">成绩查询页</a> · <a href="rank.html">难度排行</a> ·
       <a href="https://github.com/Lyuchen0720/Arcaea-CN-Scroll-Tool">GitHub 仓库</a></div>
     <div>作者 Lyuchen0720 · 曲绘与素材版权归 lowiro 所有，仅用于曲目识别</div>
-    <div style="font-size:11px;opacity:.6;margin-top:4px">v2.4.9</div>
+    <div style="font-size:11px;opacity:.6;margin-top:4px">v2.5.0</div>
   </footer>
 
 </div>
+<script>
+/* 本地版（exe 里的服务）：/index.html 是提取器页，查分页在 /site。
+   线上 GitHub Pages 没有这个判断，链接照原样走。 */
+(function(){
+  if (window.__OFFLINE__ || location.port === '8770' || location.port === '8780') {
+    var as = document.querySelectorAll('a[href="index.html"]');
+    for (var i = 0; i < as.length; i++) { as[i].setAttribute('href', '/site'); }
+  }
+})();
+</script>
 </body>
 </html>
