@@ -191,12 +191,12 @@
   <img class="pageheadbg" src="off/hero_s.webp" alt="" fetchpriority="high" decoding="async">
   <div class="pageheadnav">
     <img class="pageheadlogo" src="off/logo.png" alt="ARCAEA">
-    <ul><li class="on">成绩查询</li><li><a href="https://arcaea.lowiro.com/zh/song_ranking/paid" target="_blank" rel="noopener">曲目</a></li><li><a href="rank.html">排行</a></li><li><a href="tool.html">提取工具</a></li></ul>
+    <ul><li class="on">成绩查询</li><li><a href="https://arcaea.lowiro.com/zh/song_ranking/paid" target="_blank" rel="noopener">曲目</a></li><li><a href="rank.html">排行</a></li><li><a href="recent.html">最近</a></li><li><a href="tool.html">提取工具</a></li></ul>
   </div>
   <div class="hex"><b>成绩查询</b><small>SCORE VIEWER</small></div>
 </div>
 <div class="wrap">
-  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.7.2</span></div>
+  <div class="sub">国服成绩查询 · 本地计算 B30 / R10<span style="font-size:10.5px;opacity:.55;margin-left:8px">v2.7.3</span></div>
   <div class="sub" style="font-size:10.5px;opacity:.5;margin-top:2px">曲绘版权归 lowiro 所有，仅用于曲目识别</div>
 
   <div class="card">
@@ -211,7 +211,7 @@
   <div class="card">
     <h2>成绩数据（可选） <span class="tag">算 B30/R10 需要</span></h2>
     <div class="sub" style="margin:0 0 8px">
-      粘贴 scores.csv 的内容。没有也能查账号，只是不显示 B30/R10。
+      粘贴 scores.csv 的内容。没有也能查账号和最近成绩，只是不显示 B30/R10。
     </div>
     <textarea id="csv" placeholder="song,id,diff,const,score,...&#10;Grievous Lady,grievouslady,Future,11,9863372,..." spellcheck="false"></textarea>
     <div class="row" style="margin-top:8px">
@@ -265,6 +265,10 @@
     </div>
   </div>
 
+  <div id="recent" class="card hide">
+    <h2>最近成绩</h2>
+    <div id="recentBody"></div>
+  </div>
 
   <div id="distCard" class="card hide">
     <h2>成绩分布 <span class="avg" id="distTotal"></span></h2>
@@ -651,6 +655,34 @@ function load(){
     return smP.then(function(sm){
       var rows = parseCSV($('#csv').value);
 
+      /* 「最近成绩」优先用 CSV 按 date 降序取前 10 条。
+         官服 /api/user/me 的 recent_score 只有「最近一次上传的那条」，
+         跟模拟器里 st3 的真实最近成绩不是一回事，只当没有 CSV 时的兜底。 */
+      var rsHtml = '';
+      if (rows.length){
+        var top = rows.slice().sort(function(a, b){
+          var d = String(b.date || '').localeCompare(String(a.date || ''));
+          return d !== 0 ? d : (b.pot - a.pot);
+        }).slice(0, 10);
+        rsHtml = top.map(function(r, i){
+          return scoreRow(i + 1, r.song || r.id, r.diff, r.cc, r.score, r.pot, r.id);
+        }).join('');
+      } else {
+        var rs = v.recent_score || [];
+        rsHtml = rs.length
+          ? rs.map(function(s, i){
+              var info = sm[s.song_id] || {};
+              var d = info.difficulties || {};
+              var cc = d[String(s.difficulty)];
+              var ccv = (cc == null) ? 0 : cc;
+              return scoreRow(i + 1, info.title || s.song_id, s.difficulty,
+                              cc == null ? '-' : cc, s.score, pot(ccv + CONST_FIX, s.score), s.song_id);
+            }).join('')
+          : '<div style="color:var(--dim)">暂无最近成绩</div>';
+      }
+      $('#recentBody').innerHTML = rsHtml;
+      $('#recent').classList.remove('hide');
+
       if (rows.length) renderStats(rows, sm);
     });
   }).catch(function(e){
@@ -909,7 +941,7 @@ $('#calc').onclick = calcOnly;
     var savedCsv = localStorage.getItem('arcaea_csv') || '';
     // 本地服务注入的成绩数据优先于上一次缓存的 CSV（刚提取的一定更新）
     $('#csv').value = (window.__AUTOCSV__ || savedCsv);
-    // 注入的是刚提取的最新数据，顺手存一份，刷新页面时不用重新粘
+    // 注入的是刚提取的最新数据，顺手存一份，免得跳去「最近成绩」页时读不到
     if (window.__AUTOCSV__ && window.__AUTOCSV__ !== savedCsv){
       try { localStorage.setItem('arcaea_csv', window.__AUTOCSV__); } catch(e){}
     }
