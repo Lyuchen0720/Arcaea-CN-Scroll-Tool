@@ -59,7 +59,7 @@
    模板引擎、B30/R10 计算全部复用查分页同一份 export-engine.js。 */
 (function(){
   var TPL_LIST = ARC_TPL.list, TPL_DESC = ARC_TPL.desc;
-  var state = { tpl: 'portrait', lv: 1, data: null, site: '', cv: null, url: '', busy: false, seq: 0 };
+  var state = { tpl: 'portrait', lv: 1, theme: 'light', data: null, site: '', cv: null, url: '', busy: false, seq: 0 };
   function $(s){ return document.querySelector(s); }
   function qs(k, src){ var m = new RegExp('[?&]' + k + '=([^&]*)').exec(src || location.search); return m ? decodeURIComponent(m[1]) : ''; }
   function settingsSet(k, v){ try { localStorage.setItem(k, v); } catch(e){} }
@@ -157,7 +157,7 @@
     try {
       await hydrateJackets();
       var d = state.data;
-      var opt = { rows: d.rows, me: d.me, sm: d.sm, tpl: state.tpl };
+      var opt = { rows: d.rows, me: d.me, sm: d.sm, tpl: state.tpl, theme: state.theme };
       var cv = await ARC_TPL.build(opt);
       if (seq !== state.seq) return;
       state.cv = cv;
@@ -170,7 +170,7 @@
       $('#res').textContent = TPL_DESC[state.tpl] || state.tpl;
       $('#meta').textContent = state.cv.width + ' × ' + state.cv.height + ' px';
       $('#dl').disabled = false;
-      try { history.replaceState(null, '', '?tpl=' + state.tpl); } catch(e){}
+      try { history.replaceState(null, '', '?tpl=' + state.tpl + '&theme=' + state.theme); } catch(e){}
       document.title = '导出预览 ' + state.cv.width + '×' + state.cv.height + ' · Arcaea';
     } catch (e) {
       emp.textContent = '生成失败：' + (e && e.message ? e.message : e);
@@ -189,6 +189,12 @@
     if (p.tpl && TPL_DESC[p.tpl]) state.tpl = p.tpl;
     var q = qs('tpl');
     if (q && TPL_DESC[q]) state.tpl = q;
+    /* 主题：URL 参数 > localStorage（引擎存的那份） > 默认亮色 */
+    var th = qs('theme') || p.theme;
+    if (th !== 'dark' && th !== 'light'){
+      try { th = (window.ARC_TPL && ARC_TPL.themeGet) ? ARC_TPL.themeGet() : (localStorage.getItem('arcaea_theme') || 'light'); } catch(e){ th = 'light'; }
+    }
+    state.theme = (th === 'dark') ? 'dark' : 'light';
     paintSwitch();
     render();
   };
