@@ -52,14 +52,27 @@ function f_rrPath(G, x, y, w, h, r){
 }
 
 function f_drawCard(G, x, y, w, h){
-  var c = G.c;
+  var c = G.c, T = G_theme(G), light = !!(G.TH && G.TH.bg === THEME_LIGHT.bg);
   f_rrPath(G, x, y, w, h, 18);
-  c.fillStyle = 'rgba(255,255,255,.045)';
-  c.fill();
-  c.strokeStyle = 'rgba(255,255,255,.085)';
+  if (light){
+    c.save();
+    c.shadowColor = 'rgba(80,60,120,.07)';
+    c.shadowBlur = 10 * (G.s || 1);
+    c.shadowOffsetY = 2 * (G.s || 1);
+    c.fillStyle = T.card;
+    c.fill();
+    c.restore();
+  } else {
+    c.fillStyle = 'rgba(255,255,255,.045)';
+    c.fill();
+  }
+  f_rrPath(G, x, y, w, h, 18);
+  c.strokeStyle = light ? T.cardLine : 'rgba(255,255,255,.085)';
   c.lineWidth = 1;
   c.stroke();
 }
+
+function G_isLight(G){ return !!(G.TH && G.TH.bg === THEME_LIGHT.bg); }
 
 function f_clipText(G, text, max){
   var c = G.c;
@@ -92,13 +105,13 @@ function f_drawJacket(G, im, x, y, size){
 
 /* 一行成绩：名次 / 封面 / 定数 / 歌名 / 难度+判定 / 分数 / 潜力 */
 function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
-  var c = G.c, s = G.s;
+  var c = G.c, s = G.s, T = G_theme(G), light = G_isLight(G);
   var H = (opt && opt.rowH) || 66;
 
   c.font = '700 ' + (14 * s).toFixed(1) + 'px "Consolas",monospace';
   c.textAlign = 'right';
   c.textBaseline = 'middle';
-  c.fillStyle = rank <= 3 ? '#f472b6' : 'rgba(255,255,255,.30)';
+  c.fillStyle = rank <= 3 ? (light ? '#d3459a' : '#f472b6') : (light ? '#c9c3d6' : 'rgba(255,255,255,.30)');
   c.fillText(String(rank), x + 40 * s, y + H / 2);
   c.textAlign = 'left';
 
@@ -117,17 +130,17 @@ function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
   var ccTxt = '[' + (r.cc == null || r.cc === '' ? '-' : String(r.cc)) + ']';
   c.textBaseline = 'top';
   c.textAlign = 'left';
-  c.fillStyle = 'rgba(196,181,253,.85)';
+  c.fillStyle = light ? '#8b6cc4' : 'rgba(196,181,253,.85)';
   c.fillText(ccTxt, tx, y + 10 * s);
   var cw2 = c.measureText(ccTxt).width;
 
   c.font = '600 ' + (17 * s).toFixed(1) + 'px "Microsoft YaHei","Segoe UI",sans-serif';
-  c.fillStyle = '#ece7ff';
+  c.fillStyle = light ? T.text : '#ece7ff';
   var mx = tx + cw2 + 7 * s;
   c.fillText(f_clipText(G, title, tx + tw - mx), mx, y + 8 * s);
 
   c.font = (12 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.40)';
+  c.fillStyle = light ? T.dim : 'rgba(255,255,255,.40)';
   c.fillText(diff, tx, y + 32 * s);
   var dx = tx + c.measureText(diff).width + 10 * s;
 
@@ -135,38 +148,38 @@ function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
   if (hasJudge){
     var base = (12 * s).toFixed(1) + 'px "Consolas","Segoe UI",monospace';
     c.font = base;
-    c.fillStyle = 'rgba(255,255,255,.58)';
+    c.fillStyle = light ? '#5f5870' : 'rgba(255,255,255,.58)';
     var a1 = 'P' + r.pure;
     c.fillText(a1, dx, y + 32 * s);
     var x2 = dx + c.measureText(a1).width;
     if (r.shiny > 0){
-      c.fillStyle = 'rgba(196,181,253,.80)';
+      c.fillStyle = light ? '#8b6cc4' : 'rgba(196,181,253,.80)';
       var a2 = '+' + r.shiny;
       c.fillText(a2, x2, y + 32 * s);
       x2 += c.measureText(a2).width;
     }
-    c.fillStyle = 'rgba(255,255,255,.22)';
+    c.fillStyle = light ? '#d6d1e0' : 'rgba(255,255,255,.22)';
     c.fillText(' · ', x2, y + 32 * s);
     var x3 = x2 + c.measureText(' · ').width;
-    c.fillStyle = 'rgba(255,255,255,.50)';
+    c.fillStyle = light ? '#7d768c' : 'rgba(255,255,255,.50)';
     var a3 = 'F' + r.far;
     c.fillText(a3, x3, y + 32 * s);
     var x4 = x3 + c.measureText(a3).width;
-    c.fillStyle = 'rgba(255,255,255,.22)';
+    c.fillStyle = light ? '#d6d1e0' : 'rgba(255,255,255,.22)';
     c.fillText(' · ', x4, y + 32 * s);
     var x5 = x4 + c.measureText(' · ').width;
-    c.fillStyle = r.lost > 0 ? 'rgba(248,113,113,.78)' : 'rgba(255,255,255,.50)';
+    c.fillStyle = r.lost > 0 ? (light ? '#d9534f' : 'rgba(248,113,113,.78)') : (light ? '#7d768c' : 'rgba(255,255,255,.50)');
     c.fillText('L' + r.lost, x5, y + 32 * s);
   }
 
   c.textAlign = 'right';
   c.textBaseline = 'top';
   c.font = '600 ' + (18 * s).toFixed(1) + 'px "Consolas","Segoe UI",monospace';
-  c.fillStyle = '#ffffff';
+  c.fillStyle = light ? T.text : '#ffffff';
   c.fillText(f_fmt(r.score), x + w - 10 * s, y + 8 * s);
 
   c.font = '600 ' + (14 * s).toFixed(1) + 'px "Consolas",monospace';
-  c.fillStyle = '#c4b5fd';
+  c.fillStyle = light ? '#8b6cc4' : '#c4b5fd';
   c.fillText(potOf(r).toFixed(3), x + w - 10 * s, y + 31 * s);
 
   c.textAlign = 'left';
@@ -183,7 +196,7 @@ function f_drawSongRow(G, x, y, w, r, rank, im, sm, opt){
       c.save();
       f_rrPath(G, bx, by, bw, bh, bh / 2);
       c.clip();
-      c.fillStyle = 'rgba(255,255,255,.07)';
+      c.fillStyle = light ? T.barBg : 'rgba(255,255,255,.07)';
       c.fillRect(bx, by, bw, bh);
       var wPure = bw * (r.pure / tot);
       var wFar  = bw * ((r.far || 0) / tot);
@@ -249,10 +262,61 @@ function G_make(cv, P, s){
   return { cv: cv, c: cv.getContext('2d'), P: P, s: s || 1, ox: 0, oy: 0 };
 }
 
+/* 纸面配色：白纸主题（和查分页同一个调子）。
+   TH 挂在 G 上，渲染结束时由 G_free 还原，所以深/浅两套模板可以共存。 */
+var THEME_LIGHT = {
+  bg: '#ffffff',
+  card: '#fafafc',
+  cardLine: '#ebe8f2',
+  text: '#2b2733',
+  dim: '#938fa0',
+  dim2: '#b8b3c4',
+  accent: '#6b3fa0',
+  pink: '#d3459a',
+  purple: '#8f6fd0',
+  purpleSoft: '#a78bfa',
+  pinkSoft: '#e879b6',
+  mark: '#1d0b2e',
+  rule: '#eae7f0',
+  barBg: '#f1eef7',
+  logoA: '#1d0b2e', logoB: '#9a7ad0'
+};
+var THEME_DARK = {
+  bg: '#15111f',
+  card: '#17121f',
+  cardLine: '#2a2438',
+  text: '#f0eaff',
+  dim: '#9b93ad',
+  dim2: '#6c647c',
+  accent: '#c4b5fd',
+  pink: '#f472b6',
+  purple: '#a78bfa',
+  purpleSoft: '#c4b5fd',
+  pinkSoft: '#f9a8d4',
+  mark: '#f0eaff',
+  rule: '#2a2438',
+  barBg: '#1f1a2b',
+  logoA: '#ffffff', logoB: '#a78bfa'
+};
+
+function G_theme(G){ return G.TH || THEME_DARK; }
+
 function paintBg(G, W, H, t){
-  var c = G.c;
+  var c = G.c, T = G_theme(G);
   c.save();
   c.setTransform(G.P, 0, 0, G.P, 0, 0);
+  if (t && t.light){
+    /* 白纸：纯白底 + 顶部一层极淡的紫色晕，避免大面积死白 */
+    c.fillStyle = T.bg;
+    c.fillRect(0, 0, W, H);
+    var glowW = c.createRadialGradient(W * 0.18, -60, 0, W * 0.18, -60, Math.max(W, 620) * 0.8);
+    glowW.addColorStop(0, 'rgba(143,111,208,.10)');
+    glowW.addColorStop(0.6, 'rgba(143,111,208,.03)');
+    glowW.addColorStop(1, 'rgba(143,111,208,0)');
+    c.fillStyle = glowW;
+    c.fillRect(0, 0, W, Math.min(H, 460));
+    return c.restore();
+  }
   var bg = c.createLinearGradient(0, 0, W * 0.6, H);
   bg.addColorStop(0, '#15111f');
   bg.addColorStop(0.45, '#1b1529');
@@ -275,28 +339,66 @@ function paintBg(G, W, H, t){
   c.restore();
 }
 
-/* 标题栏，固定占 96 */
+/* 标题栏，固定占 96。白纸主题下是「渐变衬线 ARCAEA + 国服成绩」，和网页头部同一套。 */
 function f_drawHead(G, W, PAD, opt){
-  var c = G.c, s = G.s;
+  var c = G.c, s = G.s, T = G_theme(G), light = G_isLight(G);
   var big = (opt.big || 42) * s, y = 30;
   c.textAlign = 'left';
   c.textBaseline = 'top';
-  c.font = 'bold ' + big + 'px "Microsoft YaHei","Segoe UI",sans-serif';
-  c.fillStyle = '#f0eaff';
-  c.fillText('ARCAEA', PAD, y);
-  var tw = c.measureText('ARCAEA').width;
-  c.font = '600 ' + Math.round(big * 0.52) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = '#a78bfa';
-  c.fillText('国服成绩', PAD + tw + 16 * s, y + Math.round(big * 0.38));
+  if (light && G.logo && G.logo.naturalWidth){
+    /* 白纸主题：左上角直接放 ARCAEA 官方 logo（黑底已抠成透明 PNG） */
+    var lh = (opt.logoH || 44) * s;
+    var lw = lh * (G.logo.naturalWidth / G.logo.naturalHeight);
+    var maxW = W - PAD * 2 - (opt.badge ? 220 * s : 0);
+    if (lw > maxW){ lw = maxW; lh = lw * (G.logo.naturalHeight / G.logo.naturalWidth); }
+    /* 白底上淡投影：先画一层模糊的暗影，再压上 logo 本体 */
+    c.save();
+    c.shadowColor = 'rgba(60,40,100,.28)';
+    c.shadowBlur = 7 * s;
+    c.shadowOffsetX = 0;
+    c.shadowOffsetY = 2 * s;
+    c.drawImage(G.logo, PAD, y - 6 * s, lw, lh);
+    c.restore();
+  } else if (light){
+    /* 拿不到 logo 图就退回文字版：深紫→浅紫→深紫的横向渐变，衬线体，字距拉宽 */
+    c.save();
+    var lg = c.createLinearGradient(PAD, y, PAD + big * 4.6, y);
+    lg.addColorStop(0, '#1d0b2e');
+    lg.addColorStop(0.34, '#4a2f88');
+    lg.addColorStop(0.52, '#9a7ad0');
+    lg.addColorStop(0.74, '#1d0b2e');
+    c.font = '500 ' + big.toFixed(1) + 'px "Bodoni MT","Didot","Cinzel","Playfair Display","Palatino Linotype","Times New Roman",serif';
+    c.fillStyle = lg;
+    if ('letterSpacing' in c) c.letterSpacing = (big * 0.18).toFixed(1) + 'px';
+    c.fillText('ARCAEA', PAD, y - big * 0.06);
+    if ('letterSpacing' in c) c.letterSpacing = '0px';
+    c.restore();
+    var tw = c.measureText('ARCAEA').width;
+    c.font = '600 ' + Math.round(big * 0.52) + 'px "Microsoft YaHei",sans-serif';
+    c.fillStyle = T.mark;
+    c.fillText('国服成绩', PAD + tw + 20 * s, y + Math.round(big * 0.44));
+  } else {
+    c.font = 'bold ' + big + 'px "Microsoft YaHei","Segoe UI",sans-serif';
+    c.fillStyle = '#f0eaff';
+    c.fillText('ARCAEA', PAD, y);
+    var tw2 = c.measureText('ARCAEA').width;
+    c.font = '600 ' + Math.round(big * 0.52) + 'px "Microsoft YaHei",sans-serif';
+    c.fillStyle = '#a78bfa';
+    c.fillText('国服成绩', PAD + tw2 + 16 * s, y + Math.round(big * 0.38));
+  }
   c.font = (15 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.35)';
+  c.fillStyle = light ? T.dim : 'rgba(255,255,255,.35)';
   c.fillText(opt.sub || 'BEST 30 + RECENT 10', PAD, y + 58);
   if (opt.badge){
     c.textAlign = 'right';
     c.font = '600 ' + (13 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-    c.fillStyle = 'rgba(196,181,253,.55)';
+    c.fillStyle = light ? T.dim2 : 'rgba(196,181,253,.55)';
     c.fillText(opt.badge, W - PAD, y + 62);
     c.textAlign = 'left';
+  }
+  if (light){
+    c.fillStyle = T.rule;
+    c.fillRect(PAD, y + 88, W - PAD * 2, 1);
   }
 }
 
@@ -320,11 +422,11 @@ function f_drawProfile(G, x, y, w, h, me){
   c.textAlign = 'left';
   c.textBaseline = 'top';
 
-  c.fillStyle = '#fff';
+  c.fillStyle = G_theme(G).text;
   c.font = 'bold ' + (30 * s).toFixed(1) + 'px "Microsoft YaHei","Segoe UI",sans-serif';
   c.fillText(f_clipText(G, String(me.display_name || me.name || '—'), w * 0.52), ax + av + 22 * s, y + 30);
   c.font = (14 * s).toFixed(1) + 'px "Consolas",monospace';
-  c.fillStyle = 'rgba(255,255,255,.42)';
+  c.fillStyle = G_theme(G).dim;
   c.fillText('USER CODE ' + (me.user_code || ''), ax + av + 22 * s, y + 76);
 
   c.textAlign = 'right';
@@ -336,7 +438,7 @@ function f_drawProfile(G, x, y, w, h, me){
   c.fillStyle = pg;
   c.fillText(rnum, x + w - 30 * s, y + 26);
   c.font = (12 * s).toFixed(1) + 'px "Consolas",monospace';
-  c.fillStyle = 'rgba(255,255,255,.38)';
+  c.fillStyle = G_theme(G).dim2;
   c.fillText('POTENTIAL', x + w - 30 * s, y + 82);
   c.textAlign = 'left';
 }
@@ -347,12 +449,12 @@ function f_drawBlockHead(G, x, y, w, title, right, rightColor){
   c.textAlign = 'left';
   c.textBaseline = 'top';
   c.font = '600 ' + (20 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = '#e9e3ff';
+  c.fillStyle = G_isLight(G) ? (G_theme(G).mark) : '#e9e3ff';
   c.fillText(title, x + 22 * s, y + 18);
   if (right){
     c.textAlign = 'right';
     c.font = 'bold ' + (22 * s).toFixed(1) + 'px "Consolas",monospace';
-    c.fillStyle = rightColor || '#c4b5fd';
+    c.fillStyle = G_isLight(G) ? G_theme(G).purple : (rightColor || '#c4b5fd');
     c.fillText(right, x + w - 22 * s, y + 17);
     c.textAlign = 'left';
   }
@@ -363,7 +465,7 @@ function drawFoot(G, W, H, PAD, alphabetic){
   c.textAlign = 'left';
   c.textBaseline = alphabetic ? 'alphabetic' : 'top';
   c.font = (13 * s).toFixed(1) + 'px "Microsoft YaHei",sans-serif';
-  c.fillStyle = 'rgba(255,255,255,.26)';
+  c.fillStyle = G_isLight(G) ? '#a9a3b6' : 'rgba(255,255,255,.26)';
   c.fillText('定数已按 +0.4 修正 · B30/R10 为本地估算，官方 rating 以游戏内为准', PAD, H - 60.5);
   c.textAlign = 'right';
   c.fillText('曲绘版权归 lowiro 所有 · 仅用于曲目识别', W - PAD, H - 60.5);
@@ -529,6 +631,21 @@ function jacketNeeds(d){
   return need;
 }
 
+/* 标题 logo：优先用 off/logo_white.png（黑底已抠成透明），失败就算了，head 会退回文字版 */
+var LOGO_IMG = null, LOGO_TRIED = false;
+function loadLogo(){
+  if (LOGO_TRIED) return Promise.resolve(LOGO_IMG);
+  LOGO_TRIED = true;
+  return new Promise(function(res){
+    var im = new Image(), done = false;
+    function fin(v){ if (!done){ done = true; LOGO_IMG = v; res(v); } }
+    im.onload = function(){ fin(im.naturalWidth ? im : null); };
+    im.onerror = function(){ fin(null); };
+    setTimeout(function(){ fin(null); }, 4000);
+    im.src = 'off/logo_white.png';
+  });
+}
+
 /* 预览页没有查分页的 imgLoad，就退回本地实现（同样带超时，防止永远转圈） */
 function defaultImgLoad(src){
   return new Promise(function(res){
@@ -580,7 +697,8 @@ function portraitSize(d){
 function renderPortrait(G, W, H, d, imgs){
   var PAD = 40, CW = W - PAD * 2, ROW = 74, HEAD = 54, GAP = 14, COLS = 2;
   var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent, sm = d.sm;
-  paintBg(G, W, H, null);
+  G.TH = THEME_LIGHT;
+  paintBg(G, W, H, { light: true });
   G.c.textBaseline = 'top';
   G.c.textAlign = 'left';
   var y = 30;
@@ -623,6 +741,7 @@ function wideSize(){ return { W: WIDE_W, H: WIDE_H }; }
 
 function renderWide(G, d, imgs){
   var c = G.c, s = G.s;
+  G.TH = THEME_DARK;
   var W = WIDE_W, H = WIDE_H, PAD = 60, GAP = 18;
   var me = d.me, b30 = d.b30, r10 = d.r10, recent = d.recent;
   paintBg(G, W, H, { glow2: true });
@@ -765,6 +884,7 @@ function wallSize(d){
 
 function renderWall(G, W, H, d, imgs){
   var c = G.c, s = G.s;
+  G.TH = THEME_DARK;
   var L = wallSize(d), PAD = L.PAD, COLS = L.COLS, GAP = L.GAP, tile = L.tile;
   paintBg(G, W, H, null);
   c.textBaseline = 'top';
@@ -815,6 +935,7 @@ function drawTemplate(G, tpl, W, H, d, imgs){
   if (tpl === 'wide') renderWide(G, d, imgs);
   else if (tpl === 'wall') renderWall(G, W, H, d, imgs);
   else renderPortrait(G, W, H, d, imgs);
+  G.TH = null;          /* 还原默认深色，后续模板不受影响 */
 }
 
 /* 先出一张 1×，确认尺寸后再查分页上做导出（预览页直接 1× 显示） */
@@ -823,12 +944,14 @@ async function buildScoreImage(opt){
   var d = opt.data || collectExportData(opt);
   if (!d) return null;
   var tpl = opt.tpl || TtGet();
-  var imgs = await loadJacketImages(jacketNeeds(d));
+  var got = await Promise.all([loadJacketImages(jacketNeeds(d)), loadLogo()]);
+  var imgs = got[0];
   var S = tplSize(tpl, d);
   var cv = document.createElement('canvas');
   cv.width = Math.max(1, Math.round(S.W));
   cv.height = Math.max(1, Math.round(S.H));
   var G = G_make(cv, 1, 1);
+  G.logo = got[1];
   drawTemplate(G, tpl, S.W, S.H, d, imgs);
   return cv;
 }
@@ -841,12 +964,13 @@ function buildScaled(opt){
   var tpl = opt.tpl || TtGet();
   var S = tplSize(tpl, d);
   var k = Math.max(1, Math.min(4, Math.round(opt.scale || 1)));
-  return loadJacketImages(jacketNeeds(d)).then(function(imgs){
+  return Promise.all([loadJacketImages(jacketNeeds(d)), loadLogo()]).then(function(got){
     var cv = document.createElement('canvas');
     cv.width = Math.round(S.W * k);
     cv.height = Math.round(S.H * k);
     var G = G_make(cv, k, 1);
-    drawTemplate(G, tpl, S.W, S.H, d, imgs);
+    G.logo = got[1];
+    drawTemplate(G, tpl, S.W, S.H, d, got[0]);
     return cv;
   });
 }
